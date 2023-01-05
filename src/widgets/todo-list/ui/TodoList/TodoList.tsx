@@ -1,10 +1,11 @@
-import { FC, useMemo } from 'react';
+import { FC, memo, useMemo } from 'react';
 import { useAtom } from '@reatom/npm-react';
 import { TodoItem, userTodosAtom } from 'entities/todo';
 import { SORT_FUNCTIONS } from '../../config';
 import { todoSortAtom } from '../../model';
 import { RemoveTodoButton } from 'features/remove-todo';
 import { ToggleTodo } from 'features/toggle-todo';
+import { Todo } from 'shared/types';
 import styles from './TodoList.module.css';
 
 const NoTodos = () => {
@@ -15,11 +16,27 @@ const NoTodos = () => {
   );
 };
 
+const TodoCard: FC<{ todo: Todo }> = memo(({ todo }) => {
+  const { _id, title, completed, description } = todo;
+
+  return (
+    <TodoItem
+      title={title}
+      completed={completed}
+      description={description}
+      loading={false}
+    >
+      <RemoveTodoButton id={_id} />
+      <ToggleTodo completion={completed} id={_id} />
+    </TodoItem>
+  );
+});
+
 export const TodoList: FC = () => {
   const [currentSort] = useAtom(todoSortAtom);
   const [todoItems] = useAtom(userTodosAtom);
 
-  const sortedTodoItems = useMemo(() => {
+  const sortedTodos = useMemo(() => {
     if (currentSort === 'Default') return todoItems;
 
     const sortFunction = SORT_FUNCTIONS[currentSort];
@@ -27,25 +44,15 @@ export const TodoList: FC = () => {
     return [...todoItems].sort(sortFunction);
   }, [todoItems, currentSort]);
 
-  const todoListEmpty = sortedTodoItems.length === 0;
+  const todoListEmpty = sortedTodos.length === 0;
 
   if (todoListEmpty) return <NoTodos />;
 
-  const items = sortedTodoItems.map(({ _id, completed, description, title }) => {
-    return (
-      <li key={_id}>
-        <TodoItem
-          title={title}
-          completed={completed}
-          description={description}
-          loading={false}
-        >
-          <RemoveTodoButton id={_id} />
-          <ToggleTodo completion={completed} id={_id} />
-        </TodoItem>
-      </li>
-    );
-  });
+  const items = sortedTodos.map((todo) => (
+    <li key={todo._id}>
+      <TodoCard todo={todo} />
+    </li>
+  ));
 
   return <ul className={styles.list}>{items}</ul>;
 };
