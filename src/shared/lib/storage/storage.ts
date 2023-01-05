@@ -1,56 +1,56 @@
 class StorageWrapper {
-  private storage?: Storage;
+	private storage?: Storage;
 
-  constructor(storageType: Storage) {
-    try {
-      this.storage = storageType; // session
-    } catch (error) {
-      console.error(error);
-    }
-  }
+	constructor(storageType: Storage) {
+		try {
+			this.storage = storageType; // session
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
-  get length() {
-    if (!this.storage) return;
+	get length() {
+		if (!this.storage) return;
 
-    return this.storage.length;
-  }
+		return this.storage.length;
+	}
 
-  get<T>(key: string): T | undefined {
-    if (!this.storage) return;
+	get<T>(key: string): T | undefined {
+		if (!this.storage) return;
 
-    try {
-      const value = this.storage.getItem(key);
+		try {
+			const value = this.storage.getItem(key);
 
-      if (value === null) return;
+			if (value === null) return;
 
-      return JSON.parse(value);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+			return JSON.parse(value);
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
-  set(key: string, value: unknown) {
-    if (!this.storage) return;
+	set(key: string, value: unknown) {
+		if (!this.storage) return;
 
-    try {
-      const stringValue = JSON.stringify(value);
-      this.storage.setItem(key, stringValue);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+		try {
+			const stringValue = JSON.stringify(value);
+			this.storage.setItem(key, stringValue);
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
-  remove(key: string) {
-    if (!this.storage) return;
+	remove(key: string) {
+		if (!this.storage) return;
 
-    this.storage.removeItem(key);
-  }
+		this.storage.removeItem(key);
+	}
 
-  clear() {
-    if (!this.storage) return;
+	clear() {
+		if (!this.storage) return;
 
-    this.storage.clear();
-  }
+		this.storage.clear();
+	}
 }
 
 export const storage = new StorageWrapper(localStorage);

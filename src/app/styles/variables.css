@@ -1,18 +1,18 @@
 :root {
-  --color-primary: hsl(207, 17%, 23%);
-  --color-primary-light: rgb(84, 142, 170);
+	--color-primary: hsl(207, 17%, 23%);
+	--color-primary-light: rgb(84, 142, 170);
 
-  --color-neutral: hsl(208, 100%, 97%);
+	--color-neutral: hsl(208, 100%, 97%);
 
-  --color-secondary: hsl(206, 17%, 32%);
-  --color-secondary-light: rgb(25, 118, 210);
+	--color-secondary: hsl(206, 17%, 32%);
+	--color-secondary-light: rgb(25, 118, 210);
 
-  --color-active: hsl(128, 100%, 80%);
+	--color-active: hsl(128, 100%, 80%);
 
-  --color-base-0: hsl(0, 0%, 0%);
-  --color-base-100: hsl(0, 0%, 20%);
-  --color-base-200: hsl(0, 0%, 40%);
-  --color-base-300: hsl(0, 0%, 60%);
-  --color-base-400: hsl(0, 0%, 80%);
-  --color-base-500: hsl(0, 0%, 100%);
+	--color-base-0: hsl(0, 0%, 0%);
+	--color-base-100: hsl(0, 0%, 20%);
+	--color-base-200: hsl(0, 0%, 40%);
+	--color-base-300: hsl(0, 0%, 60%);
+	--color-base-400: hsl(0, 0%, 80%);
+	--color-base-500: hsl(0, 0%, 100%);
 }

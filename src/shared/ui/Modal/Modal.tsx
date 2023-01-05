@@ -4,43 +4,43 @@ import { Portal } from '../Portal';
 import styles from './Modal.module.css';
 
 type ModalProps = {
-  children: ReactNode;
-  onClose: () => void;
-  isOpened: boolean;
+	children: ReactNode;
+	onClose: () => void;
+	isOpened: boolean;
 };
 
 export const Modal: FC<ModalProps> = ({ children, onClose, isOpened }) => {
-  const handleEscapeClick = ({ key }: KeyboardEvent) => {
-    if (key === 'Esc' || key === 'Escape') {
-      onClose();
-    }
-  };
+	const handleEscapeClick = ({ key }: KeyboardEvent) => {
+		if (key === 'Esc' || key === 'Escape') {
+			onClose();
+		}
+	};
 
-  useEffect(() => {
-    if (!isOpened) return;
+	useEffect(() => {
+		if (!isOpened) return;
 
-    window.addEventListener('keydown', handleEscapeClick);
+		window.addEventListener('keydown', handleEscapeClick);
 
-    return () => {
-      window.removeEventListener('keydown', handleEscapeClick);
-    };
-  }, [isOpened]);
+		return () => {
+			window.removeEventListener('keydown', handleEscapeClick);
+		};
+	}, [isOpened]);
 
-  if (!isOpened) return null;
+	if (!isOpened) return null;
 
-  const onClickModal: MouseEventHandler = (event) => {
-    event.stopPropagation();
-  };
+	const onClickModal: MouseEventHandler = (event) => {
+		event.stopPropagation();
+	};
 
-  return (
-    <Portal>
-      <FocusLock>
-        <div onClick={onClose} className={styles.overlay}>
-          <div onClick={onClickModal} className={styles.modal} role="dialog">
-            {children}
-          </div>
-        </div>
-      </FocusLock>
-    </Portal>
-  );
+	return (
+		<Portal>
+			<FocusLock>
+				<div onClick={onClose} className={styles.overlay}>
+					<div onClick={onClickModal} className={styles.modal} role="dialog">
+						{children}
+					</div>
+				</div>
+			</FocusLock>
+		</Portal>
+	);
 };

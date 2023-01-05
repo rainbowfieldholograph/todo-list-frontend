@@ -5,15 +5,15 @@ import { Outlet } from 'react-router-dom';
 import styles from './Layout.module.css';
 
 export const Layout: FC = () => {
-  return (
-    <Container className={styles.wrapper}>
-      <Header />
-      <main className={styles.content}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Outlet />
-        </Suspense>
-      </main>
-      <Footer />
-    </Container>
-  );
+	return (
+		<Container className={styles.wrapper}>
+			<Header />
+			<main className={styles.content}>
+				<Suspense fallback={<div>Loading...</div>}>
+					<Outlet />
+				</Suspense>
+			</main>
+			<Footer />
+		</Container>
+	);
 };

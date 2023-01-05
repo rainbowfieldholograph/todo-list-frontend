@@ -1,12 +1,12 @@
 .title {
-  margin-bottom: 2rem;
+	margin-bottom: 2rem;
 }
 
 .buttons {
-  display: flex;
-  justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
 .error {
-  margin-top: 1rem;
+	margin-top: 1rem;
 }

@@ -6,9 +6,9 @@ const ctx = createCtx();
 connectLogger(ctx);
 
 export const withReatom = (Component: FC) => () => {
-  return (
-    <reatomContext.Provider value={ctx}>
-      <Component />
-    </reatomContext.Provider>
-  );
+	return (
+		<reatomContext.Provider value={ctx}>
+			<Component />
+		</reatomContext.Provider>
+	);
 };

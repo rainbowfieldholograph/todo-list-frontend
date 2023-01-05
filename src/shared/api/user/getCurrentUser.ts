@@ -2,9 +2,9 @@ import { apiInstance } from '../base';
 import { Todo, User } from 'shared/types';
 
 interface Response extends User {
-  todo: Todo[];
+	todo: Todo[];
 }
 
 export const getCurrentUser = () => {
-  return apiInstance.get<Response>('/user/me');
+	return apiInstance.get<Response>('/user/me');
 };

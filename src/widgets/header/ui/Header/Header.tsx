@@ -4,10 +4,10 @@ import { LinksList } from './LinksList';
 import styles from './Header.module.css';
 
 export const Header: FC = () => {
-  return (
-    <header className={styles.header}>
-      <LinksList />
-      <AuthSection />
-    </header>
-  );
+	return (
+		<header className={styles.header}>
+			<LinksList />
+			<AuthSection />
+		</header>
+	);
 };

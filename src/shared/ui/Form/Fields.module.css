@@ -1,9 +1,9 @@
 .fields {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }
 
 .fields:not(:last-child) {
-  margin-bottom: 2rem;
+	margin-bottom: 2rem;
 }

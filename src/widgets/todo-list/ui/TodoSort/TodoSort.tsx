@@ -5,24 +5,24 @@ import { todoSortAtom } from '../../model';
 import styles from './TodoSort.module.css';
 
 export const TodoSort = () => {
-  const [_todoSort, setTodoSort] = useAtom(todoSortAtom);
+	const [_todoSort, setTodoSort] = useAtom(todoSortAtom);
 
-  const handleSelect = (event: ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value as SortType;
-    setTodoSort(value);
-  };
+	const handleSelect = (event: ChangeEvent<HTMLSelectElement>) => {
+		const value = event.target.value as SortType;
+		setTodoSort(value);
+	};
 
-  const options = sortVariants.map((option) => {
-    return (
-      <option key={option} value={option}>
-        {option}
-      </option>
-    );
-  });
+	const options = sortVariants.map((option) => {
+		return (
+			<option key={option} value={option}>
+				{option}
+			</option>
+		);
+	});
 
-  return (
-    <select onChange={handleSelect} className={styles.filter}>
-      {options}
-    </select>
-  );
+	return (
+		<select onChange={handleSelect} className={styles.filter}>
+			{options}
+		</select>
+	);
 };

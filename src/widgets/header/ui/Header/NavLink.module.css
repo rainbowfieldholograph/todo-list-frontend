@@ -1,22 +1,22 @@
 .link {
-  color: inherit;
-  font-size: 1.2rem;
+	color: inherit;
+	font-size: 1.2rem;
 
-  --link-outline-color: var(--color-secondary-light);
+	--link-outline-color: var(--color-secondary-light);
 }
 
 .link:hover,
 .link:focus {
-  color: var(--color-secondary-light);
+	color: var(--color-secondary-light);
 }
 
 .link:focus-visible {
-  outline: 1px solid var(--link-outline-color);
-  outline-offset: 0.5rem;
+	outline: 1px solid var(--link-outline-color);
+	outline-offset: 0.5rem;
 }
 
 .link[aria-current='page'] {
-  color: var(--color-active);
+	color: var(--color-active);
 
-  --link-outline-color: var(--color-active);
+	--link-outline-color: var(--color-active);
 }
