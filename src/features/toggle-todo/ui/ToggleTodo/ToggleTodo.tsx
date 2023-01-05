@@ -1,6 +1,6 @@
 import { useAction, useAtom } from '@reatom/npm-react';
 import { toggleTodoAction } from 'entities/todo';
-import { FC, memo } from 'react';
+import { FC } from 'react';
 import { Todo } from 'shared/types';
 
 type ToggleTodoProps = {
@@ -8,7 +8,7 @@ type ToggleTodoProps = {
   completion: boolean;
 };
 
-export const ToggleTodo: FC<ToggleTodoProps> = memo(({ id, completion }) => {
+export const ToggleTodo: FC<ToggleTodoProps> = ({ id, completion }) => {
   const toggle = useAction(toggleTodoAction);
   const [loading] = useAtom((ctx) => ctx.spy(toggleTodoAction.pendingAtom) > 0);
 
@@ -23,4 +23,4 @@ export const ToggleTodo: FC<ToggleTodoProps> = memo(({ id, completion }) => {
       />
     </label>
   );
-});
+};

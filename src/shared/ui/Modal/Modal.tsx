@@ -10,24 +10,21 @@ type ModalProps = {
 };
 
 export const Modal: FC<ModalProps> = ({ children, onClose, isOpened }) => {
-  // const handleEscapeClick = ({ key }: KeyboardEvent) => {
-  //   console.log('click!');
+  const handleEscapeClick = ({ key }: KeyboardEvent) => {
+    if (key === 'Esc' || key === 'Escape') {
+      onClose();
+    }
+  };
 
-  //   if (key === 'Esc' || key === 'Escape') {
-  //     console.log('close!');
-  //     onClose();
-  //   }
-  // };
+  useEffect(() => {
+    if (!isOpened) return;
 
-  // useEffect(() => {
-  //   if (!isOpened) return;
+    window.addEventListener('keydown', handleEscapeClick);
 
-  //   window.addEventListener('keydown', handleEscapeClick);
-
-  //   return () => {
-  //     window.removeEventListener('keydown', handleEscapeClick);
-  //   };
-  // }, [isOpened]);
+    return () => {
+      window.removeEventListener('keydown', handleEscapeClick);
+    };
+  }, [isOpened]);
 
   if (!isOpened) return null;
 

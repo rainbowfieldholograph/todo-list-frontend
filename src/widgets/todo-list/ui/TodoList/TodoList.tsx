@@ -27,6 +27,10 @@ export const TodoList: FC = () => {
     return [...todoItems].sort(sortFunction);
   }, [todoItems, currentSort]);
 
+  const todoListEmpty = sortedTodoItems.length === 0;
+
+  if (todoListEmpty) return <NoTodos />;
+
   const items = sortedTodoItems.map(({ _id, completed, description, title }) => {
     return (
       <li key={_id}>
@@ -42,10 +46,6 @@ export const TodoList: FC = () => {
       </li>
     );
   });
-
-  const todoListEmpty = sortedTodoItems.length === 0;
-
-  if (todoListEmpty) return <NoTodos />;
 
   return <ul className={styles.list}>{items}</ul>;
 };

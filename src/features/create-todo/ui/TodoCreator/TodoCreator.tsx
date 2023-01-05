@@ -16,19 +16,8 @@ export const TodoCreator: FC = () => {
   return (
     <>
       <Button onClick={onClickButton}>Create new Todo</Button>
-      <Modal
-        isOpened={modalOpened}
-        onClose={() => {
-          console.log('onClose from Modal');
-          onClose();
-        }}
-      >
-        <TodoCreatorModal
-          onClose={() => {
-            console.log('onClose from Creator');
-            onClose();
-          }}
-        />
+      <Modal isOpened={modalOpened} onClose={onClose}>
+        <TodoCreatorModal onClose={onClose} />
       </Modal>
     </>
   );
