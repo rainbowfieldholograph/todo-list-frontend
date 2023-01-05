@@ -1,0 +1,43 @@
+import { FC } from 'react';
+import { userAtom } from 'entities/user';
+import { NavLink } from './NavLink';
+import { useAtom } from '@reatom/npm-react';
+import styles from './LinksList.module.css';
+
+interface Link {
+  title: string;
+  to: string;
+  needAuth?: boolean;
+  hideWhenAuth?: boolean;
+}
+
+const LINKS: Link[] = [
+  { title: 'Start', to: '/' },
+  { title: 'Login', to: '/login', hideWhenAuth: true },
+  { title: 'Todo', to: '/todo', needAuth: true },
+  { title: 'SignUp', to: '/signup', hideWhenAuth: true },
+];
+
+export const LinksList: FC = () => {
+  const [user] = useAtom(userAtom);
+
+  const isAuth = Boolean(user);
+
+  const linkItems = LINKS.map(({ title, to, needAuth, hideWhenAuth }) => {
+    const key = title + to;
+
+    if ((needAuth && !isAuth) || (hideWhenAuth && isAuth)) return;
+
+    return (
+      <li key={key}>
+        <NavLink to={to}>{title}</NavLink>
+      </li>
+    );
+  });
+
+  return (
+    <nav>
+      <ul className={styles.links}>{linkItems}</ul>
+    </nav>
+  );
+};

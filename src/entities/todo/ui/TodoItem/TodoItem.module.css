@@ -1,0 +1,21 @@
+.todo {
+  border: 1px solid var(--color-primary-light);
+  padding: 0.5rem;
+}
+
+.todo.completed {
+  opacity: 0.75;
+}
+
+.todo.completed .meta {
+  text-decoration: line-through;
+}
+
+.meta {
+  margin-bottom: 0.4rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+}

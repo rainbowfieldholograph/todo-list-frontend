@@ -1,0 +1,55 @@
+.button {
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: transparent;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.5vmax;
+  transition: all 0.2s;
+  outline: transparent;
+}
+
+.primary {
+  --btn-active-bg-color: var(--color-secondary-light);
+  --btn-active-border-color: var(--color-secondary-light);
+  --btn-active-text-color: var(--color-base-500);
+  --btn-active-outline-color: var(--color-primary-light);
+
+  border-color: var(--color-secondary-light);
+  color: var(--color-secondary-light);
+}
+
+.secondary {
+  --btn-active-bg-color: transparent;
+  --btn-active-border-color: var(--color-active);
+  --btn-active-text-color: var(--color-active);
+  --btn-active-outline-color: var(--color-primary);
+
+  border-color: var(--color-neutral);
+  color: var(--color-base-500);
+}
+
+.button.block {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
+.button:not(:disabled):hover,
+.button:not(:disabled):focus {
+  background-color: var(--btn-active-bg-color);
+  border-color: var(--btn-active-border-color);
+  color: var(--btn-active-text-color);
+}
+
+.button:not(:disabled):active {
+  outline-width: 1px;
+  outline-style: solid;
+  outline-color: var(--btn-active-outline-color);
+}
+
+.button:disabled {
+  opacity: 0.5;
+}
