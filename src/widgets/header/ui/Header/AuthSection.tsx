@@ -1,12 +1,12 @@
 import { FC } from 'react';
-import { userAtom, logoutAction } from 'entities/user';
+import { userAtom, onLogout } from 'entities/user';
 import { Button } from 'shared/ui';
 import { useAction, useAtom } from '@reatom/npm-react';
 import styles from './AuthSection.module.css';
 
 export const AuthSection: FC = () => {
 	const [user] = useAtom(userAtom);
-	const logout = useAction(logoutAction);
+	const logout = useAction(onLogout);
 
 	if (!user) return null;
 

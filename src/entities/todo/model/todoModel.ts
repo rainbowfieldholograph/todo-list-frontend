@@ -3,13 +3,13 @@ import { Todo } from 'shared/types';
 import { deleteTodo, postTodo, toggleCompletedTodo } from 'shared/api';
 
 const initialTodos: Todo[] = [];
-const todosAtom = atom(initialTodos, 'userTodosAtom');
+export const todosAtom = atom(initialTodos, 'todosAtom');
 
-const resetTodosAction = action((ctx) => {
+export const onResetTodos = action((ctx) => {
 	todosAtom(ctx, initialTodos);
-}, 'resetTodosAction');
+}, 'onResetTodos');
 
-const removeTodoAction = reatomAsync(async (ctx, todoId: Todo['_id']) => {
+export const onRemoveTodo = reatomAsync(async (ctx, todoId: Todo['_id']) => {
 	await deleteTodo(todoId);
 
 	const filtered = ctx.get(todosAtom).filter((todo) => todo._id !== todoId);
@@ -18,7 +18,7 @@ const removeTodoAction = reatomAsync(async (ctx, todoId: Todo['_id']) => {
 
 type CreateTodoArgs = Pick<Todo, 'title' | 'description'>;
 
-const createTodoAction = reatomAsync(
+export const onCreateTodo = reatomAsync(
 	async (ctx, todoToCreate: CreateTodoArgs) => {
 		const createTodoResponse = await postTodo(todoToCreate);
 
@@ -38,7 +38,7 @@ const createTodoAction = reatomAsync(
 	}),
 );
 
-const toggleTodoAction = reatomAsync(async (ctx, todoId: Todo['_id']) => {
+export const onToggleTodo = reatomAsync(async (ctx, todoId: Todo['_id']) => {
 	const todoToToggle = ctx.get(todosAtom).find(({ _id }) => _id === todoId);
 
 	if (!todoToToggle) return;
@@ -57,11 +57,3 @@ const toggleTodoAction = reatomAsync(async (ctx, todoId: Todo['_id']) => {
 		console.error(error);
 	}
 });
-
-export {
-	createTodoAction,
-	removeTodoAction,
-	resetTodosAction,
-	toggleTodoAction,
-	todosAtom as userTodosAtom,
-};

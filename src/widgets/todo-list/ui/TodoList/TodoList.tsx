@@ -1,6 +1,6 @@
 import { FC, memo, useMemo } from 'react';
 import { useAtom } from '@reatom/npm-react';
-import { TodoItem, userTodosAtom } from 'entities/todo';
+import { TodoItem, todosAtom } from 'entities/todo';
 import { SORT_FUNCTIONS } from '../../config';
 import { todoSortAtom } from '../../model';
 import { RemoveTodoButton } from 'features/remove-todo';
@@ -34,7 +34,7 @@ const TodoCard: FC<{ todo: Todo }> = memo(({ todo }) => {
 
 export const TodoList: FC = () => {
 	const [currentSort] = useAtom(todoSortAtom);
-	const [todoItems] = useAtom(userTodosAtom);
+	const [todoItems] = useAtom(todosAtom);
 
 	const sortedTodos = useMemo(() => {
 		if (currentSort === 'Default') return todoItems;

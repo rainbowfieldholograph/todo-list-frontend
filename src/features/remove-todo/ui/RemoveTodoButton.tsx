@@ -1,5 +1,5 @@
 import { useAction, useAtom } from '@reatom/npm-react';
-import { removeTodoAction } from 'entities/todo';
+import { onRemoveTodo } from 'entities/todo';
 import { Todo } from 'shared/types';
 import { FC, useState } from 'react';
 import { Button } from 'shared/ui';
@@ -9,7 +9,7 @@ type RemoveTodoButtonProps = {
 };
 
 export const RemoveTodoButton: FC<RemoveTodoButtonProps> = ({ id }) => {
-	const [removeTodoActionLocal] = useState(() => removeTodoAction);
+	const [removeTodoActionLocal] = useState(() => onRemoveTodo);
 	const handleRemoveTodo = useAction(removeTodoActionLocal);
 	const [loading] = useAtom((ctx) => {
 		return ctx.spy(removeTodoActionLocal.pendingAtom) > 0;

@@ -6,10 +6,10 @@ import {
 	action,
 } from '@reatom/framework';
 import { User } from 'shared/types';
-import { setupUserAction } from 'shared/model';
-import { clearToken, saveToken, getToken } from './lib';
-import { resetTodosAction, userTodosAtom } from 'entities/todo';
+import { onSetupUser } from 'shared/model';
 import { authenticateUser, getCurrentUser, setAuthHeader } from 'shared/api';
+import { onResetTodos, todosAtom } from 'entities/todo';
+import { clearToken, saveToken, getToken } from '../lib';
 
 export const userAtom = atom<User | null>(null, 'currentUserAtom').pipe(
 	withReset(),
@@ -23,11 +23,11 @@ onConnect(userAtom, (ctx) => {
 	setAuthHeader(token);
 
 	ctx.schedule(async () => {
-		await setupUserAction(ctx);
+		await onSetupUser(ctx);
 	});
 });
 
-export const loginAction = reatomAsync(async (ctx, body) => {
+export const onLogin = reatomAsync(async (ctx, body) => {
 	const authenticateResponse = await authenticateUser(body);
 
 	const { accessToken } = authenticateResponse.data;
@@ -40,13 +40,13 @@ export const loginAction = reatomAsync(async (ctx, body) => {
 	const { _id, email, username, todo } = currentUser;
 
 	ctx.get(() => {
-		userTodosAtom(ctx, todo);
+		todosAtom(ctx, todo);
 		userAtom(ctx, { _id, email, username });
 	});
 }, 'loginAction');
 
-export const logoutAction = action((ctx) => {
+export const onLogout = action((ctx) => {
 	userAtom.reset(ctx);
-	resetTodosAction(ctx);
+	onResetTodos(ctx);
 	clearToken();
 }, 'logoutAction');

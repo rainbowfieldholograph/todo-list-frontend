@@ -5,7 +5,7 @@ import { todoSortAtom } from '../../model';
 import styles from './TodoSort.module.css';
 
 export const TodoSort = () => {
-	const [_todoSort, setTodoSort] = useAtom(todoSortAtom);
+	const [_, setTodoSort] = useAtom(todoSortAtom);
 
 	const handleSelect = (event: ChangeEvent<HTMLSelectElement>) => {
 		const value = event.target.value as SortType;
