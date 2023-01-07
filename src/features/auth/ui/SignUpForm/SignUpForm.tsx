@@ -1,26 +1,50 @@
 import { Button, Form, Input } from 'shared/ui';
-import { FC } from 'react';
+import { FC, FormEvent, useState } from 'react';
+import { useAction, useAtom } from '@reatom/npm-react';
+import { onSignUp } from 'entities/user';
 
 export const SignUpForm: FC = () => {
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [username, setUsername] = useState('');
+	const handleSignUp = useAction(onSignUp);
+	const [loading] = useAtom((ctx) => ctx.spy(onSignUp.pendingAtom) > 0);
+
+	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		handleSignUp({ email, password, username });
+	};
+
 	return (
-		<Form>
+		<Form onSubmit={handleSubmit}>
 			<Form.Fields>
 				<Input
 					required
 					label="Email:"
 					type="email"
-					value={''}
-					onChange={() => console.log}
+					value={email}
+					onChange={(event) => setEmail(event.target.value)}
+					disabled={loading}
+				/>
+				<Input
+					required
+					label="Username:"
+					type="text"
+					value={username}
+					onChange={(event) => setUsername(event.target.value)}
+					disabled={loading}
 				/>
 				<Input
 					label="Password:"
 					type="password"
-					value={''}
-					onChange={() => console.log}
+					value={password}
 					required
+					onChange={(event) => setPassword(event.target.value)}
+					disabled={loading}
 				/>
 			</Form.Fields>
-			<Button block type="submit">
+			<Button block type="submit" disabled={loading}>
 				Submit
 			</Button>
 		</Form>

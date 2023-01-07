@@ -3,6 +3,7 @@ import { userAtom } from 'entities/user';
 import { NavLink } from './NavLink';
 import { useAtom } from '@reatom/npm-react';
 import styles from './LinksList.module.css';
+import { routeMap } from 'shared/config';
 
 interface Link {
 	title: string;
@@ -12,10 +13,10 @@ interface Link {
 }
 
 const LINKS: Link[] = [
-	{ title: 'Start', to: '/' },
-	{ title: 'Login', to: '/login', hideWhenAuth: true },
-	{ title: 'Todo', to: '/todo', needAuth: true },
-	{ title: 'SignUp', to: '/signup', hideWhenAuth: true },
+	{ title: 'Start', to: routeMap.home },
+	{ title: 'Login', to: routeMap.login, hideWhenAuth: true },
+	{ title: 'Todo', to: routeMap.todo, needAuth: true },
+	{ title: 'SignUp', to: routeMap.signUp, hideWhenAuth: true },
 ];
 
 export const LinksList: FC = () => {

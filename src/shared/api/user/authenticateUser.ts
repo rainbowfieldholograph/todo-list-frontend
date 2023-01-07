@@ -1,14 +1,14 @@
 import { apiInstance } from '../base';
 
-export interface AuthenticationBody {
+export type AuthenticateBody = {
 	email: string;
 	password: string;
-}
+};
 
-interface Response {
+type Response = {
 	accessToken: string;
-}
+};
 
-export const authenticateUser = async (body: AuthenticationBody) => {
+export const authenticateUser = async (body: AuthenticateBody) => {
 	return apiInstance.post<Response>('/user/login', body);
 };
