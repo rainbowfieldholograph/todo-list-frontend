@@ -1,10 +1,9 @@
 import { useAction, useAtom } from '@reatom/npm-react';
-import { onToggleTodo } from 'entities/todo';
+import { onToggleTodo, TodoDto } from 'entities/todo';
 import { FC } from 'react';
-import { Todo } from 'shared/types';
 
 type ToggleTodoProps = {
-	id: Todo['_id'];
+	id: TodoDto['_id'];
 	completion: boolean;
 };
 

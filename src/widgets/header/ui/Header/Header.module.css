@@ -1,15 +1,17 @@
 .header {
-	--bg-color: var(--color-primary);
-
 	background-color: var(--bg-color);
+	color: var(--color-main);
+
 	padding-top: 1rem;
 	padding-bottom: 1rem;
+	border-bottom: 1px solid var(--color-main);
+
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	gap: 1rem;
-	color: var(--color-base-500);
 
 	/* full width background */
-	box-shadow: 0 0 0 100vmax var(--bg-color);
-	clip-path: inset(0 -100vmax);
+	/* box-shadow: 0 0 0 100vmax var(--bg-color); */
+	/* clip-path: inset(0 -100vmax); */
 }

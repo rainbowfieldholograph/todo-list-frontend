@@ -1,4 +1,4 @@
-import { apiInstance } from '../base';
+import { apiInstance } from 'shared/api';
 
 export type AuthenticateBody = {
 	email: string;

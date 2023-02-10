@@ -7,7 +7,7 @@ export const StackList: FC = () => {
 		<div className={styles.wrapper}>
 			<StackItem
 				title="Frontend stack:"
-				items={['Vite', 'React', 'TypeScript', 'Recoil']}
+				items={['Vite', 'React', 'TypeScript', 'Reatom']}
 			/>
 			<StackItem
 				title="Backend stack:"

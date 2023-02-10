@@ -5,19 +5,19 @@ import {
 	onConnect,
 	action,
 } from '@reatom/framework';
-import { User } from 'shared/types';
-import { onSetupUser } from 'shared/model';
+import { UserDto } from '../types';
+import { setAuthHeader } from 'shared/api';
 import {
 	AuthenticateBody,
 	authenticateUser,
 	getCurrentUser,
-	setAuthHeader,
-} from 'shared/api';
-import { onResetTodos, todosAtom } from 'entities/todo';
+	SignUpBody,
+	signUpUser,
+} from '../api';
+// import { onResetTodos } from 'entities/todo';
 import { clearToken, saveToken, getToken } from '../lib';
-import { SignUpBody, signUpUser } from 'shared/api/user/signUpUser';
 
-export const userAtom = atom<User | null>(null, 'currentUserAtom').pipe(
+export const userAtom = atom<UserDto | null>(null, 'currentUserAtom').pipe(
 	withReset(),
 );
 
@@ -29,7 +29,11 @@ onConnect(userAtom, (ctx) => {
 	setAuthHeader(token);
 
 	ctx.schedule(async () => {
-		await onSetupUser(ctx);
+		const { data: currentUser } = await getCurrentUser();
+
+		const { _id, email, username } = currentUser;
+
+		userAtom(ctx, { _id, email, username });
 	});
 });
 
@@ -43,12 +47,9 @@ export const onLogin = reatomAsync(async (ctx, body: AuthenticateBody) => {
 
 	const { data: currentUser } = await getCurrentUser();
 
-	const { _id, email, username, todo } = currentUser;
+	const { _id, email, username } = currentUser;
 
-	ctx.get(() => {
-		todosAtom(ctx, todo);
-		userAtom(ctx, { _id, email, username });
-	});
+	userAtom(ctx, { _id, email, username });
 }, 'onLogin');
 
 export const onSignUp = reatomAsync(async (ctx, body: SignUpBody) => {
@@ -63,6 +64,6 @@ export const onSignUp = reatomAsync(async (ctx, body: SignUpBody) => {
 
 export const onLogout = action((ctx) => {
 	userAtom.reset(ctx);
-	onResetTodos(ctx);
+	// onResetTodos(ctx);
 	clearToken();
 }, 'onLogout');

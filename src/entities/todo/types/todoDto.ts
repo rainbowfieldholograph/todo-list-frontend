@@ -1,4 +1,4 @@
-export interface Todo {
+export interface TodoDto {
 	_id: string;
 	creatorId: string;
 	title: string;

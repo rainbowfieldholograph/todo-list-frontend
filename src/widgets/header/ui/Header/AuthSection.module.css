@@ -6,6 +6,23 @@
 
 .username {
 	font-size: 1.5rem;
+	color: inherit;
+	padding: 0.3rem;
+	padding-top: 0.3rem;
+	padding-bottom: 0.3rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 0.5vmax;
+	transition: all 0.2s;
+	outline: transparent;
+}
+
+.username:hover,
+.username:focus {
+	font-weight: bold;
+	outline: 1px solid black;
 }
 
 .button {

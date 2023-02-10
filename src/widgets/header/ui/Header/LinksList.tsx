@@ -2,8 +2,8 @@ import { FC } from 'react';
 import { userAtom } from 'entities/user';
 import { NavLink } from './NavLink';
 import { useAtom } from '@reatom/npm-react';
-import styles from './LinksList.module.css';
 import { routeMap } from 'shared/config';
+import styles from './LinksList.module.css';
 
 interface Link {
 	title: string;

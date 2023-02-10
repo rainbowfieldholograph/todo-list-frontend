@@ -1,30 +1,58 @@
-import { atom, action, reatomAsync, withErrorAtom } from '@reatom/framework';
-import { Todo } from 'shared/types';
-import { deleteTodo, postTodo, toggleCompletedTodo } from 'shared/api';
+import {
+	action,
+	reatomAsync,
+	withErrorAtom,
+	onConnect,
+	withDataAtom,
+	AsyncAction,
+	onDisconnect,
+} from '@reatom/framework';
+import { TodoDto } from '../types';
+import { deleteTodo, getTodos, postTodo, toggleCompletedTodo } from '../api';
+
+export type Todo = TodoDto & {
+	remove: AsyncAction;
+};
 
 const initialTodos: Todo[] = [];
-export const todosAtom = atom(initialTodos, 'todosAtom');
+
+const createTodoReatom = (todoToCreate: TodoDto): Todo => {
+	const todo = {
+		...todoToCreate,
+		remove: reatomAsync(async (ctx, todoId: TodoDto['_id']) => {
+			await deleteTodo(todoId);
+
+			const filtered = ctx
+				.get(onFetchTodos.dataAtom)
+				.filter((todo) => todo._id !== todoId);
+
+			onFetchTodos.dataAtom(ctx, filtered);
+		}),
+	};
+
+	return todo;
+};
+
+export const onFetchTodos = reatomAsync(async () => {
+	const { data: todos } = await getTodos();
+
+	return todos.map(createTodoReatom);
+}).pipe(withDataAtom(initialTodos));
 
 export const onResetTodos = action((ctx) => {
-	todosAtom(ctx, initialTodos);
+	onFetchTodos.dataAtom(ctx, initialTodos);
 }, 'onResetTodos');
 
-export const onRemoveTodo = reatomAsync(async (ctx, todoId: Todo['_id']) => {
-	await deleteTodo(todoId);
-
-	const filtered = ctx.get(todosAtom).filter((todo) => todo._id !== todoId);
-	todosAtom(ctx, filtered);
-});
-
-type CreateTodoArgs = Pick<Todo, 'title' | 'description'>;
+type CreateTodoArgs = Pick<TodoDto, 'title' | 'description'>;
 
 export const onCreateTodo = reatomAsync(
 	async (ctx, todoToCreate: CreateTodoArgs) => {
 		const createTodoResponse = await postTodo(todoToCreate);
 
 		const { data: createdTodo } = createTodoResponse;
+		const todoToPush = createTodoReatom(createdTodo);
 
-		todosAtom(ctx, (prevTodos) => [...prevTodos, createdTodo]);
+		onFetchTodos.dataAtom(ctx, (prevTodos) => [...prevTodos, todoToPush]);
 	},
 ).pipe(
 	withErrorAtom((ctx, error) => {
@@ -38,15 +66,17 @@ export const onCreateTodo = reatomAsync(
 	}),
 );
 
-export const onToggleTodo = reatomAsync(async (ctx, todoId: Todo['_id']) => {
-	const todoToToggle = ctx.get(todosAtom).find(({ _id }) => _id === todoId);
+export const onToggleTodo = reatomAsync(async (ctx, todoId: TodoDto['_id']) => {
+	const todoToToggle = ctx
+		.get(onFetchTodos.dataAtom)
+		.find(({ _id }) => _id === todoId);
 
 	if (!todoToToggle) return;
 
 	try {
 		await toggleCompletedTodo(todoId, !todoToToggle.completed);
 
-		todosAtom(ctx, (prevTodos) => {
+		onFetchTodos.dataAtom(ctx, (prevTodos) => {
 			return prevTodos.map((todo) => {
 				return todo._id === todoId
 					? { ...todo, completed: !todo.completed }
@@ -57,3 +87,14 @@ export const onToggleTodo = reatomAsync(async (ctx, todoId: Todo['_id']) => {
 		console.error(error);
 	}
 });
+
+onConnect(onFetchTodos.dataAtom, (ctx) => {
+	ctx.schedule(async () => {
+		const { data: todos } = await getTodos();
+		const todosToApply = todos.map(createTodoReatom);
+
+		onFetchTodos.dataAtom(ctx, todosToApply);
+	});
+});
+
+onDisconnect(onFetchTodos.dataAtom, onFetchTodos.dataAtom.reset);

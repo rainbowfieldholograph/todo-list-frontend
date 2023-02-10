@@ -1,11 +1,11 @@
-import { FC, memo, useMemo } from 'react';
+import { FC, memo, useEffect, useMemo } from 'react';
 import { useAtom } from '@reatom/npm-react';
-import { TodoItem, todosAtom } from 'entities/todo';
+import { onFetchTodos, TodoItem } from 'entities/todo';
 import { SORT_FUNCTIONS } from '../../config';
 import { todoSortAtom } from '../../model';
 import { RemoveTodoButton } from 'features/remove-todo';
 import { ToggleTodo } from 'features/toggle-todo';
-import { Todo } from 'shared/types';
+import { Todo } from 'entities/todo';
 import styles from './TodoList.module.css';
 
 const NoTodos = () => {
@@ -17,7 +17,7 @@ const NoTodos = () => {
 };
 
 const TodoCard: FC<{ todo: Todo }> = memo(({ todo }) => {
-	const { _id, title, completed, description } = todo;
+	const { _id, title, completed, description, remove } = todo;
 
 	return (
 		<TodoItem
@@ -26,7 +26,7 @@ const TodoCard: FC<{ todo: Todo }> = memo(({ todo }) => {
 			description={description}
 			loading={false}
 		>
-			<RemoveTodoButton id={_id} />
+			<RemoveTodoButton id={_id} remove={remove} />
 			<ToggleTodo completion={completed} id={_id} />
 		</TodoItem>
 	);
@@ -34,7 +34,14 @@ const TodoCard: FC<{ todo: Todo }> = memo(({ todo }) => {
 
 export const TodoList: FC = () => {
 	const [currentSort] = useAtom(todoSortAtom);
-	const [todoItems] = useAtom(todosAtom);
+	const [todoItems, setTodoItems] = useAtom(onFetchTodos.dataAtom);
+	const [loading] = useAtom((ctx) => ctx.spy(onFetchTodos.pendingAtom) > 0);
+
+	// useEffect(() => {
+	// 	return () => {
+	// 		setTodoItems([]);
+	// 	};
+	// }, []);
 
 	const sortedTodos = useMemo(() => {
 		if (currentSort === 'Default') return todoItems;
@@ -46,13 +53,15 @@ export const TodoList: FC = () => {
 
 	const todoListEmpty = sortedTodos.length === 0;
 
+	if (loading) return <p>Todos loading...</p>;
+
 	if (todoListEmpty) return <NoTodos />;
 
-	const items = sortedTodos.map((todo) => (
+	const listItems = sortedTodos.map((todo) => (
 		<li key={todo._id}>
 			<TodoCard todo={todo} />
 		</li>
 	));
 
-	return <ul className={styles.list}>{items}</ul>;
+	return <ul className={styles.list}>{listItems}</ul>;
 };

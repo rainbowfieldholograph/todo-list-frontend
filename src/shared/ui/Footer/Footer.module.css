@@ -1,10 +1,8 @@
 .footer {
-	--bg-color: var(--color-primary);
-
 	margin-top: 2rem;
 	padding: 1rem;
 	background-color: var(--bg-color);
-	color: var(--color-base-500);
+	color: var(--color-main);
 	display: flex;
 	justify-content: space-between;
 	gap: 1rem;
@@ -19,10 +17,17 @@
 }
 
 .link {
-	color: var(--color-active);
+	color: var(--color-main);
+}
+
+.link:hover,
+.link:focus {
+	text-decoration: underline;
+	text-decoration-thickness: 3px;
+	font-weight: bold;
 }
 
 .link:focus-visible {
-	outline: 1px solid var(--color-active);
+	outline: 1px solid var(--color-main);
 	outline-offset: 0.5rem;
 }

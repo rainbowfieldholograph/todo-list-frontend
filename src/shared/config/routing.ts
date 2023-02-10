@@ -3,4 +3,5 @@ export const routeMap = {
 	todo: '/todo',
 	login: '/login',
 	signUp: '/signup',
+	userPage: '/user-page',
 };

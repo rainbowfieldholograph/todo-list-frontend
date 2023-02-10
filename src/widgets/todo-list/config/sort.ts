@@ -1,3 +1,5 @@
+import { AnyFunction } from 'shared/types';
+
 export const sortVariants = [
 	'Default',
 	'Name A-Z',
@@ -10,7 +12,7 @@ export const sortVariants = [
 export type SortType = typeof sortVariants[number];
 
 type SortFunction = {
-	[key in Exclude<SortType, 'Default'>]: (...args: any[]) => any;
+	[key in Exclude<SortType, 'Default'>]: AnyFunction;
 };
 
 export const SORT_FUNCTIONS: SortFunction = {

@@ -1,15 +1,16 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { Layout } from './Layout';
-import { userAtom } from 'entities/user';
 import { lazily } from 'react-lazily';
 import { useAtom } from '@reatom/npm-react';
 import { routeMap } from 'shared/config';
+import { userAtom } from 'entities/user';
+import { Layout } from './Layout';
 
 const { Welcome } = lazily(() => import('./Welcome'));
 const { Login } = lazily(() => import('./Login'));
 const { TodoPage } = lazily(() => import('./TodoPage'));
 const { NotFound } = lazily(() => import('./NotFound'));
 const { SignUp } = lazily(() => import('./SignUp'));
+const { UserPage } = lazily(() => import('./UserPage'));
 
 export const Routing = () => {
 	const [user] = useAtom(userAtom);
@@ -24,6 +25,12 @@ export const Routing = () => {
 					path={routeMap.signUp}
 					element={
 						!isAuth ? <SignUp /> : <Navigate to={routeMap.todo} replace />
+					}
+				/>
+				<Route
+					path={routeMap.userPage}
+					element={
+						isAuth ? <UserPage /> : <Navigate to={routeMap.login} replace />
 					}
 				/>
 				<Route
