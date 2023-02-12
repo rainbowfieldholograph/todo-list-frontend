@@ -1,7 +1,7 @@
 import { apiInstance } from 'shared/api';
-import { UserDto } from '../types';
+import { UserDto, UserWithoutIdDto } from '../types';
 
-export const updateUser = async (updateData: Omit<UserDto, '_id'>) => {
+export const updateUser = async (updateData: Partial<UserWithoutIdDto>) => {
 	const updatedUser = await apiInstance.patch<UserDto>('/user/me', updateData);
 
 	return updatedUser;

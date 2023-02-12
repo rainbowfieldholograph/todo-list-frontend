@@ -3,3 +3,5 @@ export interface UserDto {
 	email: string;
 	username: string;
 }
+
+export type UserWithoutIdDto = Omit<UserDto, '_id'>;

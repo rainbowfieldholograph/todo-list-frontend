@@ -4,8 +4,9 @@ import {
 	withReset,
 	onConnect,
 	action,
+	omit,
 } from '@reatom/framework';
-import { UserDto } from '../types';
+import { UserDto, UserWithoutIdDto } from '../types';
 import { setAuthHeader } from 'shared/api';
 import {
 	AuthenticateBody,
@@ -43,9 +44,23 @@ onConnect(userAtom, (ctx) => {
 });
 
 export const onChangeCredentials = reatomAsync(
-	async (ctx, updateData: Omit<UserDto, '_id'>) => {
+	async (ctx, updateData: UserWithoutIdDto) => {
+		const dataToUpdate = new Map();
+		const user = omit(ctx.get(userAtom)!, ['_id']);
+
+		for (const key in user) {
+			const typedKey = key as keyof typeof user;
+			if (updateData[typedKey] !== user[typedKey]) {
+				dataToUpdate.set(typedKey, updateData[typedKey]);
+			}
+		}
+
+		if (dataToUpdate.size === 0) return;
+
+		const dataToUpdateObj = Object.fromEntries(dataToUpdate);
+
 		try {
-			const response = await updateUser(updateData);
+			const response = await updateUser(dataToUpdateObj);
 
 			userAtom(ctx, response.data);
 		} catch (error) {
