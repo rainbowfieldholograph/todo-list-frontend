@@ -13,6 +13,7 @@ import {
 	getCurrentUser,
 	SignUpBody,
 	signUpUser,
+	updateUser,
 } from '../api';
 // import { onResetTodos } from 'entities/todo';
 import { clearToken, saveToken, getToken } from '../lib';
@@ -29,27 +30,48 @@ onConnect(userAtom, (ctx) => {
 	setAuthHeader(token);
 
 	ctx.schedule(async () => {
-		const { data: currentUser } = await getCurrentUser();
+		try {
+			const { data: currentUser } = await getCurrentUser();
 
-		const { _id, email, username } = currentUser;
+			const { _id, email, username } = currentUser;
 
-		userAtom(ctx, { _id, email, username });
+			userAtom(ctx, { _id, email, username });
+		} catch (error) {
+			console.error(error);
+		}
 	});
 });
 
+export const onChangeCredentials = reatomAsync(
+	async (ctx, updateData: Omit<UserDto, '_id'>) => {
+		try {
+			const response = await updateUser(updateData);
+
+			userAtom(ctx, response.data);
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	},
+);
+
 export const onLogin = reatomAsync(async (ctx, body: AuthenticateBody) => {
-	const authenticateResponse = await authenticateUser(body);
+	try {
+		const authenticateResponse = await authenticateUser(body);
 
-	const { accessToken } = authenticateResponse.data;
+		const { accessToken } = authenticateResponse.data;
 
-	setAuthHeader(accessToken);
-	saveToken(accessToken);
+		setAuthHeader(accessToken);
+		saveToken(accessToken);
 
-	const { data: currentUser } = await getCurrentUser();
+		const { data: currentUser } = await getCurrentUser();
+		const { _id, email, username } = currentUser;
 
-	const { _id, email, username } = currentUser;
-
-	userAtom(ctx, { _id, email, username });
+		userAtom(ctx, { _id, email, username });
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
 }, 'onLogin');
 
 export const onSignUp = reatomAsync(async (ctx, body: SignUpBody) => {
@@ -59,11 +81,11 @@ export const onSignUp = reatomAsync(async (ctx, body: SignUpBody) => {
 		await onLogin(ctx, { email: body.email, password: body.password });
 	} catch (error) {
 		console.error(error);
+		throw error;
 	}
 }, 'onSignUp');
 
 export const onLogout = action((ctx) => {
 	userAtom.reset(ctx);
-	// onResetTodos(ctx);
 	clearToken();
 }, 'onLogout');

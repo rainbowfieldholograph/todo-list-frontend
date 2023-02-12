@@ -17,6 +17,9 @@
 	border-radius: 0.5vmax;
 	transition: all 0.2s;
 	outline: transparent;
+	max-width: 15rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .username:hover,

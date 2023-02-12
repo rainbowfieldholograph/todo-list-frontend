@@ -10,5 +10,10 @@ type Response = {
 };
 
 export const authenticateUser = async (body: AuthenticateBody) => {
-	return apiInstance.post<Response>('/user/login', body);
+	const authenticatedUser = await apiInstance.post<Response>(
+		'/user/login',
+		body,
+	);
+
+	return authenticatedUser;
 };

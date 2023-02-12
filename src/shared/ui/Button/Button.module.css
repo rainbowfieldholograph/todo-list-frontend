@@ -1,4 +1,5 @@
 .button {
+	display: inline-block;
 	padding-top: 0.3rem;
 	padding-bottom: 0.3rem;
 	padding-left: 1rem;

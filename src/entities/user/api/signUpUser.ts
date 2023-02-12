@@ -6,7 +6,7 @@ export type SignUpBody = Pick<UserDto, 'email' | 'username'> & {
 };
 
 export const signUpUser = async (body: SignUpBody) => {
-	const createdUser = apiInstance.post<UserDto>('/user', body);
+	const createdUser = await apiInstance.post<UserDto>('/user', body);
 
 	return createdUser;
 };

@@ -10,10 +10,14 @@ export const SignUpForm: FC = () => {
 	const handleSignUp = useAction(onSignUp);
 	const [loading] = useAtom((ctx) => ctx.spy(onSignUp.pendingAtom) > 0);
 
-	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		handleSignUp({ email, password, username });
+		try {
+			await handleSignUp({ email, password, username });
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (
