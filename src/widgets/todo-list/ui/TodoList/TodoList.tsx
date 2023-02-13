@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useMemo } from 'react';
+import { FC, memo, useMemo } from 'react';
 import { useAtom } from '@reatom/npm-react';
 import { onFetchTodos, TodoItem } from 'entities/todo';
 import { SORT_FUNCTIONS } from '../../config';
@@ -17,7 +17,7 @@ const NoTodos = () => {
 };
 
 const TodoCard: FC<{ todo: Todo }> = memo(({ todo }) => {
-	const { _id, title, completed, description, remove } = todo;
+	const { title, completed, description, remove, toggle } = todo;
 
 	return (
 		<TodoItem
@@ -26,22 +26,16 @@ const TodoCard: FC<{ todo: Todo }> = memo(({ todo }) => {
 			description={description}
 			loading={false}
 		>
-			<RemoveTodoButton id={_id} remove={remove} />
-			<ToggleTodo completion={completed} id={_id} />
+			<RemoveTodoButton remove={remove} />
+			<ToggleTodo completed={completed} toggle={toggle} />
 		</TodoItem>
 	);
 });
 
 export const TodoList: FC = () => {
 	const [currentSort] = useAtom(todoSortAtom);
-	const [todoItems, setTodoItems] = useAtom(onFetchTodos.dataAtom);
+	const [todoItems] = useAtom(onFetchTodos.dataAtom);
 	const [loading] = useAtom((ctx) => ctx.spy(onFetchTodos.pendingAtom) > 0);
-
-	// useEffect(() => {
-	// 	return () => {
-	// 		setTodoItems([]);
-	// 	};
-	// }, []);
 
 	const sortedTodos = useMemo(() => {
 		if (currentSort === 'Default') return todoItems;

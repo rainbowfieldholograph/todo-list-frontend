@@ -12,6 +12,7 @@ import { deleteTodo, getTodos, postTodo, toggleCompletedTodo } from '../api';
 
 export type Todo = TodoDto & {
 	remove: AsyncAction;
+	toggle: AsyncAction;
 };
 
 const initialTodos: Todo[] = [];
@@ -19,14 +20,29 @@ const initialTodos: Todo[] = [];
 const createTodoReatom = (todoToCreate: TodoDto): Todo => {
 	const todo = {
 		...todoToCreate,
-		remove: reatomAsync(async (ctx, todoId: TodoDto['_id']) => {
-			await deleteTodo(todoId);
+		remove: reatomAsync(async (ctx) => {
+			await deleteTodo(todoToCreate._id);
 
-			const filtered = ctx
+			onFetchTodos.dataAtom(ctx, (todos) => {
+				return todos.filter((todo) => todo._id !== todoToCreate._id);
+			});
+		}),
+		toggle: reatomAsync(async (ctx) => {
+			const toggledTodo = ctx
 				.get(onFetchTodos.dataAtom)
-				.filter((todo) => todo._id !== todoId);
+				.find((todo) => todo._id === todoToCreate._id);
 
-			onFetchTodos.dataAtom(ctx, filtered);
+			if (!toggledTodo) return;
+
+			await toggleCompletedTodo(todoToCreate._id, !toggledTodo.completed);
+
+			onFetchTodos.dataAtom(ctx, (todos) => {
+				return todos.map((todo) => {
+					return todo._id === todoToCreate._id
+						? { ...todo, completed: !todo.completed }
+						: todo;
+				});
+			});
 		}),
 	};
 
