@@ -16,7 +16,6 @@ import {
 	signUpUser,
 	updateUser,
 } from '../api';
-// import { onResetTodos } from 'entities/todo';
 import { clearToken, saveToken, getToken } from '../lib';
 
 export const userAtom = atom<UserDto | null>(null, 'currentUserAtom').pipe(

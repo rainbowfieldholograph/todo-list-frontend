@@ -1,11 +1,11 @@
 import {
-	action,
 	reatomAsync,
 	withErrorAtom,
 	onConnect,
 	withDataAtom,
 	AsyncAction,
 	onDisconnect,
+	withReset,
 } from '@reatom/framework';
 import { TodoDto } from '../types';
 import { deleteTodo, getTodos, postTodo, toggleCompletedTodo } from '../api';
@@ -53,11 +53,7 @@ export const onFetchTodos = reatomAsync(async () => {
 	const { data: todos } = await getTodos();
 
 	return todos.map(createTodoReatom);
-}).pipe(withDataAtom(initialTodos));
-
-export const onResetTodos = action((ctx) => {
-	onFetchTodos.dataAtom(ctx, initialTodos);
-}, 'onResetTodos');
+}).pipe(withDataAtom(initialTodos), withReset());
 
 type CreateTodoArgs = Pick<TodoDto, 'title' | 'description'>;
 
