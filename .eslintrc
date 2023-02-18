@@ -29,7 +29,8 @@
 				"caughtErrorsIgnorePattern": "^_"
 			}
 		],
-		"no-console": ["warn", { "allow": ["error"] }]
+		"no-console": ["warn", { "allow": ["error"] }],
+		"@typescript-eslint/no-non-null-assertion": "off"
 	},
 	"settings": {
 		"react": {

@@ -4,7 +4,6 @@ import {
 	withReset,
 	onConnect,
 	action,
-	omit,
 } from '@reatom/framework';
 import { UserDto, UserWithoutIdDto } from '../types';
 import { setAuthHeader } from 'shared/api';
@@ -17,6 +16,7 @@ import {
 	updateUser,
 } from '../api';
 import { clearToken, saveToken, getToken } from '../lib';
+import { removeSameFieldValues } from 'shared/lib/utils';
 
 export const userAtom = atom<UserDto | null>(null, 'currentUserAtom').pipe(
 	withReset(),
@@ -44,22 +44,12 @@ onConnect(userAtom, (ctx) => {
 
 export const onChangeCredentials = reatomAsync(
 	async (ctx, updateData: UserWithoutIdDto) => {
-		const dataToUpdate = new Map();
-		const user = omit(ctx.get(userAtom)!, ['_id']);
+		const dataToUpdate = removeSameFieldValues(ctx.get(userAtom)!, updateData);
 
-		for (const key in user) {
-			const typedKey = key as keyof typeof user;
-			if (updateData[typedKey] !== user[typedKey]) {
-				dataToUpdate.set(typedKey, updateData[typedKey]);
-			}
-		}
-
-		if (dataToUpdate.size === 0) return;
-
-		const dataToUpdateObj = Object.fromEntries(dataToUpdate);
+		if (!dataToUpdate) return;
 
 		try {
-			const response = await updateUser(dataToUpdateObj);
+			const response = await updateUser(dataToUpdate);
 
 			userAtom(ctx, response.data);
 		} catch (error) {

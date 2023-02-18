@@ -7,6 +7,7 @@ import { RemoveTodoButton } from 'features/remove-todo';
 import { ToggleTodo } from 'features/toggle-todo';
 import { Todo } from 'entities/todo';
 import styles from './TodoList.module.css';
+import { EditTodo } from 'features/edit-todo';
 
 const NoTodos = () => {
 	return (
@@ -26,7 +27,10 @@ const TodoCard: FC<{ todo: Todo }> = memo(({ todo }) => {
 			description={description}
 			loading={false}
 		>
-			<RemoveTodoButton remove={remove} />
+			<div className={styles.buttons}>
+				<RemoveTodoButton remove={remove} />
+				<EditTodo todo={todo} />
+			</div>
 			<ToggleTodo completed={completed} toggle={toggle} />
 		</TodoItem>
 	);
