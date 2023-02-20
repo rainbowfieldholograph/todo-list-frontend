@@ -5,8 +5,9 @@ import {
 	onConnect,
 	action,
 } from '@reatom/framework';
-import { UserDto, UserWithoutIdDto } from '../types';
 import { setAuthHeader } from 'shared/api';
+import { removeSameFieldValues } from 'shared/lib/utils';
+import { UserDto, UserWithoutIdDto } from '../types';
 import {
 	AuthenticateBody,
 	authenticateUser,
@@ -14,9 +15,9 @@ import {
 	SignUpBody,
 	signUpUser,
 	updateUser,
+	removeAccount,
 } from '../api';
 import { clearToken, saveToken, getToken } from '../lib';
-import { removeSameFieldValues } from 'shared/lib/utils';
 
 export const userAtom = atom<UserDto | null>(null, 'currentUserAtom').pipe(
 	withReset(),
@@ -93,3 +94,8 @@ export const onLogout = action((ctx) => {
 	userAtom.reset(ctx);
 	clearToken();
 }, 'onLogout');
+
+export const onRemoveAccount = reatomAsync(async (ctx) => {
+	await removeAccount();
+	onLogout(ctx);
+});
