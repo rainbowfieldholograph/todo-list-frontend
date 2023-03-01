@@ -6,79 +6,81 @@ import {
 	AsyncAction,
 	onDisconnect,
 	withReset,
+	atom,
+	AtomMut,
 } from '@reatom/framework';
 import { TodoDto } from '../types';
-import { deleteTodo, getTodos, postTodo, toggleCompletedTodo } from '../api';
-import { updateTodoData } from '../api/updateTodoData';
+import {
+	deleteTodo,
+	getTodos,
+	postTodo,
+	toggleCompletedTodo,
+	updateTodoData,
+} from '../api';
 import { removeSameFieldValues } from 'shared/lib/utils';
 
-export type Todo = TodoDto & {
+export type Todo = Omit<TodoDto, 'title' | 'description' | 'completed'> & {
+	title: AtomMut<TodoDto['title']>;
+	description: AtomMut<TodoDto['description']>;
+	completed: AtomMut<TodoDto['completed']>;
 	remove: AsyncAction;
 	toggle: AsyncAction;
 	update: AsyncAction<[updateData: Pick<TodoDto, 'description' | 'title'>]>;
 };
 
+type FieldsToUpdate = 'title' | 'description';
+
 const initialTodos = [] satisfies Todo[];
 
 const createTodoReatom = (todoToCreate: TodoDto): Todo => {
-	const todo = {
+	const reatomTodo = {
 		...todoToCreate,
+		title: atom(todoToCreate.title, 'todo.titleAtom'),
+		description: atom(todoToCreate.description, 'todo.descriptionAtom'),
+		completed: atom(todoToCreate.completed, 'todo.completedAtom'),
 		remove: reatomAsync(async (ctx) => {
 			await deleteTodo(todoToCreate._id);
 
 			onFetchTodos.dataAtom(ctx, (todos) => {
-				return todos.filter((todo) => todo._id !== todoToCreate._id);
+				return todos.filter(({ _id }) => _id !== reatomTodo._id);
 			});
 		}),
 		toggle: reatomAsync(async (ctx) => {
-			const toggledTodo = ctx
-				.get(onFetchTodos.dataAtom)
-				.find((todo) => todo._id === todoToCreate._id)!;
+			const updatedCompletion = !ctx.get(reatomTodo.completed);
 
-			await toggleCompletedTodo(todoToCreate._id, !toggledTodo.completed);
+			await toggleCompletedTodo(todoToCreate._id, updatedCompletion);
 
-			onFetchTodos.dataAtom(ctx, (todos) => {
-				return todos.map((todo) => {
-					return todo._id === todoToCreate._id
-						? { ...todo, completed: !todo.completed }
-						: todo;
-				});
-			});
+			reatomTodo.completed(ctx, updatedCompletion);
 		}),
 		update: reatomAsync(
-			async (ctx, updateData: Pick<TodoDto, 'description' | 'title'>) => {
-				const actualTodoToCreate = ctx
-					.get(onFetchTodos.dataAtom)
-					.find(({ _id }) => _id === todoToCreate._id)!;
+			async (ctx, updateData: Pick<TodoDto, FieldsToUpdate>) => {
+				const actualTodoToUpdate: Partial<Pick<TodoDto, FieldsToUpdate>> = {};
+
+				for (const key of Object.keys(updateData)) {
+					actualTodoToUpdate[key as FieldsToUpdate] = ctx.get(
+						reatomTodo[key as FieldsToUpdate],
+					);
+				}
 
 				const dataToUpdate = removeSameFieldValues(
-					actualTodoToCreate,
+					actualTodoToUpdate,
 					updateData,
 				);
 
 				if (!dataToUpdate) return;
 
-				const { data: updatedTodo } = await updateTodoData(
-					todoToCreate._id,
-					dataToUpdate,
-				);
+				await updateTodoData(todoToCreate._id, dataToUpdate);
 
-				onFetchTodos.dataAtom(ctx, (todos) => {
-					return todos.map((todo) => {
-						return updatedTodo._id === todo._id
-							? {
-									...todo,
-									description: updatedTodo.description,
-									title: updatedTodo.title,
-							  }
-							: todo;
-					});
+				ctx.get(() => {
+					for (const [key, value] of Object.entries(dataToUpdate)) {
+						reatomTodo[key as FieldsToUpdate](ctx, value);
+					}
 				});
 			},
 		),
 	} satisfies Todo;
 
-	return todo;
+	return reatomTodo;
 };
 
 export const onFetchTodos = reatomAsync(async () => {
@@ -109,24 +111,6 @@ export const onCreateTodo = reatomAsync(
 		}
 	}),
 );
-
-export const onToggleTodo = reatomAsync(async (ctx, todoId: TodoDto['_id']) => {
-	const todoToToggle = ctx
-		.get(onFetchTodos.dataAtom)
-		.find(({ _id }) => _id === todoId);
-
-	if (!todoToToggle) return;
-
-	await toggleCompletedTodo(todoId, !todoToToggle.completed);
-
-	onFetchTodos.dataAtom(ctx, (prevTodos) => {
-		return prevTodos.map((todo) => {
-			return todo._id === todoId
-				? { ...todo, completed: !todo.completed }
-				: todo;
-		});
-	});
-});
 
 onConnect(onFetchTodos.dataAtom, (ctx) => {
 	ctx.schedule(async () => {

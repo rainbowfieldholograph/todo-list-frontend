@@ -1,4 +1,4 @@
-import { AnyFunction } from 'shared/types';
+import { TodoDto } from 'entities/todo';
 
 export const sortVariants = [
 	'Default',
@@ -9,16 +9,26 @@ export const sortVariants = [
 	'Completion',
 ] as const;
 
-export type SortType = typeof sortVariants[number];
+export type SortType = (typeof sortVariants)[number];
 
 type SortFunction = {
-	[key in Exclude<SortType, 'Default'>]: AnyFunction;
+	[key in Exclude<SortType, 'Default'>]: (a: TodoDto, b: TodoDto) => number;
 };
 
 export const SORT_FUNCTIONS: SortFunction = {
-	'Name A-Z': (a, b) => a.title.localeCompare(b.title),
-	'Name Z-A': (a, b) => a.title.localeCompare(b.title) * -1,
-	Completion: (a, b) => +a.completed - +b.completed,
-	'Description A-Z': (a, b) => a.description.localeCompare(b.description),
-	'Description Z-A': (a, b) => a.description.localeCompare(b.description) * -1,
+	'Name A-Z': (a, b) => {
+		return a.title.localeCompare(b.title);
+	},
+	'Name Z-A': (a, b) => {
+		return a.title.localeCompare(b.title) * -1;
+	},
+	Completion: (a, b) => {
+		return +a.completed - +b.completed;
+	},
+	'Description A-Z': (a, b) => {
+		return a.description.localeCompare(b.description);
+	},
+	'Description Z-A': (a, b) => {
+		return a.description.localeCompare(b.description) * -1;
+	},
 };

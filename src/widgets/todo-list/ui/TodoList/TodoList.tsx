@@ -1,13 +1,10 @@
-import { FC, memo, useMemo } from 'react';
+import { FC, memo } from 'react';
 import { useAtom } from '@reatom/npm-react';
-import { onFetchTodos, TodoItem } from 'entities/todo';
-import { SORT_FUNCTIONS } from '../../config';
-import { todoSortAtom } from '../../model';
+import { onFetchTodos, TodoItem, Todo } from 'entities/todo';
 import { RemoveTodoButton } from 'features/remove-todo';
 import { ToggleTodo } from 'features/toggle-todo';
-import { Todo } from 'entities/todo';
-import styles from './TodoList.module.css';
 import { EditTodo } from 'features/edit-todo';
+import styles from './TodoList.module.css';
 
 const NoTodos = () => {
 	return (
@@ -17,8 +14,22 @@ const NoTodos = () => {
 	);
 };
 
-const TodoCard: FC<{ todo: Todo }> = memo(({ todo }) => {
-	const { title, completed, description, remove, toggle } = todo;
+type TodoCardProps = {
+	todo: Todo;
+};
+
+const TodoCard = memo(({ todo }: TodoCardProps) => {
+	const {
+		title: titleAtom,
+		completed: completedAtom,
+		description: descriptionAtom,
+		remove,
+		toggle,
+	} = todo;
+
+	const [title] = useAtom(titleAtom);
+	const [completed] = useAtom(completedAtom);
+	const [description] = useAtom(descriptionAtom);
 
 	return (
 		<TodoItem
@@ -37,25 +48,43 @@ const TodoCard: FC<{ todo: Todo }> = memo(({ todo }) => {
 });
 
 export const TodoList: FC = () => {
-	const [currentSort] = useAtom(todoSortAtom);
+	// const [currentSort] = useAtom(todoSortAtom);
 	const [todoItems] = useAtom(onFetchTodos.dataAtom);
 	const [loading] = useAtom((ctx) => ctx.spy(onFetchTodos.pendingAtom) > 0);
+	// const ctx = useCtx();
 
-	const sortedTodos = useMemo(() => {
-		if (currentSort === 'Default') return todoItems;
+	// const sortedTodos = useMemo(() => {
+	// 	if (currentSort === 'Default') return todoItems;
 
-		const sortFunction = SORT_FUNCTIONS[currentSort];
+	// 	const sortFunction = SORT_FUNCTIONS[currentSort];
 
-		return [...todoItems].sort(sortFunction);
-	}, [todoItems, currentSort]);
+	// 	return [...todoItems]
+	// 		.map((todo) => {
+	// 			return {
+	// 				...todo,
+	// 				description: ctx.get(todo.description),
+	// 				completed: ctx.get(todo.completed),
+	// 				title: ctx.get(todo.title),
+	// 			};
+	// 		})
+	// 		.sort(sortFunction)
+	// 		.map((todo) => {
+	// 			return {
+	// 				...todo,
+	// 				description: atom(todo.description),
+	// 				completed: atom(todo.completed),
+	// 				title: atom(todo.title),
+	// 			};
+	// 		});
+	// }, [currentSort, todoItems]);
 
-	const todoListEmpty = sortedTodos.length === 0;
+	const todoListEmpty = todoItems.length === 0;
 
 	if (loading) return <p>Todos loading...</p>;
 
 	if (todoListEmpty) return <NoTodos />;
 
-	const listItems = sortedTodos.map((todo) => (
+	const listItems = todoItems.map((todo) => (
 		<li key={todo._id}>
 			<TodoCard todo={todo} />
 		</li>

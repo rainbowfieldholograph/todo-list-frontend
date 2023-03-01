@@ -1,3 +1,4 @@
+import { useAtom } from '@reatom/npm-react';
 import { Todo } from 'entities/todo';
 import { useState } from 'react';
 import { Button, Modal } from 'shared/ui';
@@ -9,14 +10,16 @@ type EditTodoProps = {
 
 export const EditTodo = ({ todo }: EditTodoProps) => {
 	const [modal, setModal] = useState(false);
+	const [description] = useAtom(todo.description);
+	const [title] = useAtom(todo.title);
 
 	return (
 		<>
 			<Button onClick={() => setModal(true)}>edit</Button>
 			<Modal isOpened={modal} onClose={() => setModal(false)}>
 				<EditTodoForm
-					description={todo.description}
-					title={todo.title}
+					description={description}
+					title={title}
 					update={todo.update}
 					onSubmit={() => setModal(false)}
 				/>
