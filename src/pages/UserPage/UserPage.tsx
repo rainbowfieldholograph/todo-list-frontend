@@ -1,7 +1,6 @@
 import { useAtom } from '@reatom/npm-react';
 import { userAtom } from 'entities/user';
-import { EditUser } from 'features/edit-user';
-import { RemoveAccountButton } from 'features/remove-account';
+import { EditUser, RemoveAccountButton } from 'features/user';
 import styles from './UserPage.module.css';
 
 export const UserPage = () => {

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { TodoCreator } from 'features/create-todo';
+import { TodoCreator } from 'features/todo';
 import { TodoList } from 'widgets/todo-list';
 import styles from './TodoPage.module.css';
 
