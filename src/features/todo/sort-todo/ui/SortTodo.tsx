@@ -1,5 +1,5 @@
 import { useAtom } from '@reatom/npm-react';
-import { currentTodoSort, TodoSortKeys, todoSortVariants } from 'entities/todo';
+import { currentTodoSort, TodoSortKey, todoSortVariants } from 'entities/todo';
 import { ChangeEventHandler, CSSProperties } from 'react';
 
 const optionsEntries = Object.entries(todoSortVariants);
@@ -20,7 +20,7 @@ export const SortTodo = ({ className, style }: SortTodoProps) => {
 	})!;
 
 	const handleChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
-		const selectedSort = event.target.value as TodoSortKeys;
+		const selectedSort = event.target.value as TodoSortKey;
 
 		changeSort(todoSortVariants[selectedSort]);
 	};

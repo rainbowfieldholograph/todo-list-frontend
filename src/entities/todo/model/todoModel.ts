@@ -87,12 +87,8 @@ const createTodoReatom = (todoToCreate: TodoDto): Todo => {
 
 export const onFetchTodos = reatomAsync(async (ctx) => {
 	const sort = ctx.get(currentTodoSort);
-	const fetchOptions = sort && {
-		sortField: sort.field,
-		sortType: sort.type,
-	};
 
-	const { data: todos } = await getTodos(fetchOptions);
+	const { data: todos } = await getTodos(sort && { sort });
 
 	return todos.map(createTodoReatom);
 }).pipe(withDataAtom(initialTodos), withReset());

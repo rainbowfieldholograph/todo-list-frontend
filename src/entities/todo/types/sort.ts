@@ -1,7 +1,7 @@
 import { TodoDto } from './todoDto';
 
-export type SortFields = keyof Pick<
+export type SortField = keyof Pick<
 	TodoDto,
 	'completed' | 'description' | 'title'
 >;
-export type SortTypes = 'asc' | 'desc';
+export type SortType = 'asc' | 'desc';

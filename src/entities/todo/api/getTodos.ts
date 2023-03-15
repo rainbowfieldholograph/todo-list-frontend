@@ -1,16 +1,15 @@
-import { TodoDto, SortFields, SortTypes } from '../types';
+import { TodoDto } from '../types';
 import { apiInstance } from 'shared/api/base';
+import { TodoSortVariant } from '../model';
 
-type GetTodosArgs =
-	| { sortField: SortFields; sortType?: SortTypes | null }
-	| { sortField: never; sortType?: never }
-	| void
-	| null;
+type GetTodosArgs = {
+	sort: NonNullable<TodoSortVariant>;
+} | null | void;
 
 export const getTodos = async (args: GetTodosArgs) => {
 	return apiInstance.get<TodoDto[]>('/todo', {
 		params: {
-			sort: args && `${args?.sortField}|${args?.sortType ?? 'asc'}`,
+			sort: args && `${args?.sort.field}|${args?.sort.type ?? 'asc'}`,
 		},
 	});
 };
