@@ -8,6 +8,7 @@ import {
 	withReset,
 	atom,
 	AtomMut,
+	onUpdate,
 } from '@reatom/framework';
 import { TodoDto } from '../types';
 import {
@@ -18,6 +19,7 @@ import {
 	updateTodoData,
 } from '../api';
 import { removeSameFieldValues } from 'shared/lib/utils';
+import { currentTodoSort } from './todoSort';
 
 export type Todo = Omit<TodoDto, 'title' | 'description' | 'completed'> & {
 	title: AtomMut<TodoDto['title']>;
@@ -83,8 +85,14 @@ const createTodoReatom = (todoToCreate: TodoDto): Todo => {
 	return reatomTodo;
 };
 
-export const onFetchTodos = reatomAsync(async () => {
-	const { data: todos } = await getTodos();
+export const onFetchTodos = reatomAsync(async (ctx) => {
+	const sort = ctx.get(currentTodoSort);
+	const fetchOptions = sort && {
+		sortField: sort.field,
+		sortType: sort.type,
+	};
+
+	const { data: todos } = await getTodos(fetchOptions);
 
 	return todos.map(createTodoReatom);
 }).pipe(withDataAtom(initialTodos), withReset());
@@ -112,13 +120,8 @@ export const onCreateTodo = reatomAsync(
 	}),
 );
 
-onConnect(onFetchTodos.dataAtom, (ctx) => {
-	ctx.schedule(async () => {
-		const { data: todos } = await getTodos();
-		const todosToApply = todos.map(createTodoReatom);
-
-		onFetchTodos.dataAtom(ctx, todosToApply);
-	});
-});
+onConnect(onFetchTodos.dataAtom, (ctx) => ctx.schedule(onFetchTodos));
 
 onDisconnect(onFetchTodos.dataAtom, onFetchTodos.dataAtom.reset);
+
+onUpdate(currentTodoSort, onFetchTodos);
