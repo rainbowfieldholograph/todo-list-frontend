@@ -48,30 +48,38 @@ const createTodoReatom = (todoToCreate: TodoDto): Todo => {
 			});
 		}),
 		toggle: reatomAsync(async (ctx) => {
+			const sort = ctx.get(currentTodoSort);
 			const updatedCompletion = !ctx.get(reatomTodo.completed);
 
 			await toggleCompletedTodo(todoToCreate._id, updatedCompletion);
+
+			if (String(sort?.field) === 'completed') {
+				await onFetchTodos(ctx);
+				return;
+			}
 
 			reatomTodo.completed(ctx, updatedCompletion);
 		}),
 		update: reatomAsync(
 			async (ctx, updateData: Pick<TodoDto, FieldsToUpdate>) => {
-				const actualTodoToUpdate: Partial<Pick<TodoDto, FieldsToUpdate>> = {};
+				const todoToUpdate: Partial<Pick<TodoDto, FieldsToUpdate>> = {};
+				const sort = ctx.get(currentTodoSort);
 
 				for (const key of Object.keys(updateData)) {
-					actualTodoToUpdate[key as FieldsToUpdate] = ctx.get(
+					todoToUpdate[key as FieldsToUpdate] = ctx.get(
 						reatomTodo[key as FieldsToUpdate],
 					);
 				}
 
-				const dataToUpdate = removeSameFieldValues(
-					actualTodoToUpdate,
-					updateData,
-				);
-
+				const dataToUpdate = removeSameFieldValues(todoToUpdate, updateData);
 				if (!dataToUpdate) return;
 
 				await updateTodoData(todoToCreate._id, dataToUpdate);
+
+				if (String(sort?.field) in dataToUpdate) {
+					await onFetchTodos(ctx);
+					return;
+				}
 
 				ctx.get(() => {
 					for (const [key, value] of Object.entries(dataToUpdate)) {
