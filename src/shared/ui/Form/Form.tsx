@@ -1,20 +1,22 @@
 import { clsx } from 'clsx';
-import { DetailedHTMLProps, FC, FormHTMLAttributes } from 'react';
+import { ComponentPropsWithoutRef, FC } from 'react';
+import { PropsWithChildren } from 'react';
 import styles from './Form.module.css';
 
-type FormProps = DetailedHTMLProps<
-	FormHTMLAttributes<HTMLFormElement>,
-	HTMLFormElement
-> & {
+export const Fields = ({ children }: PropsWithChildren) => {
+	return <div className={styles.fields}>{children}</div>;
+};
+
+type FormProps = ComponentPropsWithoutRef<'form'> & {
 	border?: boolean;
 };
 
-export const FormOrigin: FC<FormProps> = ({
+export const Form = ({
 	className,
 	border = true,
 	children,
 	...rest
-}) => {
+}: FormProps) => {
 	return (
 		<form
 			className={clsx(className, styles.form, {
