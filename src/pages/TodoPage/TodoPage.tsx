@@ -1,7 +1,5 @@
 import { FC } from 'react';
-import { TodoCreator } from 'todo/components/todo-creator';
-import { SortTodo } from 'todo/components/sort-todo';
-import { TodoList } from 'todo/components/todo-list';
+import { TodoCreator, SortTodo , TodoList } from 'todo/components';
 import styles from './TodoPage.module.css';
 
 export const TodoPage: FC = () => {

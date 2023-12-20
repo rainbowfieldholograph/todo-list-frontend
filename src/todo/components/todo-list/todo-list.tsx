@@ -2,9 +2,7 @@ import { FC, memo } from 'react';
 import { useAtom } from '@reatom/npm-react';
 import { onFetchTodos, Todo } from '../../model';
 import { TodoItem } from '../todo-item';
-import { RemoveTodo } from '../remove-todo';
-import { ToggleTodo } from '../todo-toggle';
-import { EditTodo } from '../todo-editor';
+import { RemoveTodo, ToggleTodo, EditTodo } from '..';
 import styles from './todo-list.module.css';
 
 const NoTodos = () => {
