@@ -10,7 +10,8 @@
 		"format:check": "prettier --check .",
 		"format:fix": "prettier --write .",
 		"lint:check": "eslint --ext js,ts,.tsx,.jsx .",
-		"lint:fix": "eslint --ext js,ts,.tsx,.jsx --fix ."
+		"lint:fix": "eslint --ext js,ts,.tsx,.jsx --fix .",
+		"ts:check": "tsc"
 	},
 	"dependencies": {
 		"@reatom/framework": "3.1.32",
