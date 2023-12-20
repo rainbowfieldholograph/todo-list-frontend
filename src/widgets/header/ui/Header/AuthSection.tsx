@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { useAction, useAtom } from '@reatom/npm-react';
-import { userAtom, onLogout } from 'entities/user';
+import { userAtom, onLogout } from 'user/model';
 import { Button } from 'shared/ui';
 import { routeMap } from 'shared/config';
 import styles from './AuthSection.module.css';

@@ -1,5 +1,5 @@
 import { useAction, useAtom } from '@reatom/npm-react';
-import { onChangeCredentials, userAtom } from 'entities/user';
+import { onChangeCredentials, userAtom } from '../../model';
 import { FormEventHandler, useState } from 'react';
 import { Button, Form, Input } from 'shared/ui';
 

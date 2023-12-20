@@ -1,9 +1,9 @@
 import { AxiosError } from 'axios';
 import { ChangeEvent, FC, FormEvent, useState } from 'react';
-import { onLogin } from 'entities/user';
+import { onLogin } from '../../model';
 import { Button, Input, Form, ErrorStroke } from 'shared/ui';
 import { useAction, useAtom } from '@reatom/npm-react';
-import styles from './AuthForm.module.css';
+import styles from './auth-user.module.css';
 
 export const AuthForm: FC = () => {
 	const [email, setEmail] = useState('');

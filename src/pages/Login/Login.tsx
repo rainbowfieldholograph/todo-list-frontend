@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { AuthForm } from 'features/user';
+import { AuthForm } from 'user/components/auth-user/auth-user';
 import { AuthLayout } from 'shared/ui';
 
 export const Login: FC = () => {

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { userAtom } from 'entities/user';
+import { userAtom } from 'user/model';
 import { NavLink } from './NavLink';
 import { useAtom } from '@reatom/npm-react';
 import { routeMap } from 'shared/config';
