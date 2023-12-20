@@ -1,7 +1,7 @@
 import { clsx } from 'clsx';
 import { FC, HTMLInputTypeAttribute } from 'react';
 import { TextFieldProps } from './text-field.props';
-import styles from './TextField.module.css';
+import styles from './text-field.module.css';
 
 type InputProps = TextFieldProps<HTMLInputElement> & {
 	type?: HTMLInputTypeAttribute;

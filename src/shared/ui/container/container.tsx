@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef, FC } from 'react';
 import clsx from 'clsx';
-import styles from './Container.module.css';
+import styles from './container.module.css';
 
 type ContainerProps = ComponentPropsWithoutRef<'div'>;
 

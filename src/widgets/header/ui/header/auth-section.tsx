@@ -4,7 +4,7 @@ import { useAction, useAtom } from '@reatom/npm-react';
 import { userAtom, onLogout } from 'user/model';
 import { Button } from 'shared/ui';
 import { routeMap } from 'shared/config';
-import styles from './AuthSection.module.css';
+import styles from './auth-section.module.css';
 
 export const AuthSection: FC = () => {
 	const [user] = useAtom(userAtom);

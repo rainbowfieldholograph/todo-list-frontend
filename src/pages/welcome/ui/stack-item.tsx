@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import styles from './StackItem.module.css';
+import styles from './stack-item.module.css';
 
 type StackItemProps = {
 	title: string;

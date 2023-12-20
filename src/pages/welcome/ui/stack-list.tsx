@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { StackItem } from './StackItem';
-import styles from './StackList.module.css';
+import { StackItem } from './stack-item';
+import styles from './stack-list.module.css';
 
 export const StackList: FC = () => {
 	return (

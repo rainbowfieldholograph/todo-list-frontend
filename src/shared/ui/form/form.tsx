@@ -1,6 +1,5 @@
 import { clsx } from 'clsx';
-import { ComponentPropsWithoutRef, FC } from 'react';
-import { PropsWithChildren } from 'react';
+import { ComponentPropsWithoutRef, PropsWithChildren } from 'react';
 import styles from './form.module.css';
 
 export const Fields = ({ children }: PropsWithChildren) => {

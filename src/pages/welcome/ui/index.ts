@@ -1,1 +1,1 @@
-export * from './StackList';
+export * from './stack-list';
