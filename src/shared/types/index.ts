@@ -1,1 +1,1 @@
-export * from './anyFunction';
+export * from './any-function';

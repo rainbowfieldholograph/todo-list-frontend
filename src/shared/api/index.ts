@@ -1,2 +1,2 @@
 export * from './base';
-export * from './setAuthHeader';
+export * from './set-auth-header';

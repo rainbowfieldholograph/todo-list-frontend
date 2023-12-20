@@ -1,1 +1,1 @@
-export * from './removeSameFieldValues';
+export * from './remove-same-field-values';
