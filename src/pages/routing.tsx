@@ -3,10 +3,10 @@ import { lazily } from 'react-lazily';
 import { useAtom } from '@reatom/npm-react';
 import { routeMap } from 'shared/config';
 import { userAtom } from 'user/model';
-import { Layout } from './layout-';
+import { Layout } from './layout';
 
-const { Welcome } = lazily(() => import('./Welcome'));
-const { Login } = lazily(() => import('./login-'));
+const { Welcome } = lazily(() => import('./welcome'));
+const { Login } = lazily(() => import('./login'));
 const { TodoPage } = lazily(() => import('./todo-page'));
 const { NotFound } = lazily(() => import('./not-found'));
 const { SignUp } = lazily(() => import('./sign-up'));

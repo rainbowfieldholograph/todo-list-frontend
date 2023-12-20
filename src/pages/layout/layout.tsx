@@ -2,7 +2,7 @@ import { FC, Suspense } from 'react';
 import { Footer, Container } from 'shared/ui';
 import { Header } from 'widgets/header';
 import { Outlet } from 'react-router-dom';
-import styles from './Layout.module.css';
+import styles from './layout.module.css';
 
 export const Layout: FC = () => {
 	return (

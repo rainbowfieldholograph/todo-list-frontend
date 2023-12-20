@@ -7,8 +7,8 @@ import {
 } from 'react';
 import { clsx } from 'clsx';
 import FocusLock from 'react-focus-lock';
-import { Portal } from '../portal-';
-import styles from './Modal.module.css';
+import { Portal } from '../portal';
+import styles from './modal.module.css';
 
 type ModalProps = PropsWithChildren<{
 	onClose: () => void;
