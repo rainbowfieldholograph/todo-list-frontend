@@ -1,3 +1,2 @@
-export * from './todo-model';
-export * from './todo-sort';
+export * from './todo';
 export * from './sort';

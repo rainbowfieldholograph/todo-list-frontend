@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { StackList } from './ui';
+import { StackList } from './stack-list';
 import styles from './welcome.module.css';
 
 export const Welcome: FC = () => {

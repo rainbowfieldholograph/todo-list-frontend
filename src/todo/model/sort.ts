@@ -1,14 +1,8 @@
 import { atom } from '@reatom/framework';
-import { SortField, SortType } from '../types';
+import { SortBy, SortType } from '../types';
 
-type SortVariantValue = {
-	field: SortField;
-	type: SortType;
-} | null;
-
-type TodoSortVariantsType = {
-	[key: string]: SortVariantValue;
-};
+type SortVariantValue = { field: SortBy; type: SortType } | null;
+type TodoSortVariantsType = { [key: string]: SortVariantValue };
 
 export const todoSortVariants = {
 	Default: null,
@@ -41,4 +35,7 @@ export const todoSortVariants = {
 export type TodoSortVariant = (typeof todoSortVariants)[TodoSortKey];
 export type TodoSortKey = keyof typeof todoSortVariants;
 
-export const currentTodoSort = atom<TodoSortVariant>(null);
+export const currentTodoSortAtom = atom<TodoSortVariant>(
+	null,
+	'currentTodoSortAtom',
+);

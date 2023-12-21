@@ -1,8 +1,12 @@
 import { apiInstance } from 'shared/api/base';
-import { TodoDto } from '../types';
+import { TodoDTO } from '../types';
+import { AxiosRequestConfig } from 'axios';
 
-export const deleteTodo = async (id: TodoDto['_id']) => {
+export const deleteTodo = async (
+	id: TodoDTO['_id'],
+	config?: AxiosRequestConfig,
+) => {
 	const url = '/todo/' + id;
 
-	return await apiInstance.delete<TodoDto>(url);
+	return await apiInstance.delete<TodoDTO>(url, config);
 };

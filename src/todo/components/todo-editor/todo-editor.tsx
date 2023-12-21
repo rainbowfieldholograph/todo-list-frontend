@@ -1,27 +1,38 @@
-import { useAtom } from '@reatom/npm-react';
-import { Todo } from '../../model';
 import { useState } from 'react';
 import { Button, Modal } from 'shared/ui';
-import { EditTodoForm } from './todo-editor-form';
+import { TodoEditorForm, FieldsToUpdate } from './todo-editor-form';
 
-type EditTodoProps = {
-	todo: Todo;
+type TodoEditorProps = {
+	initialTitle: string;
+	initialDescription: string;
+	loading: boolean;
+	onSubmit: (fields: FieldsToUpdate) => void;
 };
 
-export const EditTodo = ({ todo }: EditTodoProps) => {
+export const TodoEditor = ({
+	initialDescription,
+	initialTitle,
+	loading,
+	onSubmit,
+}: TodoEditorProps) => {
 	const [modal, setModal] = useState(false);
-	const [description] = useAtom(todo.description);
-	const [title] = useAtom(todo.title);
+
+	const handleSubmit = (fields: FieldsToUpdate) => {
+		onSubmit(fields);
+		setModal(false);
+	};
 
 	return (
 		<>
-			<Button onClick={() => setModal(true)}>edit</Button>
+			<Button disabled={loading} onClick={() => setModal(true)}>
+				edit
+			</Button>
 			<Modal isOpened={modal} onClose={() => setModal(false)}>
-				<EditTodoForm
-					description={description}
-					title={title}
-					update={todo.update}
-					onSubmit={() => setModal(false)}
+				<TodoEditorForm
+					description={initialDescription}
+					title={initialTitle}
+					onSubmit={handleSubmit}
+					loading={loading}
 				/>
 			</Modal>
 		</>

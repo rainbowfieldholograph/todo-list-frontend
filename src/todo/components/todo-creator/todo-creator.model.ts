@@ -1,10 +1,10 @@
 import { atom, reatomAsync, withReset } from '@reatom/framework';
-import { onCreateTodo } from '../../model';
+import { createTodo } from '../../model';
 import { FormEvent } from 'react';
 import { AnyFunction } from 'shared/types';
 
-export const titleAtom = atom('').pipe(withReset());
-export const descriptionAtom = atom('').pipe(withReset());
+export const titleAtom = atom('', 'titleAtom').pipe(withReset());
+export const descriptionAtom = atom('', 'descriptionAtom').pipe(withReset());
 
 export const onSubmit = reatomAsync(
 	async (ctx, event: FormEvent<HTMLFormElement>, onSuccess: AnyFunction) => {
@@ -14,7 +14,7 @@ export const onSubmit = reatomAsync(
 		const description = ctx.get(descriptionAtom);
 
 		try {
-			await onCreateTodo(ctx, { description, title });
+			await createTodo(ctx, { description, title });
 
 			onSuccess();
 
@@ -24,4 +24,5 @@ export const onSubmit = reatomAsync(
 			console.error(error);
 		}
 	},
+	'onSubmit',
 );

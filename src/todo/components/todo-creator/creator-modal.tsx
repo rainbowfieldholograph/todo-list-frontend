@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Input, TextArea, Button, Form, ErrorStroke } from 'shared/ui';
-import { onCreateTodo } from '../../model';
+import { createTodo } from '../../model';
 import { useAction, useAtom } from '@reatom/npm-react';
 import { descriptionAtom, titleAtom, onSubmit } from './todo-creator.model';
 import styles from './todo-creator-modal.module.css';
@@ -11,7 +11,7 @@ type TodoCreatorModalProps = {
 
 const TitleField: FC = () => {
 	const [title, setTitle] = useAtom(titleAtom);
-	const [loading] = useAtom((ctx) => ctx.spy(onCreateTodo.pendingAtom) > 0);
+	const [loading] = useAtom((ctx) => ctx.spy(createTodo.pendingAtom) > 0);
 
 	return (
 		<Input
@@ -27,7 +27,7 @@ const TitleField: FC = () => {
 
 const DescriptionField: FC = () => {
 	const [description, setDescription] = useAtom(descriptionAtom);
-	const [loading] = useAtom((ctx) => ctx.spy(onCreateTodo.pendingAtom) > 0);
+	const [loading] = useAtom((ctx) => ctx.spy(createTodo.pendingAtom) > 0);
 
 	return (
 		<TextArea
@@ -41,8 +41,8 @@ const DescriptionField: FC = () => {
 };
 
 export const TodoCreatorModal: FC<TodoCreatorModalProps> = ({ onClose }) => {
-	const [loading] = useAtom((ctx) => ctx.spy(onCreateTodo.pendingAtom) > 0);
-	const [error] = useAtom((ctx) => ctx.spy(onCreateTodo.errorAtom));
+	const [loading] = useAtom((ctx) => ctx.spy(createTodo.pendingAtom) > 0);
+	const [error] = useAtom((ctx) => ctx.spy(createTodo.errorAtom));
 	const handleSubmit = useAction(onSubmit);
 
 	return (

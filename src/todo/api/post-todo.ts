@@ -1,8 +1,12 @@
 import { apiInstance } from 'shared/api/base';
-import { TodoDto } from '../types';
+import { TodoDTO } from '../types';
+import { AxiosRequestConfig } from 'axios';
 
-type PostTodoBody = Pick<TodoDto, 'description' | 'title'>;
+type PostTodoBody = Pick<TodoDTO, 'description' | 'title'>;
 
-export const postTodo = async (body: PostTodoBody) => {
-	return apiInstance.post<TodoDto>('/todo', body);
+export const postTodo = async (
+	body: PostTodoBody,
+	config?: AxiosRequestConfig,
+) => {
+	return apiInstance.post<TodoDTO>('/todo', body, config);
 };

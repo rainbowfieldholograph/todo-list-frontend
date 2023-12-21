@@ -1,28 +1,46 @@
-import { SortType, sortVariants } from '../../config';
-import { ChangeEvent } from 'react';
 import { useAtom } from '@reatom/npm-react';
-import { todoSortAtom } from '../../model';
-import styles from './todo-sort.module.css';
+import {
+	currentTodoSortAtom,
+	TodoSortKey,
+	todoSortVariants,
+} from '../../model';
+import { ChangeEventHandler, CSSProperties } from 'react';
 
-export const TodoSort = () => {
-	const [_, setTodoSort] = useAtom(todoSortAtom);
+const optionsEntries = Object.entries(todoSortVariants);
 
-	const handleSelect = (event: ChangeEvent<HTMLSelectElement>) => {
-		const value = event.target.value as SortType;
-		setTodoSort(value);
+type TodoSortProps = {
+	className?: string;
+	style?: CSSProperties;
+};
+
+export const TodoSort = ({ className, style }: TodoSortProps) => {
+	const [currentSort, changeSort] = useAtom(currentTodoSortAtom);
+
+	const [selectValue] = optionsEntries.find(([_, value]) => {
+		if (currentSort === value) return true;
+		if (!currentSort || !value) return false;
+
+		return currentSort.field === value.field && currentSort.type === value.type;
+	})!;
+
+	const handleChange: ChangeEventHandler<HTMLSelectElement> = (event) => {
+		const selectedSort = event.target.value as TodoSortKey;
+
+		changeSort(todoSortVariants[selectedSort]);
 	};
 
-	const options = sortVariants.map((option) => {
-		return (
-			<option key={option} value={option}>
-				{option}
-			</option>
-		);
-	});
-
 	return (
-		<select onChange={handleSelect} className={styles.filter}>
-			{options}
+		<select
+			className={className}
+			style={style}
+			onChange={handleChange}
+			value={selectValue}
+		>
+			{optionsEntries.map(([key]) => (
+				<option value={key} key={key}>
+					{key}
+				</option>
+			))}
 		</select>
 	);
 };

@@ -1,15 +1,18 @@
-import { TodoDto } from '../types';
+import { SortBy, SortType, TodoDTO } from '../types';
 import { apiInstance } from 'shared/api/base';
-import { TodoSortVariant } from '../model';
+import { AxiosRequestConfig } from 'axios';
 
 type GetTodosArgs = {
-	sort: NonNullable<TodoSortVariant>;
-} | null | void;
+	sortBy: SortBy;
+	sortType: SortType;
+} | null;
 
-export const getTodos = async (args: GetTodosArgs) => {
-	return apiInstance.get<TodoDto[]>('/todo', {
-		params: {
-			sort: args && `${args?.sort.field}|${args?.sort.type ?? 'asc'}`,
-		},
+export const getTodos = async (
+	sort: GetTodosArgs,
+	config?: AxiosRequestConfig,
+) => {
+	return apiInstance.get<TodoDTO[]>('/todo', {
+		params: { sortBy: sort?.sortBy, sortType: sort?.sortType },
+		...config,
 	});
 };

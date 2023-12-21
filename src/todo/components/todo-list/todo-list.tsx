@@ -1,8 +1,8 @@
-import { FC, memo } from 'react';
-import { useAtom } from '@reatom/npm-react';
-import { onFetchTodos, Todo } from '../../model';
+import { useAction, useAtom } from '@reatom/npm-react';
+import { getTodos, Todo } from '../../model';
 import { TodoItem } from '../todo-item';
-import { RemoveTodo, ToggleTodo, EditTodo } from '..';
+import { RemoveTodo, ToggleTodo, TodoEditor } from '..';
+import { FieldsToUpdate } from '../todo-editor/todo-editor-form';
 import styles from './todo-list.module.css';
 
 const NoTodos = () => {
@@ -13,22 +13,39 @@ const NoTodos = () => {
 	);
 };
 
-type TodoCardProps = {
-	todo: Todo;
-};
+type TodoCardProps = { todo: Todo };
 
-const TodoCard = memo(({ todo }: TodoCardProps) => {
+const TodoCard = ({ todo }: TodoCardProps) => {
 	const {
-		title: titleAtom,
-		completed: completedAtom,
-		description: descriptionAtom,
+		titleAtom,
+		completedAtom,
+		descriptionAtom,
 		remove,
 		toggle,
+		updateDescription,
+		updateTitle,
 	} = todo;
 
+	const [removing] = useAtom((ctx) => ctx.spy(remove.statusesAtom).isPending);
+	const [toggling] = useAtom((ctx) => ctx.spy(toggle.statusesAtom).isPending);
+	const [editing] = useAtom((ctx) => {
+		return (
+			ctx.spy(updateDescription.statusesAtom).isPending ||
+			ctx.spy(updateTitle.statusesAtom).isPending
+		);
+	});
 	const [title] = useAtom(titleAtom);
 	const [completed] = useAtom(completedAtom);
 	const [description] = useAtom(descriptionAtom);
+	const handleRemove = useAction(remove);
+	const handleToggle = useAction(toggle);
+	const handleUpdateTitle = useAction(updateTitle);
+	const handleUpdateDescription = useAction(updateDescription);
+
+	const handleSubmit = ({ title, description }: FieldsToUpdate) => {
+		handleUpdateTitle(title);
+		handleUpdateDescription(description);
+	};
 
 	return (
 		<TodoItem
@@ -38,18 +55,27 @@ const TodoCard = memo(({ todo }: TodoCardProps) => {
 			loading={false}
 		>
 			<div className={styles.buttons}>
-				<RemoveTodo remove={remove} />
-				<EditTodo todo={todo} />
+				<RemoveTodo loading={removing} onRemove={handleRemove} />
+				<TodoEditor
+					onSubmit={handleSubmit}
+					initialDescription={description}
+					initialTitle={title}
+					loading={editing}
+				/>
 			</div>
-			<ToggleTodo completed={completed} toggle={toggle} />
+			<ToggleTodo
+				loading={toggling}
+				completed={completed}
+				onToggle={handleToggle}
+			/>
 		</TodoItem>
 	);
-});
+};
 
-export const TodoList: FC = () => {
+export const TodoList = () => {
 	// const [currentSort] = useAtom(todoSortAtom);
-	const [todoItems] = useAtom(onFetchTodos.dataAtom);
-	const [loading] = useAtom((ctx) => ctx.spy(onFetchTodos.pendingAtom) > 0);
+	const [todoItems] = useAtom(getTodos.dataAtom);
+	const [loading] = useAtom((ctx) => ctx.spy(getTodos.pendingAtom) > 0);
 	// const ctx = useCtx();
 
 	// const sortedTodos = useMemo(() => {

@@ -1,32 +1,30 @@
-import { useAction, useAtom } from '@reatom/npm-react';
-import { Todo } from '../../model';
 import { FormEventHandler, useState } from 'react';
 import { Button, Form, Input, TextArea } from 'shared/ui';
 
-type EditTodoFormProps = {
+export type FieldsToUpdate = {
 	title: string;
 	description: string;
-	update: Todo['update'];
-	onSubmit: () => void;
 };
 
-export const EditTodoForm = ({
+type TodoEditorFormProps = {
+	title: string;
+	description: string;
+	loading: boolean;
+	onSubmit: (fields: FieldsToUpdate) => void;
+};
+
+export const TodoEditorForm = ({
 	description,
 	title,
-	update,
+	loading,
 	onSubmit,
-}: EditTodoFormProps) => {
+}: TodoEditorFormProps) => {
 	const [updateTitle, setUpdateTitle] = useState(title);
 	const [updateDescription, setUpdateDescription] = useState(description);
-	const handleUpdate = useAction(update);
-	const [loading] = useAtom((ctx) => ctx.spy(update.pendingAtom) > 0);
 
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
-
-		await handleUpdate({ title: updateTitle, description: updateDescription });
-
-		onSubmit();
+		onSubmit({ title: updateTitle, description: updateDescription });
 	};
 
 	return (
