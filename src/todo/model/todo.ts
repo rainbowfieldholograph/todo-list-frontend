@@ -58,7 +58,8 @@ const createTodoReatom = (todoToCreate: TodoDTO) => {
 	}, 'updateTitle').pipe(withAbort(), withStatusesAtom());
 
 	return {
-		...todoToCreate,
+		creatorId: todoToCreate.creatorId,
+		_id: todoToCreate._id,
 		titleAtom,
 		descriptionAtom,
 		completedAtom,

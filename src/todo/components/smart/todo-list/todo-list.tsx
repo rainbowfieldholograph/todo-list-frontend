@@ -1,7 +1,6 @@
-import { ComponentProps } from 'react';
-import { useAction, useAtom } from '@reatom/npm-react';
-import { getTodos, Todo } from '../../../model';
-import { TodoItem, RemoveTodo, TodoEditor, ToggleTodo } from '../../dumb';
+import { useAtom } from '@reatom/npm-react';
+import { getTodos } from '../../../model';
+import { TodoItem } from './todo-item';
 import styles from './todo-list.module.css';
 
 const NoTodos = () => {
@@ -9,68 +8,6 @@ const NoTodos = () => {
 		<div>
 			<p>{"You don't have todo's yet"}</p>
 		</div>
-	);
-};
-
-type TodoCardProps = { todo: Todo };
-
-const TodoCard = ({ todo }: TodoCardProps) => {
-	const {
-		titleAtom,
-		completedAtom,
-		descriptionAtom,
-		remove,
-		toggle,
-		updateDescription,
-		updateTitle,
-	} = todo;
-
-	const [removing] = useAtom((ctx) => ctx.spy(remove.statusesAtom).isPending);
-	const [toggling] = useAtom((ctx) => ctx.spy(toggle.statusesAtom).isPending);
-	const [editing] = useAtom((ctx) => {
-		return (
-			ctx.spy(updateDescription.statusesAtom).isPending ||
-			ctx.spy(updateTitle.statusesAtom).isPending
-		);
-	});
-	const [title] = useAtom(titleAtom);
-	const [completed] = useAtom(completedAtom);
-	const [description] = useAtom(descriptionAtom);
-	const handleRemove = useAction(remove);
-	const handleToggle = useAction(toggle);
-	const handleUpdateTitle = useAction(updateTitle);
-	const handleUpdateDescription = useAction(updateDescription);
-
-	const handleSubmit: ComponentProps<typeof TodoEditor>['onSubmit'] = ({
-		title,
-		description,
-	}) => {
-		handleUpdateTitle(title);
-		handleUpdateDescription(description);
-	};
-
-	return (
-		<TodoItem
-			title={title}
-			completed={completed}
-			description={description}
-			loading={false}
-		>
-			<div className={styles.buttons}>
-				<RemoveTodo loading={removing} onRemove={handleRemove} />
-				<TodoEditor
-					onSubmit={handleSubmit}
-					initialDescription={description}
-					initialTitle={title}
-					loading={editing}
-				/>
-			</div>
-			<ToggleTodo
-				loading={toggling}
-				completed={completed}
-				onToggle={handleToggle}
-			/>
-		</TodoItem>
 	);
 };
 
@@ -86,7 +23,7 @@ export const TodoList = () => {
 
 	const listItems = todoItems.map((todo) => (
 		<li key={todo._id}>
-			<TodoCard todo={todo} />
+			<TodoItem {...todo} />
 		</li>
 	));
 
