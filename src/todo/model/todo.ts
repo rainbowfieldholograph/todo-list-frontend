@@ -1,14 +1,12 @@
 import {
 	reatomAsync,
 	withErrorAtom,
-	onConnect,
 	withDataAtom,
-	onDisconnect,
 	withReset,
 	atom,
-	onUpdate,
 	withAbort,
 	withStatusesAtom,
+	reatomResource,
 } from '@reatom/framework';
 import { TodoDTO } from '../types';
 import { currentTodoSortAtom } from './sort';
@@ -16,7 +14,7 @@ import * as api from '../api';
 
 const initialTodos = [] satisfies Todo[];
 
-const createTodoReatom = (todoToCreate: TodoDTO) => {
+const reatomTodo = (todoToCreate: TodoDTO) => {
 	const titleAtom = atom(todoToCreate.title, 'titleAtom');
 	const descriptionAtom = atom(todoToCreate.description, 'descriptionAtom');
 	const completedAtom = atom(todoToCreate.completed, 'completedAtom');
@@ -24,7 +22,7 @@ const createTodoReatom = (todoToCreate: TodoDTO) => {
 	const remove = reatomAsync(async (ctx) => {
 		await api.deleteTodo(todoToCreate._id);
 
-		getTodos.dataAtom(ctx, (todos) =>
+		getTodosResource.dataAtom(ctx, (todos) =>
 			todos.filter(({ _id }) => _id !== todoToCreate._id),
 		);
 	}, 'remove').pipe(withAbort(), withStatusesAtom());
@@ -70,28 +68,32 @@ const createTodoReatom = (todoToCreate: TodoDTO) => {
 	};
 };
 
-export type Todo = ReturnType<typeof createTodoReatom>;
+export type Todo = ReturnType<typeof reatomTodo>;
 
-export const getTodos = reatomAsync(async (ctx) => {
-	const sort = ctx.get(currentTodoSortAtom);
-
+export const getTodosResource = reatomResource(async (ctx) => {
+	const sort = ctx.spy(currentTodoSortAtom);
 	const { data: todos } = await api.getTodos(
 		sort ? { sortBy: sort.field, sortType: sort.type } : null,
+		{ signal: ctx.controller.signal },
 	);
 
-	return todos.map(createTodoReatom);
-}, 'getTodos').pipe(withDataAtom(initialTodos), withReset());
+	return todos;
+}, 'getTodosResource').pipe(
+	withDataAtom(initialTodos, (_ctx, payload) => payload.map(reatomTodo)),
+	withReset(),
+	withStatusesAtom(),
+);
 
 type CreateTodoArgs = Pick<TodoDTO, 'title' | 'description'>;
 
 export const createTodo = reatomAsync(
 	async (ctx, todoToCreate: CreateTodoArgs) => {
-		const createTodoResponse = await api.postTodo(todoToCreate);
+		const { data: createdTodo } = await api.postTodo(todoToCreate);
 
-		const { data: createdTodo } = createTodoResponse;
-		const todoToPush = createTodoReatom(createdTodo);
-
-		getTodos.dataAtom(ctx, (prevTodos) => [...prevTodos, todoToPush]);
+		getTodosResource.dataAtom(ctx, (prevTodos) => [
+			...prevTodos,
+			reatomTodo(createdTodo),
+		]);
 	},
 	'createTodo',
 ).pipe(
@@ -105,7 +107,3 @@ export const createTodo = reatomAsync(
 		}
 	}),
 );
-
-onConnect(getTodos.dataAtom, getTodos);
-onDisconnect(getTodos.dataAtom, getTodos.dataAtom.reset);
-onUpdate(currentTodoSortAtom, getTodos);

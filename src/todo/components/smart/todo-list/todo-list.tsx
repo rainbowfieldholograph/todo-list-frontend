@@ -1,5 +1,5 @@
 import { useAtom } from '@reatom/npm-react';
-import { getTodos } from '../../../model';
+import { getTodosResource } from '../../../model';
 import { TodoItem } from './todo-item';
 import styles from './todo-list.module.css';
 
@@ -12,8 +12,10 @@ const NoTodos = () => {
 };
 
 export const TodoList = () => {
-	const [todoItems] = useAtom(getTodos.dataAtom);
-	const [loading] = useAtom((ctx) => ctx.spy(getTodos.pendingAtom) > 0);
+	const [todoItems] = useAtom(getTodosResource.dataAtom);
+	const [loading] = useAtom(
+		(ctx) => ctx.spy(getTodosResource.statusesAtom).isPending,
+	);
 
 	const todoListEmpty = todoItems.length === 0;
 
