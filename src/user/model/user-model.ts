@@ -5,7 +5,6 @@ import {
 	onConnect,
 	action,
 } from '@reatom/framework';
-import { setAuthHeader } from 'shared/api';
 import { removeSameFieldValues } from 'shared/lib/utils';
 import { UserDto, UserWithoutIdDto } from '../types';
 import {
@@ -17,25 +16,27 @@ import {
 	updateUser,
 	removeAccount,
 } from '../api';
-import { clearToken, saveToken, getToken } from '../lib';
+import { LS_TOKEN_KEY } from '../config';
+import { withLocalStorage } from '@reatom/persist-web-storage';
 
-export const userAtom = atom<UserDto | null>(null, 'currentUserAtom').pipe(
+export const tokenAtom = atom('', 'tokenAtom').pipe(
+	withLocalStorage(LS_TOKEN_KEY),
+	withReset(),
+);
+export const userAtom = atom<UserDto | null>(null, 'userAtom').pipe(
 	withReset(),
 );
 
 onConnect(userAtom, (ctx) => {
-	const token = getToken();
+	const token = ctx.get(tokenAtom);
 
 	if (!token) return;
-
-	setAuthHeader(token);
 
 	ctx.schedule(async () => {
 		try {
 			const { data: currentUser } = await getCurrentUser();
 
 			const { _id, email, username } = currentUser;
-
 			userAtom(ctx, { _id, email, username });
 		} catch (error) {
 			console.error(error);
@@ -58,16 +59,16 @@ export const onChangeCredentials = reatomAsync(
 			throw error;
 		}
 	},
+	'onChangeCredentials',
 );
 
-export const onLogin = reatomAsync(async (ctx, body: AuthenticateBody) => {
+export const login = reatomAsync(async (ctx, body: AuthenticateBody) => {
 	try {
 		const authenticateResponse = await authenticateUser(body);
 
 		const { accessToken } = authenticateResponse.data;
 
-		setAuthHeader(accessToken);
-		saveToken(accessToken);
+		tokenAtom(ctx, accessToken);
 
 		const { data: currentUser } = await getCurrentUser();
 		const { _id, email, username } = currentUser;
@@ -77,25 +78,25 @@ export const onLogin = reatomAsync(async (ctx, body: AuthenticateBody) => {
 		console.error(error);
 		throw error;
 	}
-}, 'onLogin');
+}, 'login');
 
 export const onSignUp = reatomAsync(async (ctx, body: SignUpBody) => {
 	try {
 		await signUpUser(body);
 
-		await onLogin(ctx, { email: body.email, password: body.password });
+		await login(ctx, { email: body.email, password: body.password });
 	} catch (error) {
 		console.error(error);
 		throw error;
 	}
 }, 'onSignUp');
 
-export const onLogout = action((ctx) => {
+export const logout = action((ctx) => {
 	userAtom.reset(ctx);
-	clearToken();
-}, 'onLogout');
+	tokenAtom.reset(ctx);
+}, 'logout');
 
 export const onRemoveAccount = reatomAsync(async (ctx) => {
 	await removeAccount();
-	onLogout(ctx);
-});
+	logout(ctx);
+}, 'onRemoveAccount');

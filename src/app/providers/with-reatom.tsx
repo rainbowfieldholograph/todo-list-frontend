@@ -1,13 +1,10 @@
-import { connectLogger, createCtx } from '@reatom/framework';
-import { reatomContext } from '@reatom/npm-react';
 import { FC } from 'react';
-
-const ctx = createCtx();
-connectLogger(ctx);
+import { reatomContext } from '@reatom/npm-react';
+import { reatomCtx } from 'shared/config/reatom-ctx';
 
 export const withReatom = (Component: FC) => () => {
 	return (
-		<reatomContext.Provider value={ctx}>
+		<reatomContext.Provider value={reatomCtx}>
 			<Component />
 		</reatomContext.Provider>
 	);

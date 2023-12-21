@@ -1,14 +1,14 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { useAction, useAtom } from '@reatom/npm-react';
-import { userAtom, onLogout } from 'user/model';
+import { userAtom, logout } from 'user/model';
 import { Button } from 'shared/ui';
 import { routeMap } from 'shared/config';
 import styles from './auth-section.module.css';
 
 export const AuthSection: FC = () => {
 	const [user] = useAtom(userAtom);
-	const logout = useAction(onLogout);
+	const handleLogout = useAction(logout);
 
 	if (!user) return null;
 
@@ -19,7 +19,7 @@ export const AuthSection: FC = () => {
 			<Link to={routeMap.userPage} className={styles.username}>
 				{user.username}
 			</Link>
-			<Button className={styles.button} onClick={logout}>
+			<Button className={styles.button} onClick={handleLogout}>
 				logout
 			</Button>
 		</div>

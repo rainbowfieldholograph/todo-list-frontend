@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { ChangeEvent, FC, FormEvent, useState } from 'react';
-import { onLogin } from '../../model';
+import { login } from '../../model';
 import { Button, Input, Form, ErrorStroke } from 'shared/ui';
 import { useAction, useAtom } from '@reatom/npm-react';
 import styles from './auth-user.module.css';
@@ -9,8 +9,8 @@ export const AuthForm: FC = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState<string | null>(null);
-	const [loading] = useAtom((ctx) => ctx.spy(onLogin.pendingAtom) > 0);
-	const loginUser = useAction(onLogin);
+	const [loading] = useAtom((ctx) => ctx.spy(login.pendingAtom) > 0);
+	const loginUser = useAction(login);
 
 	const clearStatements = () => {
 		setEmail('');
