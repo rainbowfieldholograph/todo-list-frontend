@@ -1,12 +1,12 @@
-import { UserDto } from '../types';
+import { UserDTO } from '../types';
 import { apiInstance } from 'shared/api';
 
-export type SignUpBody = Pick<UserDto, 'email' | 'username'> & {
+export type SignUpBody = Pick<UserDTO, 'email' | 'username'> & {
 	password: string;
 };
 
 export const signUpUser = async (body: SignUpBody) => {
-	const createdUser = await apiInstance.post<UserDto>('/user', body);
+	const createdUser = await apiInstance.post<UserDTO>('/user', body);
 
 	return createdUser;
 };

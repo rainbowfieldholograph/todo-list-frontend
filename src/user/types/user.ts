@@ -1,7 +1,10 @@
-export interface UserDto {
+import { ParseAtoms } from '@reatom/framework';
+import { userAtom } from 'user/model';
+
+export type UserDTO = {
 	_id: string;
 	email: string;
 	username: string;
-}
-
-export type UserWithoutIdDto = Omit<UserDto, '_id'>;
+};
+export type UserWithoutIdDto = Omit<UserDTO, '_id'>;
+export type User = ParseAtoms<typeof userAtom>;

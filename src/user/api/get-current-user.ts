@@ -1,8 +1,8 @@
 import { apiInstance } from 'shared/api';
-import { UserDto } from '../types';
+import { UserDTO } from '../types';
 
 export const getCurrentUser = async () => {
-	const currentUser = await apiInstance.get<UserDto>('/user/me');
+	const currentUser = await apiInstance.get<UserDTO>('/user/me');
 
 	return currentUser;
 };

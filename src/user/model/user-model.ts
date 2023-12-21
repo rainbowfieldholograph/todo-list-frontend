@@ -6,7 +6,7 @@ import {
 	action,
 } from '@reatom/framework';
 import { removeSameFieldValues } from 'shared/lib/utils';
-import { UserDto, UserWithoutIdDto } from '../types';
+import { UserDTO, UserWithoutIdDto } from '../types';
 import {
 	AuthenticateBody,
 	authenticateUser,
@@ -23,8 +23,14 @@ export const tokenAtom = atom('', 'tokenAtom').pipe(
 	withLocalStorage(LS_TOKEN_KEY),
 	withReset(),
 );
-export const userAtom = atom<UserDto | null>(null, 'userAtom').pipe(
+
+export const userAtom = atom<UserDTO | null>(null, 'userAtom').pipe(
 	withReset(),
+);
+
+export const isAuthAtom = atom(
+	(ctx) => Boolean(ctx.spy(userAtom)),
+	'isAuthAtom',
 );
 
 onConnect(userAtom, (ctx) => {
@@ -64,9 +70,8 @@ export const onChangeCredentials = reatomAsync(
 
 export const login = reatomAsync(async (ctx, body: AuthenticateBody) => {
 	try {
-		const authenticateResponse = await authenticateUser(body);
-
-		const { accessToken } = authenticateResponse.data;
+		const response = await authenticateUser(body);
+		const { accessToken } = response.data;
 
 		tokenAtom(ctx, accessToken);
 
@@ -83,7 +88,6 @@ export const login = reatomAsync(async (ctx, body: AuthenticateBody) => {
 export const onSignUp = reatomAsync(async (ctx, body: SignUpBody) => {
 	try {
 		await signUpUser(body);
-
 		await login(ctx, { email: body.email, password: body.password });
 	} catch (error) {
 		console.error(error);
