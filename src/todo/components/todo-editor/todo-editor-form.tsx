@@ -28,8 +28,8 @@ export const TodoEditorForm = ({
 	};
 
 	return (
-		<Form onSubmit={handleSubmit}>
-			<Form>
+		<Form.Root onSubmit={handleSubmit}>
+			<Form.Fields>
 				<Input
 					label="Title"
 					value={updateTitle}
@@ -40,8 +40,8 @@ export const TodoEditorForm = ({
 					value={updateDescription}
 					onChange={(event) => setUpdateDescription(event.target.value)}
 				/>
-			</Form>
+			</Form.Fields>
 			<Button disabled={loading}>Update todo</Button>
-		</Form>
+		</Form.Root>
 	);
 };

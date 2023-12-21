@@ -35,8 +35,8 @@ export const EditUserForm = ({ onSubmit }: EditUserFormProps) => {
 	};
 
 	return (
-		<Form border={false} onSubmit={handleSubmitUser}>
-			<Form>
+		<Form.Root border={false} onSubmit={handleSubmitUser}>
+			<Form.Fields>
 				<Input
 					disabled={loading}
 					label="Username"
@@ -49,10 +49,10 @@ export const EditUserForm = ({ onSubmit }: EditUserFormProps) => {
 					value={emailCandidate}
 					onChange={(event) => setEmailCandidate(event.target.value)}
 				/>
-			</Form>
+			</Form.Fields>
 			<Button block disabled={loading} type="submit">
 				Submit
 			</Button>
-		</Form>
+		</Form.Root>
 	);
 };

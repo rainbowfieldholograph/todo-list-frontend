@@ -47,12 +47,15 @@ export const TodoCreatorModal: FC<TodoCreatorModalProps> = ({ onClose }) => {
 
 	return (
 		<>
-			<Form border={false} onSubmit={(event) => handleSubmit(event, onClose)}>
+			<Form.Root
+				border={false}
+				onSubmit={(event) => handleSubmit(event, onClose)}
+			>
 				<h1 className={styles.title}>Create new Todo form</h1>
-				<Form>
+				<Form.Fields>
 					<TitleField />
 					<DescriptionField />
-				</Form>
+				</Form.Fields>
 				<div className={styles.buttons}>
 					<Button type="button" onClick={onClose}>
 						Go Back
@@ -62,7 +65,7 @@ export const TodoCreatorModal: FC<TodoCreatorModalProps> = ({ onClose }) => {
 					</Button>
 				</div>
 				<ErrorStroke className={styles.error}>{error}</ErrorStroke>
-			</Form>
+			</Form.Root>
 		</>
 	);
 };

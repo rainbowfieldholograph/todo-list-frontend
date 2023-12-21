@@ -21,8 +21,8 @@ export const SignUpForm: FC = () => {
 	};
 
 	return (
-		<Form onSubmit={handleSubmit}>
-			<Form>
+		<Form.Root onSubmit={handleSubmit}>
+			<Form.Fields>
 				<Input
 					required
 					label="Email:"
@@ -47,10 +47,10 @@ export const SignUpForm: FC = () => {
 					onChange={(event) => setPassword(event.target.value)}
 					disabled={loading}
 				/>
-			</Form>
+			</Form.Fields>
 			<Button block type="submit" disabled={loading}>
 				Submit
 			</Button>
-		</Form>
+		</Form.Root>
 	);
 };

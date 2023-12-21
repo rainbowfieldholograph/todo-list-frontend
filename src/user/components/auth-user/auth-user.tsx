@@ -44,8 +44,8 @@ export const AuthForm: FC = () => {
 	};
 
 	return (
-		<Form onSubmit={handleSubmitForm}>
-			<Form>
+		<Form.Root onSubmit={handleSubmitForm}>
+			<Form.Fields>
 				<Input
 					required
 					label="Email:"
@@ -62,13 +62,13 @@ export const AuthForm: FC = () => {
 					disabled={loading}
 					required
 				/>
-			</Form>
+			</Form.Fields>
 			<Button disabled={loading} block type="submit">
 				Submit
 			</Button>
 			<ErrorStroke className={styles.error} textCenter>
 				{error}
 			</ErrorStroke>
-		</Form>
+		</Form.Root>
 	);
 };
