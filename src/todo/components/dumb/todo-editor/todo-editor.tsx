@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { ComponentProps, useState } from 'react';
 import { Button, Modal } from 'shared/ui';
-import { TodoEditorForm, FieldsToUpdate } from './todo-editor-form';
+import { TodoEditorForm } from './todo-editor-form';
 
+type FormSubmit = ComponentProps<typeof TodoEditorForm>['onSubmit'];
 type TodoEditorProps = {
 	initialTitle: string;
 	initialDescription: string;
 	loading: boolean;
-	onSubmit: (fields: FieldsToUpdate) => void;
+	onSubmit: FormSubmit;
 };
 
 export const TodoEditor = ({
@@ -17,7 +18,7 @@ export const TodoEditor = ({
 }: TodoEditorProps) => {
 	const [modal, setModal] = useState(false);
 
-	const handleSubmit = (fields: FieldsToUpdate) => {
+	const handleSubmit: FormSubmit = (fields) => {
 		onSubmit(fields);
 		setModal(false);
 	};

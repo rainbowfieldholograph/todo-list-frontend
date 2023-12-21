@@ -1,5 +1,5 @@
 import { atom, reatomAsync, withReset } from '@reatom/framework';
-import { createTodo } from '../../model';
+import { createTodo } from '../../../model';
 import { FormEvent } from 'react';
 import { AnyFunction } from 'shared/types';
 

@@ -1,7 +1,7 @@
 import { FormEventHandler, useState } from 'react';
 import { Button, Form, Input, TextArea } from 'shared/ui';
 
-export type FieldsToUpdate = {
+type FieldsToUpdate = {
 	title: string;
 	description: string;
 };

@@ -1,8 +1,7 @@
+import { ComponentProps } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
-import { getTodos, Todo } from '../../model';
-import { TodoItem } from '../todo-item';
-import { RemoveTodo, ToggleTodo, TodoEditor } from '..';
-import { FieldsToUpdate } from '../todo-editor/todo-editor-form';
+import { getTodos, Todo } from '../../../model';
+import { TodoItem, RemoveTodo, TodoEditor, ToggleTodo } from '../../dumb';
 import styles from './todo-list.module.css';
 
 const NoTodos = () => {
@@ -42,7 +41,10 @@ const TodoCard = ({ todo }: TodoCardProps) => {
 	const handleUpdateTitle = useAction(updateTitle);
 	const handleUpdateDescription = useAction(updateDescription);
 
-	const handleSubmit = ({ title, description }: FieldsToUpdate) => {
+	const handleSubmit: ComponentProps<typeof TodoEditor>['onSubmit'] = ({
+		title,
+		description,
+	}) => {
 		handleUpdateTitle(title);
 		handleUpdateDescription(description);
 	};
@@ -73,35 +75,8 @@ const TodoCard = ({ todo }: TodoCardProps) => {
 };
 
 export const TodoList = () => {
-	// const [currentSort] = useAtom(todoSortAtom);
 	const [todoItems] = useAtom(getTodos.dataAtom);
 	const [loading] = useAtom((ctx) => ctx.spy(getTodos.pendingAtom) > 0);
-	// const ctx = useCtx();
-
-	// const sortedTodos = useMemo(() => {
-	// 	if (currentSort === 'Default') return todoItems;
-
-	// 	const sortFunction = SORT_FUNCTIONS[currentSort];
-
-	// 	return [...todoItems]
-	// 		.map((todo) => {
-	// 			return {
-	// 				...todo,
-	// 				description: ctx.get(todo.description),
-	// 				completed: ctx.get(todo.completed),
-	// 				title: ctx.get(todo.title),
-	// 			};
-	// 		})
-	// 		.sort(sortFunction)
-	// 		.map((todo) => {
-	// 			return {
-	// 				...todo,
-	// 				description: atom(todo.description),
-	// 				completed: atom(todo.completed),
-	// 				title: atom(todo.title),
-	// 			};
-	// 		});
-	// }, [currentSort, todoItems]);
 
 	const todoListEmpty = todoItems.length === 0;
 

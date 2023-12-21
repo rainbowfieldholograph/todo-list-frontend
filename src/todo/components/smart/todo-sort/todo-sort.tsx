@@ -3,7 +3,7 @@ import {
 	currentTodoSortAtom,
 	TodoSortKey,
 	todoSortVariants,
-} from '../../model';
+} from '../../../model';
 import { ChangeEventHandler, CSSProperties } from 'react';
 
 const optionsEntries = Object.entries(todoSortVariants);
