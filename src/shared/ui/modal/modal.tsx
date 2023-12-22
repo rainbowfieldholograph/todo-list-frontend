@@ -1,12 +1,11 @@
-import {
+import { useEffect } from 'react';
+import type {
 	CSSProperties,
-	FC,
 	MouseEventHandler,
 	PropsWithChildren,
-	useEffect,
 } from 'react';
-import { clsx } from 'clsx';
 import FocusLock from 'react-focus-lock';
+import { clsx } from 'clsx';
 import { Portal } from '../portal';
 import styles from './modal.module.css';
 
@@ -17,13 +16,13 @@ type ModalProps = PropsWithChildren<{
 	style?: CSSProperties;
 }>;
 
-export const Modal: FC<ModalProps> = ({
+export const Modal = ({
 	children,
 	className,
 	style,
 	onClose,
 	isOpened,
-}) => {
+}: ModalProps) => {
 	const handleEscapeClick = ({ key }: KeyboardEvent) => {
 		if (key === 'Esc' || key === 'Escape') {
 			onClose();

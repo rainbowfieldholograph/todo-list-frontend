@@ -1,8 +1,8 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
 import { lazily } from 'react-lazily';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAtom } from '@reatom/npm-react';
-import { routeMap } from 'shared/config';
-import { userAtom } from 'user/model';
+import { routeMap } from '~/shared/config';
+import { userAtom } from '~/user/model';
 import { Layout } from './layout';
 
 const { Welcome } = lazily(() => import('./welcome'));

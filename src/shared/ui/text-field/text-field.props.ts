@@ -1,4 +1,4 @@
-import { ChangeEventHandler, CSSProperties } from 'react';
+import type { ChangeEventHandler, CSSProperties } from 'react';
 
 export type TextFieldProps<T extends HTMLTextAreaElement | HTMLInputElement> = {
 	className?: string;

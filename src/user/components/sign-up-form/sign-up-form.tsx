@@ -1,7 +1,8 @@
-import { Button, Form, Input } from 'shared/ui';
-import { FC, FormEvent, useState } from 'react';
+import type { FC, FormEvent } from 'react';
+import { useState } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
-import { onSignUp } from 'user/model';
+import { Button, Form, Input } from '~/shared/ui';
+import { onSignUp } from '~/user/model';
 
 export const SignUpForm: FC = () => {
 	const [email, setEmail] = useState('');

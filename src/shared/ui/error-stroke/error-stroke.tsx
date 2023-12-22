@@ -1,5 +1,5 @@
+import type { CSSProperties, PropsWithChildren } from 'react';
 import { clsx } from 'clsx';
-import { CSSProperties, FC, PropsWithChildren } from 'react';
 import styles from './error-stroke.module.css';
 
 type ErrorStrokeProps = PropsWithChildren<{
@@ -8,12 +8,12 @@ type ErrorStrokeProps = PropsWithChildren<{
 	textCenter?: boolean;
 }>;
 
-export const ErrorStroke: FC<ErrorStrokeProps> = ({
+export const ErrorStroke = ({
 	children,
 	className,
 	style,
 	textCenter,
-}) => {
+}: ErrorStrokeProps) => {
 	return (
 		<p
 			role="alert"

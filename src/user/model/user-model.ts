@@ -5,19 +5,18 @@ import {
 	onConnect,
 	action,
 } from '@reatom/framework';
-import { removeSameFieldValues } from 'shared/lib/utils';
-import { UserDTO, UserWithoutIdDto } from '../types';
+import { withLocalStorage } from '@reatom/persist-web-storage';
+import { removeSameFieldValues } from '~/shared/lib/utils';
+import type { AuthenticateBody, SignUpBody } from '../api';
+import type { UserDTO, UserWithoutIdDto } from '../types';
 import {
-	AuthenticateBody,
 	authenticateUser,
 	getCurrentUser,
-	SignUpBody,
 	signUpUser,
 	updateUser,
 	removeAccount,
 } from '../api';
 import { LS_TOKEN_KEY } from '../config';
-import { withLocalStorage } from '@reatom/persist-web-storage';
 
 export const tokenAtom = atom('', 'tokenAtom').pipe(
 	withLocalStorage(LS_TOKEN_KEY),

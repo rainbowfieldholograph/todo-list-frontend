@@ -8,9 +8,9 @@ import {
 	withStatusesAtom,
 	reatomResource,
 } from '@reatom/framework';
-import { TodoDTO } from '../types';
-import { currentTodoSortAtom } from './sort';
+import type { TodoDTO } from '../types';
 import * as api from '../api';
+import { currentTodoSortAtom } from './sort';
 
 const initialTodos = [] satisfies Todo[];
 

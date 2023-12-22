@@ -1,5 +1,5 @@
-import { apiInstance } from 'shared/api';
-import { reatomCtx } from 'shared/config/reatom-ctx';
+import { apiInstance } from '~/shared/api';
+import { reatomCtx } from '~/shared/config/reatom-ctx';
 import { tokenAtom } from '../model';
 
 apiInstance.interceptors.request.use((config) => {

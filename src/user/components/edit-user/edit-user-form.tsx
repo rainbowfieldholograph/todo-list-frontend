@@ -1,7 +1,8 @@
+import type { FormEventHandler } from 'react';
+import { useState } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
+import { Button, Form, Input } from '~/shared/ui';
 import { onChangeCredentials, userAtom } from '../../model';
-import { FormEventHandler, useState } from 'react';
-import { Button, Form, Input } from 'shared/ui';
 
 type EditUserFormProps = {
 	onSubmit: () => void;

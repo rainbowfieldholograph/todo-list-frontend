@@ -1,5 +1,6 @@
-import { FC, useState } from 'react';
-import { Button, Modal } from 'shared/ui';
+import type { FC } from 'react';
+import { useState } from 'react';
+import { Button, Modal } from '~/shared/ui';
 import { TodoCreatorModal } from './creator-modal';
 
 export const TodoCreator: FC = () => {

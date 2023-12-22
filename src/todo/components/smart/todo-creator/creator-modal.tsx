@@ -1,7 +1,7 @@
-import { FC } from 'react';
-import { Input, TextArea, Button, Form, ErrorStroke } from 'shared/ui';
-import { createTodo } from '../../../model';
+import type { FC } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
+import { Input, TextArea, Button, Form, ErrorStroke } from '~/shared/ui';
+import { createTodo } from '../../../model';
 import { descriptionAtom, titleAtom, onSubmit } from './todo-creator.model';
 import styles from './todo-creator-modal.module.css';
 

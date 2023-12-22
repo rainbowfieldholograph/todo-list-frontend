@@ -1,5 +1,5 @@
 import { atom } from '@reatom/framework';
-import { SortBy, SortType } from '../types';
+import type { SortBy, SortType } from '../types';
 
 type SortVariantValue = { field: SortBy; type: SortType } | null;
 type TodoSortVariantsType = { [key: string]: SortVariantValue };

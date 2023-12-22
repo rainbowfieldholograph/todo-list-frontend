@@ -1,8 +1,9 @@
-import { AxiosError } from 'axios';
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
-import { login } from '../../model';
-import { Button, Input, Form, ErrorStroke } from 'shared/ui';
+import type { ChangeEvent, FC, FormEvent } from 'react';
+import { useState } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
+import { AxiosError } from 'axios';
+import { Button, Input, Form, ErrorStroke } from '~/shared/ui';
+import { login } from '../../model';
 import styles from './auth-user.module.css';
 
 export const AuthForm: FC = () => {

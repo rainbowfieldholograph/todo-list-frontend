@@ -1,12 +1,11 @@
-import { ComponentProps } from 'react';
-import clsx from 'clsx';
+import type { ComponentProps } from 'react';
 import { Link } from 'react-router-dom';
-import { routeMap } from 'shared/config';
-import { withSlot } from 'shared/lib/hocs';
-import { Button } from 'shared/ui';
-
-import styles from './header.module.css';
+import clsx from 'clsx';
+import { routeMap } from '~/shared/config';
+import { withSlot } from '~/shared/lib/hocs';
+import { Button } from '~/shared/ui';
 import { NavLink } from './nav-link';
+import styles from './header.module.css';
 
 type HeaderProps = { links: { title: string; to: string }[] };
 

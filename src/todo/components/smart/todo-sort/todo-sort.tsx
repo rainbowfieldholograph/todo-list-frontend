@@ -1,10 +1,10 @@
+import type { ChangeEventHandler, CSSProperties } from 'react';
 import { useAtom } from '@reatom/npm-react';
 import {
 	currentTodoSortAtom,
-	TodoSortKey,
 	todoSortVariants,
+	type TodoSortKey,
 } from '../../../model';
-import { ChangeEventHandler, CSSProperties } from 'react';
 
 const optionsEntries = Object.entries(todoSortVariants);
 

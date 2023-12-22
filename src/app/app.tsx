@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Routing } from '../pages';
 import { withProviders } from './providers';
 import './styles/base.css';

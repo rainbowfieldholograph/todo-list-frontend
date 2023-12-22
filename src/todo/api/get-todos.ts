@@ -1,6 +1,6 @@
-import { SortBy, SortType, TodoDTO } from '../types';
-import { apiInstance } from 'shared/api/base';
-import { AxiosRequestConfig } from 'axios';
+import type { AxiosRequestConfig } from 'axios';
+import { apiInstance } from '~/shared/api';
+import type { SortBy, SortType, TodoDTO } from '../types';
 
 type GetTodosArgs = { sortBy: SortBy; sortType: SortType } | null;
 

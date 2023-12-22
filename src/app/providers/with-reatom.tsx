@@ -1,6 +1,6 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { reatomContext } from '@reatom/npm-react';
-import { reatomCtx } from 'shared/config/reatom-ctx';
+import { reatomCtx } from '~/shared/config/reatom-ctx';
 
 export const withReatom = (Component: FC) => () => {
 	return (

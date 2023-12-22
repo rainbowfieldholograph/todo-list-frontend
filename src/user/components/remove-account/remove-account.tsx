@@ -1,6 +1,6 @@
 import { useAction, useAtom } from '@reatom/npm-react';
+import { Button } from '~/shared/ui';
 import { onRemoveAccount } from '../../model';
-import { Button } from 'shared/ui';
 
 export const RemoveAccountButton = () => {
 	const handleRemoveAccount = useAction(onRemoveAccount);

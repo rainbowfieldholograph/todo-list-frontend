@@ -1,4 +1,5 @@
-import { FC, PropsWithChildren, useEffect, useState } from 'react';
+import type { FC, PropsWithChildren } from 'react';
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 export const Portal: FC<PropsWithChildren> = ({ children }) => {

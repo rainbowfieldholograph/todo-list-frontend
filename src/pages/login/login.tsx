@@ -1,8 +1,7 @@
-import { FC } from 'react';
-import { AuthForm } from 'user/components';
-import { AuthLayout } from 'shared/ui';
+import { AuthLayout } from '~/shared/ui';
+import { AuthForm } from '~/user/components';
 
-export const Login: FC = () => {
+export const Login = () => {
 	return (
 		<AuthLayout title="Login">
 			<AuthForm />

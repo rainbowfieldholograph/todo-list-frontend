@@ -1,5 +1,5 @@
-import { UserDTO } from '../types';
-import { apiInstance } from 'shared/api';
+import { apiInstance } from '~/shared/api';
+import type { UserDTO } from '../types';
 
 export type SignUpBody = Pick<UserDTO, 'email' | 'username'> & {
 	password: string;

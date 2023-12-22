@@ -1,5 +1,5 @@
+import type { FC, PropsWithChildren } from 'react';
 import { NavLink as RouterNavLink, useMatch } from 'react-router-dom';
-import { FC, PropsWithChildren } from 'react';
 import styles from './nav-link.module.css';
 
 type NavLinkProps = PropsWithChildren<{ to: string }>;

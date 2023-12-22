@@ -1,5 +1,5 @@
-import { ParseAtoms } from '@reatom/framework';
-import { userAtom } from 'user/model';
+import type { ParseAtoms } from '@reatom/framework';
+import type { userAtom } from '~/user/model';
 
 export type UserDTO = {
 	_id: string;

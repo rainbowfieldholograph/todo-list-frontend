@@ -1,5 +1,6 @@
-import { ComponentProps, useState } from 'react';
-import { Button, Modal } from 'shared/ui';
+import type { ComponentProps } from 'react';
+import { useState } from 'react';
+import { Button, Modal } from '~/shared/ui';
 import { TodoEditorForm } from './todo-editor-form';
 
 type FormSubmit = ComponentProps<typeof TodoEditorForm>['onSubmit'];

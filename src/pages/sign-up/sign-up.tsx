@@ -1,8 +1,7 @@
-import { AuthLayout } from 'shared/ui';
-import { SignUpForm } from 'user/components';
-import { FC } from 'react';
+import { AuthLayout } from '~/shared/ui';
+import { SignUpForm } from '~/user/components';
 
-export const SignUp: FC = () => {
+export const SignUp = () => {
 	return (
 		<AuthLayout title="SignUp">
 			<SignUpForm />

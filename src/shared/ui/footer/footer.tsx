@@ -1,7 +1,6 @@
-import { FC } from 'react';
 import styles from './footer.module.css';
 
-export const Footer: FC = () => {
+export const Footer = () => {
 	return (
 		<footer className={styles.footer}>
 			<p>2022</p>

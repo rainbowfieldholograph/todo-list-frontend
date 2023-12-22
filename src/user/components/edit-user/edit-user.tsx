@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Modal } from 'shared/ui';
+import { Button, Modal } from '~/shared/ui';
 import { EditUserForm } from './edit-user-form';
 
 export const EditUser = () => {

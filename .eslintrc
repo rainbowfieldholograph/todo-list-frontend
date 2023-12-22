@@ -18,6 +18,7 @@
 	},
 	"plugins": ["react", "@typescript-eslint", "@reatom", "perfectionist"],
 	"rules": {
+		"@typescript-eslint/consistent-type-imports": "error",
 		"react/display-name": "off",
 		"react/react-in-jsx-scope": "off",
 		"react/prop-types": "off",
@@ -33,13 +34,15 @@
 		"no-console": ["warn", { "allow": ["error"] }],
 		"@typescript-eslint/no-non-null-assertion": "off",
 		"perfectionist/sort-imports": [
-			"error",
+			"warn",
 			{
 				"type": "natural",
 				"order": "asc",
 				"groups": [
 					"type",
-					["react", "reatom", "external"],
+					"react",
+					"reatom",
+					"external",
 					"builtin",
 					"internal-type",
 					"internal",
@@ -59,7 +62,7 @@
 						"react": "react"
 					}
 				},
-				"newlines-between": "always"
+				"newlines-between": "never"
 			}
 		]
 	},

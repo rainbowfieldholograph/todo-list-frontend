@@ -1,4 +1,3 @@
-import { FC } from 'react';
 import styles from './stack-item.module.css';
 
 type StackItemProps = {
@@ -6,7 +5,7 @@ type StackItemProps = {
 	items: string[];
 };
 
-export const StackItem: FC<StackItemProps> = ({ items, title }) => {
+export const StackItem = ({ items, title }: StackItemProps) => {
 	const listItems = items.map((item, index) => {
 		return <li key={index}>{item}</li>;
 	});

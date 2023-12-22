@@ -1,6 +1,6 @@
+import type { FC } from 'react';
 import { clsx } from 'clsx';
-import { FC } from 'react';
-import { TextFieldProps } from './text-field.props';
+import type { TextFieldProps } from './text-field.props';
 import styles from './text-field.module.css';
 
 type TextAreaProps = TextFieldProps<HTMLTextAreaElement> & {

@@ -1,5 +1,6 @@
-import { FormEventHandler, useState } from 'react';
-import { Button, Form, Input, TextArea } from 'shared/ui';
+import type { FormEventHandler } from 'react';
+import { useState } from 'react';
+import { Button, Form, Input, TextArea } from '~/shared/ui';
 
 type FieldsToUpdate = {
 	title: string;

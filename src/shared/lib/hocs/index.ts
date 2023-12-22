@@ -1,1 +1,1 @@
-export * from './withSlot';
+export * from './with-slot';

@@ -1,7 +1,7 @@
+import type { FormEvent } from 'react';
 import { atom, reatomAsync, withReset } from '@reatom/framework';
+import type { AnyFunction } from '~/shared/types';
 import { createTodo } from '../../../model';
-import { FormEvent } from 'react';
-import { AnyFunction } from 'shared/types';
 
 export const titleAtom = atom('', 'titleAtom').pipe(withReset());
 export const descriptionAtom = atom('', 'descriptionAtom').pipe(withReset());
