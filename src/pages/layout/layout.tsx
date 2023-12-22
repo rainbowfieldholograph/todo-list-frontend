@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
-import { Footer, Container } from 'shared/ui';
-import { Header } from 'widgets/header';
+import { useAction, useAtom } from '@reatom/npm-react';
 import { Outlet } from 'react-router-dom';
 import { routeMap } from 'shared/config';
-import { useAction, useAtom } from '@reatom/npm-react';
+import { Footer, Container, Header } from 'shared/ui';
 import { isAuthAtom, logout, userAtom } from 'user/model';
+
 import styles from './layout.module.css';
 
 const generalLinks = [{ title: 'Start', to: routeMap.home }];
