@@ -29,6 +29,7 @@
 	"devDependencies": {
 		"@reatom/eslint-plugin": "^3.4.3",
 		"@types/compose-function": "0.0.30",
+		"@types/node": "^20.10.5",
 		"@types/react": "18.0.28",
 		"@types/react-dom": "18.0.11",
 		"@typescript-eslint/eslint-plugin": "^6.15.0",
@@ -40,7 +41,7 @@
 		"eslint-plugin-react": "7.32.2",
 		"prettier": "2.8.4",
 		"typescript": "^5.3.3",
-		"vite": "4.1.4",
+		"vite": "^4.5.1",
 		"vite-tsconfig-paths": "4.0.5"
 	}
 }

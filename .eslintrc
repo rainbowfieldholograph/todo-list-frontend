@@ -39,17 +39,16 @@
 				"order": "asc",
 				"groups": [
 					"type",
-					"react",
-					"reatom",
-					["builtin", "external"],
+					["react", "reatom", "external"],
+					"builtin",
 					"internal-type",
 					"internal",
 					["parent-type", "sibling-type", "index-type"],
 					["parent", "sibling", "index"],
 					"side-effect",
-					"style",
 					"object",
-					"unknown"
+					"unknown",
+					"style"
 				],
 				"custom-groups": {
 					"value": {
@@ -60,13 +59,7 @@
 						"react": "react"
 					}
 				},
-				"newlines-between": "always",
-				"internal-pattern": [
-					"@/components/**",
-					"@/stores/**",
-					"@/pages/**",
-					"@/lib/**"
-				]
+				"newlines-between": "always"
 			}
 		]
 	},
