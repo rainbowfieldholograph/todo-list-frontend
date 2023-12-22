@@ -4,8 +4,6 @@ import { withProviders } from './providers';
 import './styles/base.css';
 import './styles/variables.css';
 
-const AppComponent: FC = () => {
-	return <Routing />;
-};
+const AppComponent: FC = () => <Routing />;
 
 export const App = withProviders(AppComponent);

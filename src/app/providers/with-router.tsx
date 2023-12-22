@@ -1,10 +1,10 @@
 import type { FC } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'wouter';
 
 export const withRouter = (Component: FC) => () => {
 	return (
-		<BrowserRouter>
+		<Router>
 			<Component />
-		</BrowserRouter>
+		</Router>
 	);
 };

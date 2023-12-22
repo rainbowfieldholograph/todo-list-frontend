@@ -1,6 +1,6 @@
 import { lazily } from 'react-lazily';
-import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAtom } from '@reatom/npm-react';
+import { Switch, Route, Redirect } from 'wouter';
 import { routeMap } from '~/shared/config';
 import { userAtom } from '~/user/model';
 import { Layout } from './layout';
@@ -18,35 +18,35 @@ export const Routing = () => {
 	const isAuth = Boolean(user);
 
 	return (
-		<Routes>
-			<Route path={routeMap.home} element={<Layout />}>
-				<Route index element={<Welcome />} />
+		<Switch>
+			<Layout>
+				<Route path={routeMap.home} component={Welcome} />
 				<Route
 					path={routeMap.signUp}
-					element={
-						!isAuth ? <SignUp /> : <Navigate to={routeMap.todo} replace />
+					component={
+						!isAuth ? SignUp : () => <Redirect to={routeMap.todo} replace />
 					}
 				/>
 				<Route
 					path={routeMap.userPage}
-					element={
-						isAuth ? <UserPage /> : <Navigate to={routeMap.login} replace />
+					component={
+						isAuth ? UserPage : () => <Redirect to={routeMap.login} replace />
 					}
 				/>
 				<Route
 					path={routeMap.login}
-					element={
-						!isAuth ? <Login /> : <Navigate to={routeMap.todo} replace />
+					component={
+						!isAuth ? Login : () => <Redirect to={routeMap.todo} replace />
 					}
 				/>
 				<Route
 					path={routeMap.todo}
-					element={
-						isAuth ? <TodoPage /> : <Navigate to={routeMap.login} replace />
+					component={
+						isAuth ? TodoPage : () => <Redirect to={routeMap.login} replace />
 					}
 				/>
-				<Route path="*" element={<NotFound />} />
-			</Route>
-		</Routes>
+				<Route component={NotFound} />
+			</Layout>
+		</Switch>
 	);
 };

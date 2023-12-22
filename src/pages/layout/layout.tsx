@@ -1,5 +1,4 @@
-import { Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Suspense, type PropsWithChildren } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
 import { routeMap } from '~/shared/config';
 import { Footer, Container, Header } from '~/shared/ui';
@@ -18,7 +17,7 @@ const linksDict = {
 	false: unauthenticatedLinks,
 } as const;
 
-export const Layout = () => {
+export const Layout = ({ children }: PropsWithChildren) => {
 	const [isAuth] = useAtom(isAuthAtom);
 	const [username] = useAtom((ctx) => ctx.spy(userAtom)?.username);
 	const handleLogout = useAction(logout);
@@ -36,9 +35,7 @@ export const Layout = () => {
 				}}
 			/>
 			<main className={styles.content}>
-				<Suspense fallback={<div>Loading...</div>}>
-					<Outlet />
-				</Suspense>
+				<Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
 			</main>
 			<Footer />
 		</Container>

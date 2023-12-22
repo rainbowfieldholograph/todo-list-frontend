@@ -24,7 +24,7 @@
 		"react-dom": "18.2.0",
 		"react-focus-lock": "2.9.4",
 		"react-lazily": "0.9.1",
-		"react-router-dom": "6.9.0"
+		"wouter": "^2.12.1"
 	},
 	"devDependencies": {
 		"@reatom/eslint-plugin": "^3.4.3",

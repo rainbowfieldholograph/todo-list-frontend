@@ -4,4 +4,4 @@ export const routeMap = {
 	login: '/login',
 	signUp: '/signup',
 	userPage: '/user-page',
-};
+} as const;

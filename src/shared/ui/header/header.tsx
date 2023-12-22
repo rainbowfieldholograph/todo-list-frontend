@@ -1,5 +1,5 @@
+import type { Link } from 'wouter';
 import type { ComponentProps } from 'react';
-import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { routeMap } from '~/shared/config';
 import { withSlot } from '~/shared/lib/hocs';
@@ -18,13 +18,13 @@ const LogoutButton = (props: LogoutButtonProps) => (
 
 type ProfileLinkProps = Omit<ComponentProps<typeof Link>, 'to'>;
 const ProfileLink = (props: ProfileLinkProps) => (
-	<Link
+	<NavLink
 		{...props}
-		to={routeMap.userPage}
+		href={routeMap.userPage}
 		className={clsx(styles.username, props.className)}
 	>
 		{props.children}
-	</Link>
+	</NavLink>
 );
 
 const HeaderSlot = { LogoutButton, ProfileLink };
@@ -34,7 +34,7 @@ export const Header = withSlot<typeof HeaderSlot, HeaderProps>(
 		const linkItems = links.map(({ title, to }) => {
 			return (
 				<li key={title + to}>
-					<NavLink to={to}>{title}</NavLink>
+					<NavLink href={to}>{title}</NavLink>
 				</li>
 			);
 		});

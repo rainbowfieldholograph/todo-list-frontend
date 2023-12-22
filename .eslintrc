@@ -42,6 +42,7 @@
 					"type",
 					"react",
 					"reatom",
+					"wouter",
 					"external",
 					"builtin",
 					"internal-type",
@@ -56,7 +57,8 @@
 				"custom-groups": {
 					"value": {
 						"react": ["react", "react-*"],
-						"reatom": "@reatom/**"
+						"reatom": "@reatom/**",
+						"wouter": "wouter**"
 					},
 					"type": {
 						"react": "react"
