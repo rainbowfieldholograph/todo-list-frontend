@@ -7,3 +7,4 @@ export * from './portal';
 export * from './text-field';
 export * from './form';
 export * from './error-stroke';
+export * from './header';
