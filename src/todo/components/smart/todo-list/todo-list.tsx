@@ -1,5 +1,4 @@
 import { useAtom } from '@reatom/npm-react';
-
 import { getTodosResource } from '../../../model';
 import { TodoItem } from './todo-item';
 import styles from './todo-list.module.css';

@@ -1,14 +1,12 @@
 import { reatomComponent } from '@reatom/npm-react';
-import { ComponentProps } from 'react';
-
-import type { Todo } from '../../../model';
-
 import {
 	RemoveTodo,
 	TodoEditor,
 	TodoItem as TodoItemDumb,
 	ToggleTodo,
-} from '../../dumb';
+} from 'todo/components/dumb';
+import { Todo } from 'todo/model';
+import { ComponentProps } from 'react';
 import styles from './todo-item.module.css';
 
 type TodoItemProps = Todo;
@@ -19,10 +17,10 @@ export const TodoItem = reatomComponent<TodoItemProps>(({ ctx, ...props }) => {
 		completedAtom,
 		descriptionAtom,
 		remove,
-		titleAtom,
 		toggle,
 		updateDescription,
 		updateTitle,
+		titleAtom,
 	} = props;
 
 	const title = ctx.spy(titleAtom);
@@ -35,30 +33,30 @@ export const TodoItem = reatomComponent<TodoItemProps>(({ ctx, ...props }) => {
 		ctx.spy(updateDescription.statusesAtom).isPending ||
 		ctx.spy(updateTitle.statusesAtom).isPending;
 
-	const handleSubmit: Submit = ({ description, title }) => {
+	const handleSubmit: Submit = ({ title, description }) => {
 		updateTitle(ctx, title);
 		updateDescription(ctx, description);
 	};
 
 	return (
 		<TodoItemDumb
+			title={title}
 			completed={completed}
 			description={description}
 			loading={false}
-			title={title}
 		>
 			<div className={styles.buttons}>
 				<RemoveTodo loading={removing} onRemove={() => remove(ctx)} />
 				<TodoEditor
+					onSubmit={handleSubmit}
 					initialDescription={description}
 					initialTitle={title}
 					loading={editing}
-					onSubmit={handleSubmit}
 				/>
 			</div>
 			<ToggleTodo
-				completed={completed}
 				loading={toggling}
+				completed={completed}
 				onToggle={() => toggle(ctx)}
 			/>
 		</TodoItemDumb>
