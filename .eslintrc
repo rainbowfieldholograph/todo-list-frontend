@@ -16,7 +16,7 @@
 		"ecmaVersion": "latest",
 		"sourceType": "module"
 	},
-	"plugins": ["react", "@typescript-eslint", "@reatom"],
+	"plugins": ["react", "@typescript-eslint", "@reatom", "perfectionist"],
 	"rules": {
 		"react/display-name": "off",
 		"react/react-in-jsx-scope": "off",
@@ -31,7 +31,44 @@
 			}
 		],
 		"no-console": ["warn", { "allow": ["error"] }],
-		"@typescript-eslint/no-non-null-assertion": "off"
+		"@typescript-eslint/no-non-null-assertion": "off",
+		"perfectionist/sort-imports": [
+			"error",
+			{
+				"type": "natural",
+				"order": "asc",
+				"groups": [
+					"type",
+					"react",
+					"reatom",
+					["builtin", "external"],
+					"internal-type",
+					"internal",
+					["parent-type", "sibling-type", "index-type"],
+					["parent", "sibling", "index"],
+					"side-effect",
+					"style",
+					"object",
+					"unknown"
+				],
+				"custom-groups": {
+					"value": {
+						"react": ["react", "react-*"],
+						"reatom": "@reatom/**"
+					},
+					"type": {
+						"react": "react"
+					}
+				},
+				"newlines-between": "always",
+				"internal-pattern": [
+					"@/components/**",
+					"@/stores/**",
+					"@/pages/**",
+					"@/lib/**"
+				]
+			}
+		]
 	},
 	"settings": {
 		"react": {
