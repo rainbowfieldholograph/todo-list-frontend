@@ -2,17 +2,17 @@ import type { FormEventHandler } from 'react';
 import { useState } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
 import { Button, Form, Input } from '~/shared/ui';
-import { onChangeCredentials, userAtom } from '../../model';
+import { changeCredentials, userResource } from '../../model';
 
 type EditUserFormProps = {
 	onSubmit: () => void;
 };
 
 export const EditUserForm = ({ onSubmit }: EditUserFormProps) => {
-	const [user] = useAtom(userAtom);
-	const updateUser = useAction(onChangeCredentials);
+	const [user] = useAtom(userResource.dataAtom);
+	const updateUser = useAction(changeCredentials);
 	const [loading] = useAtom(
-		(ctx) => ctx.spy(onChangeCredentials.pendingAtom) > 0,
+		(ctx) => ctx.spy(changeCredentials.pendingAtom) > 0,
 	);
 
 	if (!user) return null;

@@ -2,13 +2,14 @@ import {
 	atom,
 	reatomAsync,
 	withReset,
-	onConnect,
 	action,
+	reatomResource,
+	withDataAtom,
+	withAbort,
 } from '@reatom/framework';
 import { withLocalStorage } from '@reatom/persist-web-storage';
-import { removeSameFieldValues } from '~/shared/lib/utils';
 import type { AuthenticateBody, SignUpBody } from './api';
-import type { UserDTO, UserWithoutIdDto } from './types';
+import type { User } from './types';
 import {
 	authenticateUser,
 	getCurrentUser,
@@ -23,83 +24,52 @@ export const tokenAtom = atom('', 'tokenAtom').pipe(
 	withReset(),
 );
 
-export const userAtom = atom<UserDTO | null>(null, 'userAtom').pipe(
-	withReset(),
-);
+export const userResource = reatomResource(async (ctx) => {
+	const token = ctx.spy(tokenAtom);
+	if (!token) return;
+
+	const { data: currentUser } = await getCurrentUser({
+		signal: ctx.controller.signal,
+	});
+	return currentUser;
+}, 'userResource').pipe(withDataAtom(), withAbort());
 
 export const isAuthAtom = atom(
-	(ctx) => Boolean(ctx.spy(userAtom)),
+	(ctx) => Boolean(ctx.spy(userResource.dataAtom)),
 	'isAuthAtom',
 );
 
-onConnect(userAtom, (ctx) => {
-	const token = ctx.get(tokenAtom);
-
-	if (!token) return;
-
-	ctx.schedule(async () => {
-		try {
-			const { data: currentUser } = await getCurrentUser();
-
-			const { _id, email, username } = currentUser;
-			userAtom(ctx, { _id, email, username });
-		} catch (error) {
-			console.error(error);
-		}
-	});
-});
-
-export const onChangeCredentials = reatomAsync(
-	async (ctx, updateData: UserWithoutIdDto) => {
-		const dataToUpdate = removeSameFieldValues(ctx.get(userAtom)!, updateData);
-
-		if (!dataToUpdate) return;
-
-		try {
-			const response = await updateUser(dataToUpdate);
-
-			userAtom(ctx, response.data);
-		} catch (error) {
-			console.error(error);
-			throw error;
-		}
+export const changeCredentials = reatomAsync(
+	async (ctx, updateData: Partial<Pick<User, 'email' | 'username'>>) => {
+		const { data } = await updateUser(updateData, {
+			signal: ctx.controller.signal,
+		});
+		userResource.dataAtom(ctx, data);
 	},
-	'onChangeCredentials',
-);
+	'changeCredentials',
+).pipe(withAbort());
 
 export const login = reatomAsync(async (ctx, body: AuthenticateBody) => {
-	try {
-		const response = await authenticateUser(body);
-		const { accessToken } = response.data;
-
-		tokenAtom(ctx, accessToken);
-
-		const { data: currentUser } = await getCurrentUser();
-		const { _id, email, username } = currentUser;
-
-		userAtom(ctx, { _id, email, username });
-	} catch (error) {
-		console.error(error);
-		throw error;
-	}
-}, 'login');
+	const { data } = await authenticateUser(body, {
+		signal: ctx.controller.signal,
+	});
+	tokenAtom(ctx, data.accessToken);
+}, 'login').pipe(withAbort());
 
 export const onSignUp = reatomAsync(async (ctx, body: SignUpBody) => {
-	try {
-		await signUpUser(body);
-		await login(ctx, { email: body.email, password: body.password });
-	} catch (error) {
-		console.error(error);
-		throw error;
-	}
-}, 'onSignUp');
+	return (await signUpUser(body, { signal: ctx.controller.signal })).data;
+}, 'onSignUp').pipe(withAbort());
+
+onSignUp.onFulfill.onCall((ctx, payload) => {
+	tokenAtom(ctx, payload.accessToken);
+});
 
 export const logout = action((ctx) => {
-	userAtom.reset(ctx);
 	tokenAtom.reset(ctx);
 }, 'logout');
 
 export const onRemoveAccount = reatomAsync(async (ctx) => {
-	await removeAccount();
-	logout(ctx);
-}, 'onRemoveAccount');
+	await removeAccount({ signal: ctx.controller.signal });
+}, 'onRemoveAccount').pipe(withAbort());
+
+onRemoveAccount.onFulfill.onCall(logout);

@@ -1,10 +1,10 @@
 import { useAtom } from '@reatom/npm-react';
 import { EditUser, RemoveAccountButton } from '~/user/components';
-import { userAtom } from '~/user/model';
+import { userResource } from '~/user/model';
 import styles from './user-page.module.css';
 
 export const UserPage = () => {
-	const [user] = useAtom(userAtom);
+	const [user] = useAtom(userResource.dataAtom);
 
 	if (!user) return null;
 

@@ -2,7 +2,7 @@ import { lazily } from 'react-lazily';
 import { useAtom } from '@reatom/npm-react';
 import { Switch, Route, Redirect } from 'wouter';
 import { routeMap } from '~/shared/config';
-import { userAtom } from '~/user/model';
+import { userResource } from '~/user/model';
 import { Layout } from './layout';
 
 const { Welcome } = lazily(() => import('./welcome'));
@@ -13,7 +13,7 @@ const { SignUp } = lazily(() => import('./sign-up'));
 const { UserPage } = lazily(() => import('./user-page'));
 
 export const Routing = () => {
-	const [user] = useAtom(userAtom);
+	const [user] = useAtom(userResource.dataAtom);
 
 	const isAuth = Boolean(user);
 

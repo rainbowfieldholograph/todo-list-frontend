@@ -20,7 +20,7 @@ const reatomTodo = (todoToCreate: TodoDTO) => {
 	const completedAtom = atom(todoToCreate.completed, 'completedAtom');
 
 	const remove = reatomAsync(async (ctx) => {
-		await api.deleteTodo(todoToCreate._id);
+		await api.deleteTodo(todoToCreate._id, { signal: ctx.controller.signal });
 
 		getTodosResource.dataAtom(ctx, (todos) =>
 			todos.filter(({ _id }) => _id !== todoToCreate._id),

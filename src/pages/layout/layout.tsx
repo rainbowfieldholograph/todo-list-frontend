@@ -2,7 +2,7 @@ import { Suspense, type PropsWithChildren } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
 import { routeMap } from '~/shared/config';
 import { Footer, Container, Header } from '~/shared/ui';
-import { isAuthAtom, logout, userAtom } from '~/user/model';
+import { isAuthAtom, logout, userResource } from '~/user/model';
 import styles from './layout.module.css';
 
 const generalLinks = [{ title: 'Start', to: routeMap.home }];
@@ -19,7 +19,7 @@ const linksDict = {
 
 export const Layout = ({ children }: PropsWithChildren) => {
 	const [isAuth] = useAtom(isAuthAtom);
-	const [username] = useAtom((ctx) => ctx.spy(userAtom)?.username);
+	const [username] = useAtom((ctx) => ctx.spy(userResource.dataAtom)?.username);
 	const handleLogout = useAction(logout);
 	const links = [...generalLinks, ...linksDict[`${isAuth}`]];
 
