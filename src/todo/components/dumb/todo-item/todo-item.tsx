@@ -1,27 +1,33 @@
-import type { FC, PropsWithChildren } from 'react';
+import type { ReactNode } from 'react';
 import { clsx } from 'clsx';
 import styles from './todo-item.module.css';
 
-type TodoItemProps = PropsWithChildren<{
+type TodoItemProps = {
 	title: string;
 	description: string;
 	completed: boolean;
-	loading: boolean;
-}>;
 
-export const TodoItem: FC<TodoItemProps> = ({
+	actionsStartSlot?: ReactNode;
+	actionsEndSlot?: ReactNode;
+};
+
+export const TodoItem = ({
 	completed,
 	description,
 	title,
-	children,
-}) => {
+	actionsEndSlot,
+	actionsStartSlot,
+}: TodoItemProps) => {
 	return (
 		<article className={clsx(styles.todo, { [styles.completed]: completed })}>
 			<div className={styles.meta}>
 				<h3>{title}</h3>
 				<p>{description}</p>
 			</div>
-			<div className={styles.actions}>{children}</div>
+			<div className={styles.actionsContainer}>
+				<div className={styles.actions}>{actionsStartSlot}</div>
+				<div className={styles.actions}>{actionsEndSlot}</div>
+			</div>
 		</article>
 	);
 };

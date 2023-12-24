@@ -1,13 +1,8 @@
 import type { ComponentProps } from 'react';
 import { reatomComponent } from '@reatom/npm-react';
 import type { Todo } from '../../../model';
-import {
-	RemoveTodo,
-	TodoEditor,
-	TodoItem as TodoItemDumb,
-	ToggleTodo,
-} from '../../dumb';
-import styles from './todo-item.module.css';
+import { TodoEditor } from '../../dumb';
+import { RemoveTodo, TodoItem as TodoItemDumb, ToggleTodo } from '../../dumb';
 
 type TodoItemProps = Todo;
 type Submit = ComponentProps<typeof TodoEditor>['onSubmit'];
@@ -42,23 +37,25 @@ export const TodoItem = reatomComponent<TodoItemProps>(({ ctx, ...props }) => {
 		<TodoItemDumb
 			completed={completed}
 			description={description}
-			loading={false}
 			title={title}
-		>
-			<div className={styles.buttons}>
-				<RemoveTodo loading={removing} onRemove={() => remove(ctx)} />
-				<TodoEditor
-					initialDescription={description}
-					initialTitle={title}
-					loading={editing}
-					onSubmit={handleSubmit}
+			actionsEndSlot={
+				<ToggleTodo
+					completed={completed}
+					loading={toggling}
+					onToggle={() => toggle(ctx)}
 				/>
-			</div>
-			<ToggleTodo
-				completed={completed}
-				loading={toggling}
-				onToggle={() => toggle(ctx)}
-			/>
-		</TodoItemDumb>
+			}
+			actionsStartSlot={
+				<>
+					<RemoveTodo loading={removing} onRemove={() => remove(ctx)} />
+					<TodoEditor
+						initialDescription={description}
+						initialTitle={title}
+						loading={editing}
+						onSubmit={handleSubmit}
+					/>
+				</>
+			}
+		/>
 	);
 }, 'TodoItem');

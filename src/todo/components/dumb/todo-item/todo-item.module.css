@@ -15,8 +15,17 @@
 	margin-bottom: 0.4rem;
 }
 
-.actions {
+.actionsContainer {
 	display: flex;
 	justify-content: space-between;
+}
+
+.actionsContainer:empty {
+	display: none;
+}
+
+.actions {
+	display: flex;
 	align-items: flex-end;
+	gap: 0.5rem;
 }

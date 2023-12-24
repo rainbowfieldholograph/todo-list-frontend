@@ -1,15 +1,7 @@
 import { useAtom } from '@reatom/npm-react';
 import { todosResource } from '../../../model';
+import { TodoList as TodoListDumb } from '../../dumb';
 import { TodoItem } from './todo-item';
-import styles from './todo-list.module.css';
-
-const NoTodos = () => {
-	return (
-		<div>
-			<p>{"You don't have todo's yet"}</p>
-		</div>
-	);
-};
 
 export const TodoList = () => {
 	const [todos] = useAtom(todosResource.dataAtom);
@@ -19,14 +11,13 @@ export const TodoList = () => {
 	const todoListEmpty = todos.length === 0;
 
 	if (loading) return <p>Todos loading...</p>;
+	if (todoListEmpty) return <p>{"You don't have todo's yet"}</p>;
 
-	if (todoListEmpty) return <NoTodos />;
-
-	const listItems = todos.map((todo) => (
-		<li key={todo._id}>
-			<TodoItem {...todo} />
-		</li>
-	));
-
-	return <ul className={styles.list}>{listItems}</ul>;
+	return (
+		<TodoListDumb>
+			{todos.map((todo) => (
+				<TodoItem key={todo._id} {...todo} />
+			))}
+		</TodoListDumb>
+	);
 };
