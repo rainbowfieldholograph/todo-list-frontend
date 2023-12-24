@@ -1,10 +1,10 @@
 import { AuthLayout } from '~/shared/ui';
-import { AuthForm } from '~/user/components';
+import { AuthUser } from '~/user/components';
 
 export const Login = () => {
 	return (
 		<AuthLayout title="Login">
-			<AuthForm />
+			<AuthUser />
 		</AuthLayout>
 	);
 };

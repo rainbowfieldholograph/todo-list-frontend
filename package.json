@@ -24,6 +24,7 @@
 		"react-dom": "18.2.0",
 		"react-focus-lock": "2.9.4",
 		"react-lazily": "0.9.1",
+		"valibot": "^0.24.1",
 		"wouter": "^2.12.1"
 	},
 	"devDependencies": {

@@ -1,15 +1,16 @@
 import type { FC, FormEvent } from 'react';
 import { useState } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
-import { Button, Form, Input } from '~/shared/ui';
-import { onSignUp } from '~/user/model';
+import { Button, ErrorStroke, Form, Input } from '~/shared/ui';
+import { signUp } from '~/user/model';
 
 export const SignUpForm: FC = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [username, setUsername] = useState('');
-	const handleSignUp = useAction(onSignUp);
-	const [loading] = useAtom((ctx) => ctx.spy(onSignUp.pendingAtom) > 0);
+	const handleSignUp = useAction(signUp);
+	const [error] = useAtom(signUp.errorAtom);
+	const [loading] = useAtom((ctx) => ctx.spy(signUp.pendingAtom) > 0);
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -52,6 +53,9 @@ export const SignUpForm: FC = () => {
 			<Button block type="submit" disabled={loading}>
 				Submit
 			</Button>
+			<ErrorStroke style={{ marginTop: '1rem' }} textCenter>
+				{error?.message}
+			</ErrorStroke>
 		</Form.Root>
 	);
 };

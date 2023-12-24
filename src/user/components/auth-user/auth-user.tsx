@@ -1,39 +1,27 @@
-import type { ChangeEvent, FC, FormEvent } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 import { useState } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
-import { AxiosError } from 'axios';
 import { Button, Input, Form, ErrorStroke } from '~/shared/ui';
 import { login } from '../../model';
 import styles from './auth-user.module.css';
 
-export const AuthForm: FC = () => {
+export const AuthUser = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [error, setError] = useState<string | null>(null);
 	const [loading] = useAtom((ctx) => ctx.spy(login.pendingAtom) > 0);
-	const loginUser = useAction(login);
+	const [error] = useAtom(login.errorAtom);
+	const handleLogin = useAction(login);
 
 	const clearStatements = () => {
 		setEmail('');
 		setPassword('');
-		setError(null);
 	};
 
 	const handleSubmitForm = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		try {
-			await loginUser({ email, password });
-
-			clearStatements();
-		} catch (error) {
-			if (!(error instanceof AxiosError)) return;
-
-			const errorMessage = error.response?.statusText ?? error.message;
-
-			console.error(errorMessage);
-			setError(errorMessage);
-		}
+		await handleLogin({ email, password });
+		clearStatements();
 	};
 
 	const onChangeEmail = (event: ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +56,7 @@ export const AuthForm: FC = () => {
 				Submit
 			</Button>
 			<ErrorStroke className={styles.error} textCenter>
-				{error}
+				{error?.message}
 			</ErrorStroke>
 		</Form.Root>
 	);

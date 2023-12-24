@@ -6,8 +6,10 @@ import {
 	reatomResource,
 	withDataAtom,
 	withAbort,
+	withErrorAtom,
 } from '@reatom/framework';
 import { withLocalStorage } from '@reatom/persist-web-storage';
+import { errorMapper } from '~/shared/lib/utils';
 import type { AuthenticateBody, SignUpBody } from './api';
 import type { User } from './types';
 import {
@@ -53,14 +55,22 @@ export const login = reatomAsync(async (ctx, body: AuthenticateBody) => {
 	const { data } = await authenticateUser(body, {
 		signal: ctx.controller.signal,
 	});
-	tokenAtom(ctx, data.accessToken);
-}, 'login').pipe(withAbort());
+	return data;
+}, 'login').pipe(
+	withAbort(),
+	withErrorAtom((_ctx, err) => errorMapper(err)),
+);
 
-export const onSignUp = reatomAsync(async (ctx, body: SignUpBody) => {
+login.onFulfill.onCall((ctx, { accessToken }) => tokenAtom(ctx, accessToken));
+
+export const signUp = reatomAsync(async (ctx, body: SignUpBody) => {
 	return (await signUpUser(body, { signal: ctx.controller.signal })).data;
-}, 'onSignUp').pipe(withAbort());
+}, 'signUp').pipe(
+	withAbort(),
+	withErrorAtom((_ctx, err) => errorMapper(err)),
+);
 
-onSignUp.onFulfill.onCall((ctx, payload) => {
+signUp.onFulfill.onCall((ctx, payload) => {
 	tokenAtom(ctx, payload.accessToken);
 });
 
