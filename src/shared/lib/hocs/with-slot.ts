@@ -19,7 +19,6 @@ export function withSlot<
 	) => React.ReactNode,
 ) {
 	return React.forwardRef<Ref, Props & { slot?: MapSlot<Slot> }>(
-		// @ts-expect-error ...
 		({ slot: custom = {}, ...props }, ref) => {
 			const config = React.useRef({ slot, custom }).current;
 
