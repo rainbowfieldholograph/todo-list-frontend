@@ -1,6 +1,6 @@
 import { Button } from '~/shared/ui';
 
-type RemoveTodoProps = { onRemove: () => void; loading: boolean };
+type RemoveTodoProps = { onRemove: VoidFunction; loading: boolean };
 
 export const RemoveTodo = ({ onRemove, loading }: RemoveTodoProps) => {
 	return (

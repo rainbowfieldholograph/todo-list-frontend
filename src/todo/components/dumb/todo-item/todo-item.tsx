@@ -6,7 +6,6 @@ type TodoItemProps = {
 	title: string;
 	description: string;
 	completed: boolean;
-
 	actionsStartSlot?: ReactNode;
 	actionsEndSlot?: ReactNode;
 };
