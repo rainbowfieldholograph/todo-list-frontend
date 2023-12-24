@@ -1,5 +1,5 @@
 import { useAtom } from '@reatom/npm-react';
-import { getTodosResource } from '../../../model';
+import { todosResource } from '../../../model';
 import { TodoItem } from './todo-item';
 import styles from './todo-list.module.css';
 
@@ -12,18 +12,17 @@ const NoTodos = () => {
 };
 
 export const TodoList = () => {
-	const [todoItems] = useAtom(getTodosResource.dataAtom);
+	const [todos] = useAtom(todosResource.dataAtom);
 	const [loading] = useAtom(
-		(ctx) => ctx.spy(getTodosResource.statusesAtom).isPending,
+		(ctx) => ctx.spy(todosResource.statusesAtom).isPending,
 	);
-
-	const todoListEmpty = todoItems.length === 0;
+	const todoListEmpty = todos.length === 0;
 
 	if (loading) return <p>Todos loading...</p>;
 
 	if (todoListEmpty) return <NoTodos />;
 
-	const listItems = todoItems.map((todo) => (
+	const listItems = todos.map((todo) => (
 		<li key={todo._id}>
 			<TodoItem {...todo} />
 		</li>

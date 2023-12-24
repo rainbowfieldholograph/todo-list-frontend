@@ -10,6 +10,7 @@ import {
 } from '@reatom/framework';
 import { withLocalStorage } from '@reatom/persist-web-storage';
 import { errorMapper } from '~/shared/lib/utils';
+import { todosResource, todoSortAtom } from '~/todo/model';
 import type { AuthenticateBody, SignUpBody } from './api';
 import type { User } from './types';
 import {
@@ -26,6 +27,10 @@ export const tokenAtom = atom('', 'tokenAtom').pipe(
 	withReset(),
 );
 
+tokenAtom.onChange((ctx, token) => {
+	if (token) return;
+});
+
 export const userResource = reatomResource(async (ctx) => {
 	const token = ctx.spy(tokenAtom);
 	if (!token) return;
@@ -36,9 +41,9 @@ export const userResource = reatomResource(async (ctx) => {
 	return currentUser;
 }, 'userResource').pipe(withDataAtom(), withAbort());
 
-export const isAuthAtom = atom(
+export const isLoggedAtom = atom(
 	(ctx) => Boolean(ctx.spy(userResource.dataAtom)),
-	'isAuthAtom',
+	'isLoggedAtom',
 );
 
 export const changeCredentials = reatomAsync(
@@ -70,13 +75,13 @@ export const signUp = reatomAsync(async (ctx, body: SignUpBody) => {
 	withErrorAtom((_ctx, err) => errorMapper(err)),
 );
 
-signUp.onFulfill.onCall((ctx, payload) => {
-	tokenAtom(ctx, payload.accessToken);
-});
+signUp.onFulfill.onCall((ctx, { accessToken }) => tokenAtom(ctx, accessToken));
 
 export const logout = action((ctx) => {
 	tokenAtom.reset(ctx);
 }, 'logout');
+
+logout.onCall(todoSortAtom.reset);
 
 export const onRemoveAccount = reatomAsync(async (ctx) => {
 	await removeAccount({ signal: ctx.controller.signal });

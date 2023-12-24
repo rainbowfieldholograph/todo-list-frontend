@@ -1,10 +1,7 @@
 import type { ChangeEventHandler, CSSProperties } from 'react';
 import { useAtom } from '@reatom/npm-react';
-import {
-	currentTodoSortAtom,
-	todoSortVariants,
-	type TodoSortKey,
-} from '../../../model';
+import { todoSortVariants, type TodoSortKey } from '~/todo/config';
+import { todoSortAtom } from '../../../model';
 
 const optionsEntries = Object.entries(todoSortVariants);
 
@@ -14,7 +11,7 @@ type TodoSortProps = {
 };
 
 export const TodoSort = ({ className, style }: TodoSortProps) => {
-	const [currentSort, changeSort] = useAtom(currentTodoSortAtom);
+	const [currentSort, changeSort] = useAtom(todoSortAtom);
 
 	const [selectValue] = optionsEntries.find(([_, value]) => {
 		if (currentSort === value) return true;

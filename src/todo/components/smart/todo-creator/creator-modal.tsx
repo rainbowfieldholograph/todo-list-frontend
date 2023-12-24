@@ -64,7 +64,7 @@ export const TodoCreatorModal: FC<TodoCreatorModalProps> = ({ onClose }) => {
 						Create
 					</Button>
 				</div>
-				<ErrorStroke className={styles.error}>{error}</ErrorStroke>
+				<ErrorStroke className={styles.error}>{error?.message}</ErrorStroke>
 			</Form.Root>
 		</>
 	);

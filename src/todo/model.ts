@@ -8,29 +8,31 @@ import {
 	withStatusesAtom,
 	reatomResource,
 } from '@reatom/framework';
-import type { TodoDTO } from '../types';
-import * as api from '../api';
-import { currentTodoSortAtom } from './sort';
+import { errorMapper } from '~/shared/lib/utils';
+import { isLoggedAtom } from '~/user/model';
+import type { TodoSortVariant } from './config';
+import type { TodoDTO } from './types';
+import * as api from './api';
 
 const initialTodos = [] satisfies Todo[];
 
-const reatomTodo = (todoToCreate: TodoDTO) => {
-	const titleAtom = atom(todoToCreate.title, 'titleAtom');
-	const descriptionAtom = atom(todoToCreate.description, 'descriptionAtom');
-	const completedAtom = atom(todoToCreate.completed, 'completedAtom');
+const reatomTodo = (todoDTO: TodoDTO) => {
+	const titleAtom = atom(todoDTO.title, 'titleAtom');
+	const descriptionAtom = atom(todoDTO.description, 'descriptionAtom');
+	const completedAtom = atom(todoDTO.completed, 'completedAtom');
 
 	const remove = reatomAsync(async (ctx) => {
-		await api.deleteTodo(todoToCreate._id, { signal: ctx.controller.signal });
+		await api.deleteTodo(todoDTO._id, { signal: ctx.controller.signal });
 
-		getTodosResource.dataAtom(ctx, (todos) =>
-			todos.filter(({ _id }) => _id !== todoToCreate._id),
+		todosResource.dataAtom(ctx, (todos) =>
+			todos.filter(({ _id }) => _id !== todoDTO._id),
 		);
 	}, 'remove').pipe(withAbort(), withStatusesAtom());
 
 	const toggle = reatomAsync(async (ctx) => {
 		const completed = !ctx.get(completedAtom);
 		await api.updateTodo(
-			todoToCreate._id,
+			todoDTO._id,
 			{ completed },
 			{ signal: ctx.controller.signal },
 		);
@@ -39,7 +41,7 @@ const reatomTodo = (todoToCreate: TodoDTO) => {
 
 	const updateDescription = reatomAsync(async (ctx, description) => {
 		const { data } = await api.updateTodo(
-			todoToCreate._id,
+			todoDTO._id,
 			{ description },
 			{ signal: ctx.controller.signal },
 		);
@@ -48,7 +50,7 @@ const reatomTodo = (todoToCreate: TodoDTO) => {
 
 	const updateTitle = reatomAsync(async (ctx, title) => {
 		const { data } = await api.updateTodo(
-			todoToCreate._id,
+			todoDTO._id,
 			{ title },
 			{ signal: ctx.controller.signal },
 		);
@@ -56,8 +58,8 @@ const reatomTodo = (todoToCreate: TodoDTO) => {
 	}, 'updateTitle').pipe(withAbort(), withStatusesAtom());
 
 	return {
-		creatorId: todoToCreate.creatorId,
-		_id: todoToCreate._id,
+		creatorId: todoDTO.creatorId,
+		_id: todoDTO._id,
 		titleAtom,
 		descriptionAtom,
 		completedAtom,
@@ -70,18 +72,22 @@ const reatomTodo = (todoToCreate: TodoDTO) => {
 
 export type Todo = ReturnType<typeof reatomTodo>;
 
-export const getTodosResource = reatomResource(async (ctx) => {
-	const sort = ctx.spy(currentTodoSortAtom);
-	const { data: todos } = await api.getTodos(
-		sort ? { sortBy: sort.field, sortType: sort.type } : null,
-		{ signal: ctx.controller.signal },
-	);
+export const todosResource = reatomResource(async (ctx) => {
+	const sort = ctx.spy(todoSortAtom);
+	const logged = ctx.spy(isLoggedAtom);
+
+	if (!logged) todosResource.dataAtom.reset(ctx);
+
+	const { data: todos } = await ctx.schedule(async () => {
+		const todoSort = sort ? { sortBy: sort.field, sortType: sort.type } : null;
+		return await api.getTodos(todoSort, { signal: ctx.controller.signal });
+	});
 
 	return todos;
-}, 'getTodosResource').pipe(
-	withDataAtom(initialTodos, (_ctx, payload) => payload.map(reatomTodo)),
-	withReset(),
+}, 'todosResource').pipe(
+	withDataAtom(initialTodos, (ctx, payload) => payload.map(reatomTodo)),
 	withStatusesAtom(),
+	withReset(),
 );
 
 type CreateTodoArgs = Pick<TodoDTO, 'title' | 'description'>;
@@ -90,20 +96,14 @@ export const createTodo = reatomAsync(
 	async (ctx, todoToCreate: CreateTodoArgs) => {
 		const { data: createdTodo } = await api.postTodo(todoToCreate);
 
-		getTodosResource.dataAtom(ctx, (prevTodos) => [
+		todosResource.dataAtom(ctx, (prevTodos) => [
 			...prevTodos,
 			reatomTodo(createdTodo),
 		]);
 	},
 	'createTodo',
-).pipe(
-	withErrorAtom((ctx, error) => {
-		if (error instanceof Response) {
-			return error.status;
-		}
+).pipe(withErrorAtom((ctx, error) => errorMapper(error)));
 
-		if (error instanceof Error) {
-			return error?.message ?? 'unknown error';
-		}
-	}),
+export const todoSortAtom = atom<TodoSortVariant>(null, 'todoSortAtom').pipe(
+	withReset(),
 );
