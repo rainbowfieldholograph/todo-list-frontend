@@ -1,1 +1,1 @@
-export * from './remove-account'
+export * from './remove-account';

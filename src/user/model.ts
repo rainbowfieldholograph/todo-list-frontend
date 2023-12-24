@@ -10,7 +10,7 @@ import {
 } from '@reatom/framework';
 import { withLocalStorage } from '@reatom/persist-web-storage';
 import { errorMapper } from '~/shared/lib/utils';
-import { todosResource, todoSortAtom } from '~/todo/model';
+import { todoSortAtom } from '~/todo/model';
 import type { AuthenticateBody, SignUpBody } from './api';
 import type { User } from './types';
 import {
