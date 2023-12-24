@@ -1,16 +1,11 @@
-import type { ChangeEventHandler, CSSProperties } from 'react';
+import type { ChangeEventHandler } from 'react';
 import { useAtom } from '@reatom/npm-react';
 import { todoSortVariants, type TodoSortKey } from '~/todo/config';
 import { todoSortAtom } from '../../../model';
 
 const optionsEntries = Object.entries(todoSortVariants);
 
-type TodoSortProps = {
-	className?: string;
-	style?: CSSProperties;
-};
-
-export const TodoSort = ({ className, style }: TodoSortProps) => {
+export const TodoSort = () => {
 	const [currentSort, changeSort] = useAtom(todoSortAtom);
 
 	const [selectValue] = optionsEntries.find(([_, value]) => {
@@ -27,12 +22,7 @@ export const TodoSort = ({ className, style }: TodoSortProps) => {
 	};
 
 	return (
-		<select
-			className={className}
-			style={style}
-			onChange={handleChange}
-			value={selectValue}
-		>
+		<select onChange={handleChange} value={selectValue}>
 			{optionsEntries.map(([key]) => (
 				<option value={key} key={key}>
 					{key}
