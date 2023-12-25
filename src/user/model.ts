@@ -9,6 +9,8 @@ import {
 	withErrorAtom,
 } from '@reatom/framework';
 import { withLocalStorage } from '@reatom/persist-web-storage';
+import { navigate } from 'wouter/use-location';
+import { routeMap } from '~/shared/config';
 import { errorMapper } from '~/shared/lib/utils';
 import { todoSortAtom } from '~/todo/model';
 import type { AuthenticateBody, SignUpBody } from './api';
@@ -65,8 +67,8 @@ export const login = reatomAsync(async (ctx, body: AuthenticateBody) => {
 	withAbort(),
 	withErrorAtom((_ctx, err) => errorMapper(err)),
 );
-
 login.onFulfill.onCall((ctx, { accessToken }) => tokenAtom(ctx, accessToken));
+login.onFulfill.onCall(() => navigate(routeMap.todo));
 
 export const signUp = reatomAsync(async (ctx, body: SignUpBody) => {
 	return (await signUpUser(body, { signal: ctx.controller.signal })).data;
@@ -74,14 +76,13 @@ export const signUp = reatomAsync(async (ctx, body: SignUpBody) => {
 	withAbort(),
 	withErrorAtom((_ctx, err) => errorMapper(err)),
 );
-
 signUp.onFulfill.onCall((ctx, { accessToken }) => tokenAtom(ctx, accessToken));
 
 export const logout = action((ctx) => {
 	tokenAtom.reset(ctx);
 }, 'logout');
-
 logout.onCall(todoSortAtom.reset);
+logout.onCall(() => navigate(routeMap.login));
 
 export const onRemoveAccount = reatomAsync(async (ctx) => {
 	await removeAccount({ signal: ctx.controller.signal });

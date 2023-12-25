@@ -18,10 +18,10 @@ const linksDict = {
 } as const;
 
 export const Layout = ({ children }: PropsWithChildren) => {
-	const [isAuth] = useAtom(isLoggedAtom);
+	const [logged] = useAtom(isLoggedAtom);
 	const [username] = useAtom((ctx) => ctx.spy(userResource.dataAtom)?.username);
 	const handleLogout = useAction(logout);
-	const links = [...generalLinks, ...linksDict[`${isAuth}`]];
+	const links = [...generalLinks, ...linksDict[`${logged}`]];
 
 	return (
 		<Container className={styles.wrapper}>
@@ -29,9 +29,9 @@ export const Layout = ({ children }: PropsWithChildren) => {
 				links={links}
 				slot={{
 					ProfileLink: ({ slot, ...props }) =>
-						isAuth ? slot({ ...props, children: username }) : null,
+						logged ? slot({ ...props, children: username }) : null,
 					LogoutButton: ({ slot, ...props }) =>
-						isAuth ? slot({ ...props, onClick: handleLogout }) : null,
+						logged ? slot({ ...props, onClick: handleLogout }) : null,
 				}}
 			/>
 			<main className={styles.content}>
