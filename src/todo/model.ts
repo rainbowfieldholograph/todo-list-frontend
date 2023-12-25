@@ -102,7 +102,10 @@ export const createTodo = reatomAsync(
 		]);
 	},
 	'createTodo',
-).pipe(withErrorAtom((ctx, error) => errorMapper(error)));
+).pipe(
+	withErrorAtom((ctx, error) => errorMapper(error)),
+	withStatusesAtom(),
+);
 
 export const todoSortAtom = atom<TodoSortVariant>(null, 'todoSortAtom').pipe(
 	withReset(),

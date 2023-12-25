@@ -1,24 +1,22 @@
-import type { FC } from 'react';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Button, Modal } from '~/shared/ui';
 import { TodoCreatorModal } from './creator-modal';
+import { reatomTodoCreator } from './model';
 
-export const TodoCreator: FC = () => {
+export const TodoCreator = () => {
 	const [modalOpened, setModalOpened] = useState(false);
-
-	const onClose = () => {
-		setModalOpened(false);
-	};
-
-	const onClickButton = () => {
-		setModalOpened(true);
-	};
+	const formModel = useMemo(() => reatomTodoCreator(), []);
+	const handleClose = useCallback(
+		() => setModalOpened(false),
+		[setModalOpened],
+	);
+	const handleOpen = useCallback(() => setModalOpened(true), [setModalOpened]);
 
 	return (
 		<>
-			<Button onClick={onClickButton}>Create new Todo</Button>
-			<Modal isOpened={modalOpened} onClose={onClose}>
-				<TodoCreatorModal onClose={onClose} />
+			<Button onClick={handleOpen}>Create new Todo</Button>
+			<Modal isOpened={modalOpened} onClose={handleClose}>
+				<TodoCreatorModal model={formModel} onClose={handleClose} />
 			</Modal>
 		</>
 	);

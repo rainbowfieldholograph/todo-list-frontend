@@ -1,17 +1,19 @@
-import type { FC } from 'react';
+import { memo, type FormEvent } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
 import { Input, TextArea, Button, Form, ErrorStroke } from '~/shared/ui';
+import type { TodoCreatorFormModel } from './model';
 import { createTodo } from '../../../model';
-import { descriptionAtom, titleAtom, onSubmit } from './todo-creator.model';
 import styles from './todo-creator-modal.module.css';
 
 type TodoCreatorModalProps = {
-	onClose: () => void;
+	model: TodoCreatorFormModel;
+	onClose: VoidFunction;
 };
 
-const TitleField: FC = () => {
-	const [title, setTitle] = useAtom(titleAtom);
-	const [loading] = useAtom((ctx) => ctx.spy(createTodo.pendingAtom) > 0);
+type FieldProps = { model: TodoCreatorFormModel; loading: boolean };
+
+const TitleField = memo(({ model, loading }: FieldProps) => {
+	const [title, setTitle] = useAtom(model.titleAtom);
 
 	return (
 		<Input
@@ -23,11 +25,11 @@ const TitleField: FC = () => {
 			required
 		/>
 	);
-};
+});
+TitleField.displayName = 'TitleField';
 
-const DescriptionField: FC = () => {
-	const [description, setDescription] = useAtom(descriptionAtom);
-	const [loading] = useAtom((ctx) => ctx.spy(createTodo.pendingAtom) > 0);
+const DescriptionField = memo(({ model, loading }: FieldProps) => {
+	const [description, setDescription] = useAtom(model.descriptionAtom);
 
 	return (
 		<TextArea
@@ -38,34 +40,50 @@ const DescriptionField: FC = () => {
 			required
 		/>
 	);
-};
+});
+DescriptionField.displayName = 'DescriptionField';
 
-export const TodoCreatorModal: FC<TodoCreatorModalProps> = ({ onClose }) => {
-	const [loading] = useAtom((ctx) => ctx.spy(createTodo.pendingAtom) > 0);
-	const [error] = useAtom((ctx) => ctx.spy(createTodo.errorAtom));
-	const handleSubmit = useAction(onSubmit);
+export const TodoCreatorModal = memo(
+	({ onClose, model }: TodoCreatorModalProps) => {
+		const [loading] = useAtom(
+			(ctx) => ctx.spy(createTodo.statusesAtom).isPending,
+		);
+		const [error] = useAtom((ctx) => ctx.spy(createTodo.errorAtom));
 
-	return (
-		<>
-			<Form.Root
-				border={false}
-				onSubmit={(event) => handleSubmit(event, onClose)}
-			>
-				<h1 className={styles.title}>Create new Todo form</h1>
-				<Form.Fields>
-					<TitleField />
-					<DescriptionField />
-				</Form.Fields>
-				<div className={styles.buttons}>
-					<Button type="button" onClick={onClose}>
-						Go Back
-					</Button>
-					<Button type="submit" disabled={loading}>
-						Create
-					</Button>
-				</div>
-				<ErrorStroke className={styles.error}>{error?.message}</ErrorStroke>
-			</Form.Root>
-		</>
-	);
-};
+		const handleSubmit = useAction(
+			async (ctx, event: FormEvent<HTMLFormElement>) => {
+				event.preventDefault();
+				await createTodo(ctx, {
+					description: ctx.get(model.descriptionAtom),
+					title: ctx.get(model.titleAtom),
+				});
+				model.reset(ctx);
+			},
+		);
+
+		return (
+			<>
+				<Form.Root
+					border={false}
+					onSubmit={(event) => handleSubmit(event).then(onClose)}
+				>
+					<h1 className={styles.title}>Create new Todo form</h1>
+					<Form.Fields>
+						<TitleField loading={loading} model={model} />
+						<DescriptionField loading={loading} model={model} />
+					</Form.Fields>
+					<div className={styles.buttons}>
+						<Button type="button" onClick={onClose}>
+							Go Back
+						</Button>
+						<Button type="submit" disabled={loading}>
+							Create
+						</Button>
+					</div>
+					<ErrorStroke className={styles.error}>{error?.message}</ErrorStroke>
+				</Form.Root>
+			</>
+		);
+	},
+);
+TodoCreatorModal.displayName = 'TodoCreatorModal';

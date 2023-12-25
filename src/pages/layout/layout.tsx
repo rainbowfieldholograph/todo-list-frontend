@@ -1,4 +1,4 @@
-import { Suspense, type PropsWithChildren } from 'react';
+import { Suspense, type PropsWithChildren, useMemo } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
 import { routeMap } from '~/shared/config';
 import { Footer, Container, Header } from '~/shared/ui';
@@ -21,7 +21,10 @@ export const Layout = ({ children }: PropsWithChildren) => {
 	const [logged] = useAtom(isLoggedAtom);
 	const [username] = useAtom((ctx) => ctx.spy(userResource.dataAtom)?.username);
 	const handleLogout = useAction(logout);
-	const links = [...generalLinks, ...linksDict[`${logged}`]];
+	const links = useMemo(
+		() => [...generalLinks, ...linksDict[`${logged}`]],
+		[logged],
+	);
 
 	return (
 		<Container className={styles.wrapper}>
