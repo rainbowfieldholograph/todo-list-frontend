@@ -1,7 +1,6 @@
 import type { Link } from 'wouter';
 import type { ComponentProps } from 'react';
 import clsx from 'clsx';
-import { routeMap } from '~/shared/config';
 import { withSlot } from '~/shared/lib/hocs';
 import { Button } from '~/shared/ui';
 import { NavLink } from './nav-link';
@@ -20,7 +19,7 @@ type ProfileLinkProps = Omit<ComponentProps<typeof Link>, 'to'>;
 const ProfileLink = (props: ProfileLinkProps) => (
 	<NavLink
 		{...props}
-		href={routeMap.userPage}
+		href="/user"
 		className={clsx(styles.username, props.className)}
 	>
 		{props.children}

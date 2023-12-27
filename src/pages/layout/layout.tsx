@@ -1,16 +1,15 @@
 import { Suspense, type PropsWithChildren, useMemo } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
-import { routeMap } from '~/shared/config';
 import { Footer, Container, Header } from '~/shared/ui';
 import { isLoggedAtom, logout, userResource } from '~/user/model';
 import styles from './layout.module.css';
 
-const generalLinks = [{ title: 'Start', to: routeMap.home }];
+const generalLinks = [{ title: 'Start', to: '/' }];
 const unauthenticatedLinks = [
-	{ title: 'Login', to: routeMap.login },
-	{ title: 'SignUp', to: routeMap.signUp },
+	{ title: 'Login', to: '/login' },
+	{ title: 'SignUp', to: '/sign-up' },
 ];
-const authenticatedLinks = [{ title: 'Todo', to: routeMap.todo }];
+const authenticatedLinks = [{ title: 'Todo', to: '/todo' }];
 
 const linksDict = {
 	true: authenticatedLinks,

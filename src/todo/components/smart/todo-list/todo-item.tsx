@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react';
 import { reatomComponent } from '@reatom/npm-react';
+import { Link } from 'wouter';
 import type { Todo } from '../../../model';
 import { TodoEditor } from '../../dumb';
 import { RemoveTodo, TodoItem as TodoItemDumb, ToggleTodo } from '../../dumb';
@@ -9,6 +10,7 @@ type Submit = ComponentProps<typeof TodoEditor>['onSubmit'];
 
 export const TodoItem = reatomComponent<TodoItemProps>(({ ctx, ...props }) => {
 	const {
+		_id,
 		completedAtom,
 		descriptionAtom,
 		remove,
@@ -38,6 +40,14 @@ export const TodoItem = reatomComponent<TodoItemProps>(({ ctx, ...props }) => {
 			completed={completed}
 			description={description}
 			title={title}
+			slot={{
+				Title: ({ slot, ...props }) => {
+					return slot({
+						...props,
+						children: <Link to={`todo/${_id}`}>{props.children}</Link>,
+					});
+				},
+			}}
 			actionsEndSlot={
 				<ToggleTodo
 					completed={completed}

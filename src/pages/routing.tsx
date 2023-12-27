@@ -1,7 +1,6 @@
 import { lazily } from 'react-lazily';
 import { useAtom } from '@reatom/npm-react';
 import { Switch, Route } from 'wouter';
-import { routeMap } from '~/shared/config';
 import { isLoggedAtom } from '~/user/model';
 import { Layout } from './layout';
 
@@ -11,6 +10,7 @@ const { TodoPage } = lazily(() => import('./todo-page'));
 const { NotFound } = lazily(() => import('./not-found'));
 const { SignUp } = lazily(() => import('./sign-up'));
 const { UserPage } = lazily(() => import('./user-page'));
+const { TodoDetails } = lazily(() => import('./todo-details'));
 
 export const Routing = () => {
 	const [logged] = useAtom(isLoggedAtom);
@@ -18,18 +18,21 @@ export const Routing = () => {
 	return (
 		<Layout>
 			<Switch>
-				<Route path={routeMap.home} component={Welcome} />
+				<Route path="/" component={Welcome} />
 				{logged ? (
 					<>
-						<Route path={routeMap.todo} component={TodoPage} />
-						<Route path={routeMap.userPage} component={UserPage} />
+						<Route path="/todo" component={TodoPage} />
+						<Route path="/user" component={UserPage} />
 					</>
 				) : (
 					<>
-						<Route path={routeMap.signUp} component={SignUp} />
-						<Route path={routeMap.login} component={Login} />
+						<Route path="/sign-up" component={SignUp} />
+						<Route path="/login" component={Login} />
 					</>
 				)}
+				<Route path="/todo/:id">
+					{(params) => <TodoDetails todoId={params.id} />}
+				</Route>
 				<Route component={NotFound} />
 			</Switch>
 		</Layout>

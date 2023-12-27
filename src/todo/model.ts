@@ -7,6 +7,7 @@ import {
 	withAbort,
 	withStatusesAtom,
 	reatomResource,
+	onDisconnect,
 } from '@reatom/framework';
 import { errorMapper } from '~/shared/lib/utils';
 import { isLoggedAtom } from '~/user/model';
@@ -106,7 +107,30 @@ export const createTodo = reatomAsync(
 	withErrorAtom((ctx, error) => errorMapper(error)),
 	withStatusesAtom(),
 );
-
 export const todoSortAtom = atom<TodoSortVariant>(null, 'todoSortAtom').pipe(
 	withReset(),
 );
+
+export const todoPageIdAtom = atom<TodoDTO['_id'] | null>(
+	null,
+	'todoPageIdAtom',
+).pipe(withReset());
+export const todoPageResource = reatomResource(async (ctx) => {
+	const todoId = ctx.spy(todoPageIdAtom);
+	if (!todoId) return;
+
+	const { data } = await api.getTodoById(todoId, {
+		signal: ctx.controller.signal,
+	});
+	return data;
+}, 'todoPageResource').pipe(
+	withErrorAtom((_ctx, error) => errorMapper(error)),
+	withStatusesAtom(),
+	withAbort(),
+	withDataAtom(null, (_ctx, todo) => todo && reatomTodo(todo)),
+	withReset(),
+);
+onDisconnect(todoPageResource.dataAtom, (ctx) => {
+	todoPageResource.dataAtom.reset(ctx);
+	todoPageIdAtom.reset(ctx);
+});
