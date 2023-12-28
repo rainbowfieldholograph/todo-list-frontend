@@ -13,9 +13,7 @@ export const Button = ({
 	block = false,
 	...rest
 }: ButtonProps) => {
-	const buttonCn = clsx(className, styles.button, {
-		[styles.block]: block,
-	});
+	const buttonCn = clsx(className, styles.button, { [styles.block]: block });
 
 	return (
 		<button className={buttonCn} {...rest}>

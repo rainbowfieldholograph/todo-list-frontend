@@ -27,7 +27,7 @@ export const TodoItem = withSlot<typeof TodoItemSlot, TodoItemProps>(
 			<article className={clsx(styles.todo, { [styles.completed]: completed })}>
 				<div className={styles.meta}>
 					<slot.Title>{title}</slot.Title>
-					<p>{description}</p>
+					<p className={styles.description}>{description}</p>
 				</div>
 				<div className={styles.actionsContainer}>
 					<div className={styles.actions}>{actionsStartSlot}</div>
