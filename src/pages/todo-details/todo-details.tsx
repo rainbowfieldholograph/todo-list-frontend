@@ -3,7 +3,7 @@ import { reatomComponent, useAtom, useUpdate } from '@reatom/npm-react';
 import type { TodoDTO } from '~/todo/types';
 import { todoPageIdAtom, todoPageResource } from '~/todo/model';
 
-type TodoProps = { todoId: TodoDTO['_id'] };
+type TodoProps = { todoId: TodoDTO['id'] };
 
 export const TodoDetails = reatomComponent<TodoProps>(({ ctx, todoId }) => {
 	const containerId = useId();

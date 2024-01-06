@@ -19,7 +19,7 @@ export const TodoEditor = ({
 }: TodoEditorProps) => {
 	const [modal, setModal] = useState(false);
 
-	const handleSubmit: FormSubmit = (fields) => {
+	const handleSubmit: FormSubmit = async (fields) => {
 		onSubmit(fields);
 		setModal(false);
 	};

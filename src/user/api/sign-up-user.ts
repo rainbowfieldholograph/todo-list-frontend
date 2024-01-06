@@ -6,7 +6,7 @@ export type SignUpBody = Pick<UserDTO, 'email' | 'username'> & {
 	password: string;
 };
 
-type SignUpResponse = UserDTO & { accessToken: string };
+type SignUpResponse = UserDTO;
 
 export const signUpUser = async (
 	body: SignUpBody,

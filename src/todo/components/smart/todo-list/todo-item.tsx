@@ -10,7 +10,7 @@ type Submit = ComponentProps<typeof TodoEditor>['onSubmit'];
 
 export const TodoItem = reatomComponent<TodoItemProps>(({ ctx, ...props }) => {
 	const {
-		_id,
+		id,
 		completedAtom,
 		descriptionAtom,
 		remove,
@@ -30,9 +30,11 @@ export const TodoItem = reatomComponent<TodoItemProps>(({ ctx, ...props }) => {
 		ctx.spy(updateDescription.statusesAtom).isPending ||
 		ctx.spy(updateTitle.statusesAtom).isPending;
 
-	const handleSubmit: Submit = ({ description, title }) => {
-		updateTitle(ctx, title);
-		updateDescription(ctx, description);
+	const handleSubmit: Submit = async ({ description, title }) => {
+		return Promise.all([
+			updateTitle(ctx, title),
+			updateDescription(ctx, description),
+		]);
 	};
 
 	return (
@@ -44,7 +46,7 @@ export const TodoItem = reatomComponent<TodoItemProps>(({ ctx, ...props }) => {
 				Title: ({ slot, ...props }) => {
 					return slot({
 						...props,
-						children: <Link to={`todo/${_id}`}>{props.children}</Link>,
+						children: <Link to={`todo/${id}`}>{props.children}</Link>,
 					});
 				},
 			}}

@@ -3,7 +3,7 @@ import { apiInstance } from '~/shared/api';
 import type { TodoDTO } from '../types';
 
 export const deleteTodo = async (
-	id: TodoDTO['_id'],
+	id: TodoDTO['id'],
 	config?: AxiosRequestConfig,
 ) => {
 	const url = '/todo/' + id;

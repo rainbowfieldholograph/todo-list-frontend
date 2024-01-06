@@ -1,5 +1,5 @@
 export type TodoDTO = {
-	_id: string;
+	id: string;
 	creatorId: string;
 	title: string;
 	description: string;

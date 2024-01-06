@@ -1,7 +1,7 @@
 import type { userResource } from './model';
 
 export type UserDTO = {
-	_id: string;
+	id: string;
 	email: string;
 	username: string;
 };

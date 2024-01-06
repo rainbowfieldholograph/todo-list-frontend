@@ -70,7 +70,13 @@ login.onFulfill.onCall((ctx, { accessToken }) => tokenAtom(ctx, accessToken));
 login.onFulfill.onCall(() => navigate('/todo'));
 
 export const signUp = reatomAsync(async (ctx, body: SignUpBody) => {
-	return (await signUpUser(body, { signal: ctx.controller.signal })).data;
+	const response = await signUpUser(body, { signal: ctx.controller.signal });
+	const { accessToken } = await login(ctx, {
+		email: body.email,
+		password: body.password,
+	});
+
+	return { ...response.data, accessToken };
 }, 'signUp').pipe(
 	withAbort(),
 	withErrorAtom((_ctx, err) => errorMapper(err)),

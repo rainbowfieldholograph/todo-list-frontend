@@ -23,17 +23,17 @@ const reatomTodo = (todoDTO: TodoDTO) => {
 	const completedAtom = atom(todoDTO.completed, 'completedAtom');
 
 	const remove = reatomAsync(async (ctx) => {
-		await api.deleteTodo(todoDTO._id, { signal: ctx.controller.signal });
+		await api.deleteTodo(todoDTO.id, { signal: ctx.controller.signal });
 
 		todosResource.dataAtom(ctx, (todos) =>
-			todos.filter(({ _id }) => _id !== todoDTO._id),
+			todos.filter(({ id }) => id !== todoDTO.id),
 		);
 	}, 'remove').pipe(withAbort(), withStatusesAtom());
 
 	const toggle = reatomAsync(async (ctx) => {
 		const completed = !ctx.get(completedAtom);
 		await api.updateTodo(
-			todoDTO._id,
+			todoDTO.id,
 			{ completed },
 			{ signal: ctx.controller.signal },
 		);
@@ -42,7 +42,7 @@ const reatomTodo = (todoDTO: TodoDTO) => {
 
 	const updateDescription = reatomAsync(async (ctx, description) => {
 		const { data } = await api.updateTodo(
-			todoDTO._id,
+			todoDTO.id,
 			{ description },
 			{ signal: ctx.controller.signal },
 		);
@@ -51,7 +51,7 @@ const reatomTodo = (todoDTO: TodoDTO) => {
 
 	const updateTitle = reatomAsync(async (ctx, title) => {
 		const { data } = await api.updateTodo(
-			todoDTO._id,
+			todoDTO.id,
 			{ title },
 			{ signal: ctx.controller.signal },
 		);
@@ -60,7 +60,7 @@ const reatomTodo = (todoDTO: TodoDTO) => {
 
 	return {
 		creatorId: todoDTO.creatorId,
-		_id: todoDTO._id,
+		id: todoDTO.id,
 		titleAtom,
 		descriptionAtom,
 		completedAtom,
@@ -111,7 +111,7 @@ export const todoSortAtom = atom<TodoSortVariant>(null, 'todoSortAtom').pipe(
 	withReset(),
 );
 
-export const todoPageIdAtom = atom<TodoDTO['_id'] | null>(
+export const todoPageIdAtom = atom<TodoDTO['id'] | null>(
 	null,
 	'todoPageIdAtom',
 ).pipe(withReset());

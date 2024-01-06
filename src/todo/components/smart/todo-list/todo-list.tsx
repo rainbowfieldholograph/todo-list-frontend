@@ -22,7 +22,7 @@ export const TodoList = () => {
 	return (
 		<TodoListDumb loading={isLoading}>
 			{todos.map((todo) => (
-				<TodoItem key={todo._id} {...todo} />
+				<TodoItem key={todo.id} {...todo} />
 			))}
 		</TodoListDumb>
 	);

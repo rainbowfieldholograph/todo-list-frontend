@@ -3,7 +3,7 @@ import { apiInstance } from '~/shared/api';
 import type { TodoDTO } from '../types';
 
 export const updateTodo = async (
-	id: TodoDTO['_id'],
+	id: TodoDTO['id'],
 	updateData: Partial<Pick<TodoDTO, 'completed' | 'description' | 'title'>>,
 	config?: AxiosRequestConfig,
 ) => {
