@@ -1,42 +1,32 @@
-import type { ComponentProps, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { clsx } from 'clsx';
-import { withSlot } from '~/shared/lib/hocs';
 import styles from './todo-item.module.css';
 
 type TodoItemProps = {
 	title: string;
 	description: string;
 	completed: boolean;
-	actionsStartSlot?: ReactNode;
-	actionsEndSlot?: ReactNode;
+	endVerticalSlot: ReactNode;
+	actionsSlot: ReactNode;
 };
 
-const TodoItemSlot = {
-	Title: (props: ComponentProps<'h3'>) => <h3 {...props} />,
-};
-export const TodoItem = withSlot<typeof TodoItemSlot, TodoItemProps>(
-	TodoItemSlot,
-	({
-		slot,
-		completed,
-		description,
-		title,
-		actionsEndSlot,
-		actionsStartSlot,
-	}) => {
-		return (
-			<article className={clsx(styles.todo, { [styles.completed]: completed })}>
+export const TodoItem = ({
+	completed,
+	description,
+	title,
+	endVerticalSlot,
+	actionsSlot,
+}: TodoItemProps) => {
+	return (
+		<article className={clsx(styles.todo, { [styles.completed]: completed })}>
+			<div>
 				<div className={styles.meta}>
-					<slot.Title>{title}</slot.Title>
+					<h3>{title}</h3>
 					<p className={styles.description}>{description}</p>
 				</div>
-				<div className={styles.actionsContainer}>
-					<div className={styles.actions}>{actionsStartSlot}</div>
-					<div className={styles.actions}>{actionsEndSlot}</div>
-				</div>
-			</article>
-		);
-	},
-);
-
-TodoItem.displayName = 'TodoItem';
+				<div className={styles.actions}>{actionsSlot}</div>
+			</div>
+			<div className={styles.endVerticalSection}>{endVerticalSlot}</div>
+		</article>
+	);
+};
