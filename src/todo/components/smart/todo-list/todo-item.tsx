@@ -1,4 +1,3 @@
-import type { ComponentProps } from 'react';
 import { reatomComponent } from '@reatom/npm-react';
 import { Link } from 'wouter';
 import type { Todo } from '../../../model';
@@ -6,7 +5,6 @@ import { TodoEditor } from '../../dumb';
 import { RemoveTodo, TodoItem as TodoItemDumb, ToggleTodo } from '../../dumb';
 
 type TodoItemProps = Todo;
-type Submit = ComponentProps<typeof TodoEditor>['onSubmit'];
 
 export const TodoItem = reatomComponent<TodoItemProps>(({ ctx, ...props }) => {
 	const {
@@ -16,26 +14,12 @@ export const TodoItem = reatomComponent<TodoItemProps>(({ ctx, ...props }) => {
 		remove,
 		titleAtom,
 		toggle,
-		updateDescription,
-		updateTitle,
+		update,
 	} = props;
 
 	const title = ctx.spy(titleAtom);
 	const completed = ctx.spy(completedAtom);
 	const description = ctx.spy(descriptionAtom);
-
-	const removing = ctx.spy(remove.statusesAtom).isPending;
-	const toggling = ctx.spy(toggle.statusesAtom).isPending;
-	const editing =
-		ctx.spy(updateDescription.statusesAtom).isPending ||
-		ctx.spy(updateTitle.statusesAtom).isPending;
-
-	const handleSubmit: Submit = async ({ description, title }) => {
-		return Promise.all([
-			updateTitle(ctx, title),
-			updateDescription(ctx, description),
-		]);
-	};
 
 	return (
 		<TodoItemDumb
@@ -53,18 +37,21 @@ export const TodoItem = reatomComponent<TodoItemProps>(({ ctx, ...props }) => {
 			actionsEndSlot={
 				<ToggleTodo
 					completed={completed}
-					loading={toggling}
-					onToggle={() => toggle(ctx)}
+					loading={ctx.spy(toggle.statusesAtom).isPending}
+					onToggle={ctx.bind(toggle)}
 				/>
 			}
 			actionsStartSlot={
 				<>
-					<RemoveTodo loading={removing} onRemove={() => remove(ctx)} />
+					<RemoveTodo
+						loading={ctx.spy(remove.statusesAtom).isPending}
+						onRemove={ctx.bind(remove)}
+					/>
 					<TodoEditor
 						initialDescription={description}
 						initialTitle={title}
-						loading={editing}
-						onSubmit={handleSubmit}
+						loading={ctx.spy(update.statusesAtom).isPending}
+						onSubmit={ctx.bind(update)}
 					/>
 				</>
 			}

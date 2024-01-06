@@ -11,8 +11,9 @@ type TodoItemProps = {
 	actionsEndSlot?: ReactNode;
 };
 
-const Title = (props: ComponentProps<'h3'>) => <h3 {...props} />;
-const TodoItemSlot = { Title };
+const TodoItemSlot = {
+	Title: (props: ComponentProps<'h3'>) => <h3 {...props} />,
+};
 export const TodoItem = withSlot<typeof TodoItemSlot, TodoItemProps>(
 	TodoItemSlot,
 	({

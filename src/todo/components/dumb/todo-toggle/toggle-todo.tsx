@@ -1,4 +1,6 @@
-import type { FC } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
+import clsx from 'clsx';
+import { withSlot } from '~/shared/lib/hocs';
 import styles from './toggle-todo.module.css';
 
 type ToggleTodoProps = {
@@ -7,20 +9,28 @@ type ToggleTodoProps = {
 	loading: boolean;
 };
 
-export const ToggleTodo: FC<ToggleTodoProps> = ({
-	completed,
-	onToggle,
-	loading,
-}) => {
-	return (
-		<label>
-			<span className={styles.title}>is completed: </span>
-			<input
-				disabled={loading}
-				checked={completed}
-				onChange={onToggle}
-				type="checkbox"
-			/>
-		</label>
-	);
+const ToggleTodoSlot = {
+	Label: (props: ComponentPropsWithoutRef<'span'>) => {
+		return (
+			<span className={clsx(styles.title, props.className)}>
+				is completed:{' '}
+			</span>
+		);
+	},
 };
+export const ToggleTodo = withSlot<typeof ToggleTodoSlot, ToggleTodoProps>(
+	ToggleTodoSlot,
+	({ completed, onToggle, loading, slot }) => {
+		return (
+			<label>
+				<slot.Label />
+				<input
+					disabled={loading}
+					checked={completed}
+					onChange={onToggle}
+					type="checkbox"
+				/>
+			</label>
+		);
+	},
+);

@@ -40,23 +40,34 @@ const reatomTodo = (todoDTO: TodoDTO) => {
 		completedAtom(ctx, completed);
 	}, 'toggle').pipe(withAbort(), withStatusesAtom());
 
-	const updateDescription = reatomAsync(async (ctx, description) => {
-		const { data } = await api.updateTodo(
-			todoDTO.id,
-			{ description },
-			{ signal: ctx.controller.signal },
-		);
-		descriptionAtom(ctx, data.description);
-	}, 'updateDescription').pipe(withAbort(), withStatusesAtom());
+	// const updateDescription = reatomAsync(async (ctx, description) => {
+	// 	const { data } = await api.updateTodo(
+	// 		todoDTO.id,
+	// 		{ description },
+	// 		{ signal: ctx.controller.signal },
+	// 	);
+	// 	descriptionAtom(ctx, data.description);
+	// }, 'updateDescription').pipe(withAbort(), withStatusesAtom());
 
-	const updateTitle = reatomAsync(async (ctx, title) => {
-		const { data } = await api.updateTodo(
-			todoDTO.id,
-			{ title },
-			{ signal: ctx.controller.signal },
-		);
-		titleAtom(ctx, data.title);
-	}, 'updateTitle').pipe(withAbort(), withStatusesAtom());
+	// const updateTitle = reatomAsync(async (ctx, title) => {
+	// 	const { data } = await api.updateTodo(
+	// 		todoDTO.id,
+	// 		{ title },
+	// 		{ signal: ctx.controller.signal },
+	// 	);
+	// 	titleAtom(ctx, data.title);
+	// }, 'updateTitle').pipe(withAbort(), withStatusesAtom());
+
+	const update = reatomAsync(
+		async (ctx, input: Pick<api.UpdateTodoInput, 'title' | 'description'>) => {
+			const { data } = await api.updateTodo(todoDTO.id, input, {
+				signal: ctx.controller.signal,
+			});
+			titleAtom(ctx, data.title);
+			descriptionAtom(ctx, data.description);
+		},
+		'update',
+	).pipe(withAbort(), withStatusesAtom());
 
 	return {
 		creatorId: todoDTO.creatorId,
@@ -66,8 +77,9 @@ const reatomTodo = (todoDTO: TodoDTO) => {
 		completedAtom,
 		remove,
 		toggle,
-		updateDescription,
-		updateTitle,
+		// updateDescription,
+		// updateTitle,
+		update,
 	};
 };
 
@@ -125,9 +137,9 @@ export const todoPageResource = reatomResource(async (ctx) => {
 	return data;
 }, 'todoPageResource').pipe(
 	withErrorAtom((_ctx, error) => errorMapper(error)),
+	withDataAtom(null, (_ctx, todo) => todo && reatomTodo(todo)),
 	withStatusesAtom(),
 	withAbort(),
-	withDataAtom(null, (_ctx, todo) => todo && reatomTodo(todo)),
 	withReset(),
 );
 onDisconnect(todoPageResource.dataAtom, (ctx) => {

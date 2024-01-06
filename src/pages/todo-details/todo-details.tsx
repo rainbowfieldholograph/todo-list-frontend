@@ -1,7 +1,9 @@
 import { useId } from 'react';
 import { reatomComponent, useAtom, useUpdate } from '@reatom/npm-react';
 import type { TodoDTO } from '~/todo/types';
+import { TodoEditor, ToggleTodo } from '~/todo/components/dumb';
 import { todoPageIdAtom, todoPageResource } from '~/todo/model';
+import styles from './todo-details.module.css';
 
 type TodoProps = { todoId: TodoDTO['id'] };
 
@@ -18,15 +20,27 @@ export const TodoDetails = reatomComponent<TodoProps>(({ ctx, todoId }) => {
 
 	const title = ctx.spy(todoData.titleAtom);
 	const description = ctx.spy(todoData.descriptionAtom);
-	const completed = ctx.spy(todoData.completedAtom);
 
 	return (
 		<div key={containerId}>
-			<>
-				<h1>{title}</h1>
-				<p>{description}</p>
-				<p>is completed?: {String(completed)}</p>
-			</>
+			<div className={styles.head}>
+				<h1 className={styles.title}>{title}</h1>
+				<TodoEditor
+					initialTitle={title}
+					initialDescription={description}
+					loading={ctx.spy(todoData.update.statusesAtom).isPending}
+					onSubmit={ctx.bind(todoData.update)}
+				/>
+			</div>
+			<div className={styles.descriptionSection}>
+				<h2>Description: </h2>
+				<p className={styles.description}>{description}</p>
+			</div>
+			<ToggleTodo
+				completed={ctx.spy(todoData.completedAtom)}
+				loading={ctx.spy(todoData.toggle.statusesAtom).isPending}
+				onToggle={ctx.bind(todoData.toggle)}
+			/>
 		</div>
 	);
 }, 'TodoDetails');
