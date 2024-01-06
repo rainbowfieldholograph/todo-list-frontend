@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react';
 import { memo, useState } from 'react';
+import { useEvent } from '~/shared/lib/hooks';
 import { Button, Dialog } from '~/shared/ui';
 import { TodoEditorForm } from './todo-editor-form';
 
@@ -22,10 +23,10 @@ export const TodoEditor = memo(
 	}: TodoEditorProps) => {
 		const [dialogOpen, setDialogOpen] = useState(false);
 
-		const handleSubmit: FormSubmit = async (fields) => {
+		const handleSubmit: FormSubmit = useEvent(async (fields) => {
 			onSubmit(fields);
 			setDialogOpen(false);
-		};
+		});
 
 		return (
 			<>

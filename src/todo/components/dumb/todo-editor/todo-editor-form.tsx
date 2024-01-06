@@ -1,5 +1,5 @@
 import type { FormEventHandler } from 'react';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { Button, Form, Input, TextArea } from '~/shared/ui';
 
 type TodoEditorFormProps = {
@@ -9,7 +9,7 @@ type TodoEditorFormProps = {
 	onSubmit: (fields: { title: string; description: string }) => void;
 };
 
-export const TodoEditorForm = (props: TodoEditorFormProps) => {
+export const TodoEditorForm = memo((props: TodoEditorFormProps) => {
 	const { description, title, loading, onSubmit } = props;
 	const [updateTitle, setUpdateTitle] = useState(title);
 	const [updateDescription, setUpdateDescription] = useState(description);
@@ -36,4 +36,6 @@ export const TodoEditorForm = (props: TodoEditorFormProps) => {
 			<Button disabled={loading}>Update todo</Button>
 		</Form.Root>
 	);
-};
+});
+
+TodoEditorForm.displayName = 'TodoEditorForm';

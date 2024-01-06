@@ -1,11 +1,12 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useEvent } from '~/shared/lib/hooks';
 import { Button, Dialog } from '~/shared/ui';
-import { TodoCreatorForm } from './creator-modal';
+import { TodoCreatorForm } from './creator-form';
 import { reatomTodoCreator } from './model';
 
 export const TodoCreator = () => {
 	const [dialogOpen, setDialogOpen] = useState(false);
-	const handleClose = useCallback(() => setDialogOpen(false), [setDialogOpen]);
+	const handleClose = useEvent(() => setDialogOpen(false));
 	const formModel = useMemo(() => reatomTodoCreator(), []);
 
 	return (
