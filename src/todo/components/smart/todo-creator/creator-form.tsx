@@ -3,7 +3,7 @@ import { useAction, useAtom } from '@reatom/npm-react';
 import { Input, TextArea, Button, Form, ErrorStroke } from '~/shared/ui';
 import type { TodoCreatorFormModel } from './model';
 import { createTodo } from '../../../model';
-import styles from './todo-creator-modal.module.css';
+import styles from './creator-form.module.css';
 
 type FieldProps = { model: TodoCreatorFormModel; loading: boolean };
 
