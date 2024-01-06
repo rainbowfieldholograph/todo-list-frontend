@@ -14,6 +14,7 @@
 		"ts:check": "tsc"
 	},
 	"dependencies": {
+		"@radix-ui/react-dialog": "^1.0.5",
 		"@reatom/framework": "^3.4.30",
 		"@reatom/npm-react": "^3.8.1",
 		"@reatom/persist-web-storage": "^3.2.3",

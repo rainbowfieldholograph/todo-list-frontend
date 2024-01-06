@@ -5,11 +5,6 @@ import type { TodoCreatorFormModel } from './model';
 import { createTodo } from '../../../model';
 import styles from './todo-creator-modal.module.css';
 
-type TodoCreatorModalProps = {
-	model: TodoCreatorFormModel;
-	onClose: VoidFunction;
-};
-
 type FieldProps = { model: TodoCreatorFormModel; loading: boolean };
 
 const TitleField = memo(({ model, loading }: FieldProps) => {
@@ -43,8 +38,12 @@ const DescriptionField = memo(({ model, loading }: FieldProps) => {
 });
 DescriptionField.displayName = 'DescriptionField';
 
-export const TodoCreatorModal = memo(
-	({ onClose, model }: TodoCreatorModalProps) => {
+type TodoCreatorFormProps = {
+	model: TodoCreatorFormModel;
+	onClose: () => any;
+};
+export const TodoCreatorForm = memo(
+	({ onClose, model }: TodoCreatorFormProps) => {
 		const [loading] = useAtom(
 			(ctx) => ctx.spy(createTodo.statusesAtom).isPending,
 		);
@@ -58,32 +57,28 @@ export const TodoCreatorModal = memo(
 					title: ctx.get(model.titleAtom),
 				});
 				model.reset(ctx);
+				onClose();
 			},
 		);
 
 		return (
-			<>
-				<Form.Root
-					border={false}
-					onSubmit={(event) => handleSubmit(event).then(onClose)}
-				>
-					<h1 className={styles.title}>Create new Todo form</h1>
-					<Form.Fields>
-						<TitleField loading={loading} model={model} />
-						<DescriptionField loading={loading} model={model} />
-					</Form.Fields>
-					<div className={styles.buttons}>
-						<Button type="button" onClick={onClose}>
-							Go Back
-						</Button>
-						<Button type="submit" disabled={loading}>
-							Create
-						</Button>
-					</div>
-					<ErrorStroke className={styles.error}>{error?.message}</ErrorStroke>
-				</Form.Root>
-			</>
+			<Form.Root border={false} onSubmit={handleSubmit}>
+				<h1 className={styles.title}>Create new Todo form</h1>
+				<Form.Fields>
+					<TitleField loading={loading} model={model} />
+					<DescriptionField loading={loading} model={model} />
+				</Form.Fields>
+				<div className={styles.buttons}>
+					<Button type="button" onClick={onClose}>
+						Go Back
+					</Button>
+					<Button type="submit" disabled={loading}>
+						Create
+					</Button>
+				</div>
+				<ErrorStroke className={styles.error}>{error?.message}</ErrorStroke>
+			</Form.Root>
 		);
 	},
 );
-TodoCreatorModal.displayName = 'TodoCreatorModal';
+TodoCreatorForm.displayName = 'TodoCreatorModal';

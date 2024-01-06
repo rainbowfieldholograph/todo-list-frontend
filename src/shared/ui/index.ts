@@ -2,7 +2,7 @@ export * from './auth-layout';
 export * from './footer';
 export * from './button';
 export * from './container';
-export * from './modal';
+export * from './dialog';
 export * from './portal';
 export * from './text-field';
 export * from './form';

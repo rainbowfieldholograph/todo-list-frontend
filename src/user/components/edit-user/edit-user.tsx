@@ -1,16 +1,18 @@
 import { useState } from 'react';
-import { Button, Modal } from '~/shared/ui';
+import { Button, Dialog } from '~/shared/ui';
 import { EditUserForm } from './edit-user-form';
 
 export const EditUser = () => {
-	const [modalOpened, setModalOpened] = useState(false);
+	const [dialogOpen, setDialogOpen] = useState(false);
 
 	return (
-		<>
-			<Button onClick={() => setModalOpened(true)}>Edit user</Button>
-			<Modal isOpened={modalOpened} onClose={() => setModalOpened(false)}>
-				<EditUserForm onSubmit={() => setModalOpened(false)} />
-			</Modal>
-		</>
+		<Dialog.Root open={dialogOpen} onOpenChange={setDialogOpen}>
+			<Dialog.Trigger asChild>
+				<Button>Edit user</Button>
+			</Dialog.Trigger>
+			<Dialog.Content>
+				<EditUserForm onSubmit={() => setDialogOpen(false)} />
+			</Dialog.Content>
+		</Dialog.Root>
 	);
 };

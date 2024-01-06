@@ -1,23 +1,23 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Button, Modal } from '~/shared/ui';
-import { TodoCreatorModal } from './creator-modal';
+import { Button, Dialog } from '~/shared/ui';
+import { TodoCreatorForm } from './creator-modal';
 import { reatomTodoCreator } from './model';
 
 export const TodoCreator = () => {
-	const [modalOpened, setModalOpened] = useState(false);
+	const [dialogOpen, setDialogOpen] = useState(false);
+	const handleClose = useCallback(() => setDialogOpen(false), [setDialogOpen]);
 	const formModel = useMemo(() => reatomTodoCreator(), []);
-	const handleClose = useCallback(
-		() => setModalOpened(false),
-		[setModalOpened],
-	);
-	const handleOpen = useCallback(() => setModalOpened(true), [setModalOpened]);
 
 	return (
 		<>
-			<Button onClick={handleOpen}>Create new Todo</Button>
-			<Modal isOpened={modalOpened} onClose={handleClose}>
-				<TodoCreatorModal model={formModel} onClose={handleClose} />
-			</Modal>
+			<Dialog.Root open={dialogOpen} onOpenChange={setDialogOpen}>
+				<Dialog.Trigger asChild>
+					<Button>Create new Todo</Button>
+				</Dialog.Trigger>
+				<Dialog.Content>
+					<TodoCreatorForm model={formModel} onClose={handleClose} />
+				</Dialog.Content>
+			</Dialog.Root>
 		</>
 	);
 };

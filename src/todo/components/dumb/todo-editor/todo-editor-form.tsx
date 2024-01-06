@@ -2,24 +2,15 @@ import type { FormEventHandler } from 'react';
 import { useState } from 'react';
 import { Button, Form, Input, TextArea } from '~/shared/ui';
 
-type FieldsToUpdate = {
-	title: string;
-	description: string;
-};
-
 type TodoEditorFormProps = {
 	title: string;
 	description: string;
 	loading: boolean;
-	onSubmit: (fields: FieldsToUpdate) => void;
+	onSubmit: (fields: { title: string; description: string }) => void;
 };
 
-export const TodoEditorForm = ({
-	description,
-	title,
-	loading,
-	onSubmit,
-}: TodoEditorFormProps) => {
+export const TodoEditorForm = (props: TodoEditorFormProps) => {
+	const { description, title, loading, onSubmit } = props;
 	const [updateTitle, setUpdateTitle] = useState(title);
 	const [updateDescription, setUpdateDescription] = useState(description);
 

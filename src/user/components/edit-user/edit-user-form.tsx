@@ -28,11 +28,11 @@ export const EditUserForm = ({ onSubmit }: EditUserFormProps) => {
 				email: emailCandidate,
 				username: usernameCandidate,
 			});
+
+			onSubmit();
 		} catch (error) {
 			console.error(error);
 		}
-
-		onSubmit();
 	};
 
 	return (
