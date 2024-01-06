@@ -1,27 +1,32 @@
-import type { ReactNode } from 'react';
+import type { ElementType, ReactNode } from 'react';
 import { clsx } from 'clsx';
 import styles from './todo-item.module.css';
 
 type TodoItemProps = {
-	title: string;
 	description: string;
 	completed: boolean;
 	endVerticalSlot: ReactNode;
 	actionsSlot: ReactNode;
+	renderTitle: ({
+		TitleComponent,
+	}: {
+		TitleComponent: ElementType;
+	}) => ReactNode;
 };
 
 export const TodoItem = ({
 	completed,
 	description,
-	title,
+	// title,
 	endVerticalSlot,
 	actionsSlot,
+	renderTitle,
 }: TodoItemProps) => {
 	return (
 		<article className={clsx(styles.todo, { [styles.completed]: completed })}>
 			<div>
 				<div className={styles.meta}>
-					<h3>{title}</h3>
+					{renderTitle({ TitleComponent: 'h3' })}
 					<p className={styles.description}>{description}</p>
 				</div>
 				<div className={styles.actions}>{actionsSlot}</div>

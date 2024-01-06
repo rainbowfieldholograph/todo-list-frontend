@@ -7,28 +7,41 @@ import { RemoveTodo, TodoItem as TodoItemDumb, ToggleTodo } from '../../dumb';
 type TodoItemProps = Todo;
 
 export const TodoItem = reatomComponent<TodoItemProps>(({ ctx, ...props }) => {
-	const { completedAtom, descriptionAtom, remove, titleAtom, toggle, update } =
-		props;
+	const {
+		id,
+		completedAtom,
+		descriptionAtom,
+		remove,
+		titleAtom,
+		toggle,
+		update,
+	} = props;
 
 	const title = ctx.spy(titleAtom);
 	const completed = ctx.spy(completedAtom);
 	const description = ctx.spy(descriptionAtom);
-	const removing = ctx.spy(remove.statusesAtom).isPending;
-	const editing = ctx.spy(update.statusesAtom).isPending;
-	const toggling = ctx.spy(toggle.statusesAtom).isPending;
 
 	return (
 		<TodoItemDumb
 			completed={completed}
 			description={description}
-			title={title}
+			renderTitle={({ TitleComponent }) => {
+				return (
+					<TitleComponent>
+						<Link to={`todo/${id}`}>{title}</Link>
+					</TitleComponent>
+				);
+			}}
 			actionsSlot={
 				<>
-					<RemoveTodo loading={removing} onRemove={ctx.bind(remove)} />
+					<RemoveTodo
+						loading={ctx.spy(remove.statusesAtom).isPending}
+						onRemove={ctx.bind(remove)}
+					/>
 					<TodoEditor
 						initialDescription={description}
 						initialTitle={title}
-						loading={editing}
+						loading={ctx.spy(update.statusesAtom).isPending}
 						onSubmit={ctx.bind(update)}
 					/>
 				</>
@@ -36,7 +49,7 @@ export const TodoItem = reatomComponent<TodoItemProps>(({ ctx, ...props }) => {
 			endVerticalSlot={
 				<ToggleTodo
 					completed={completed}
-					loading={toggling}
+					loading={ctx.spy(toggle.statusesAtom).isPending}
 					onToggle={ctx.bind(toggle)}
 					label={null}
 				/>
