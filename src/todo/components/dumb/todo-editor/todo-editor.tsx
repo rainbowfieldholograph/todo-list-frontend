@@ -10,7 +10,7 @@ type TodoEditorProps = {
 	loading: boolean;
 	onSubmit: FormSubmit;
 	buttonTitle?: string;
-} & Pick<ComponentProps<typeof TodoEditorForm>, 'slot'>;
+};
 
 export const TodoEditor = memo(
 	({
