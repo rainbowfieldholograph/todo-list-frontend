@@ -1,5 +1,5 @@
+import { AuthUser } from '~/features/user/view';
 import { AuthLayout } from '~/shared/view';
-import { AuthUser } from '~/user/view';
 
 export const Login = () => {
 	return (

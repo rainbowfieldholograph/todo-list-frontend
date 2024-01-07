@@ -9,8 +9,8 @@ import {
 	reatomResource,
 	onDisconnect,
 } from '@reatom/framework';
+import { isLoggedAtom } from '~/features/user/model';
 import { errorMapper } from '~/shared/lib/utils';
-import { isLoggedAtom } from '~/user/model';
 import type { TodoSortVariant } from './config';
 import type { TodoDTO } from './types';
 import * as api from './api';

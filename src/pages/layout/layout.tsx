@@ -1,7 +1,7 @@
 import { Suspense, type PropsWithChildren, useMemo } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
+import { isLoggedAtom, logout, userResource } from '~/features/user/model';
 import { Footer, Container, Header } from '~/shared/view';
-import { isLoggedAtom, logout, userResource } from '~/user/model';
 import styles from './layout.module.css';
 
 const generalLinks = [{ title: 'Start', to: '/' }];

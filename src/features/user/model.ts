@@ -10,8 +10,8 @@ import {
 } from '@reatom/framework';
 import { withLocalStorage } from '@reatom/persist-web-storage';
 import { navigate } from 'wouter/use-location';
+import { todoSortAtom } from '~/features/todo/model';
 import { errorMapper } from '~/shared/lib/utils';
-import { todoSortAtom } from '~/todo/model';
 import type { User } from './types';
 import * as api from './api';
 import { LS_TOKEN_KEY } from './config';

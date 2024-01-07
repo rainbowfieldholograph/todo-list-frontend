@@ -1,6 +1,6 @@
 import type { ChangeEventHandler } from 'react';
 import { useAtom } from '@reatom/npm-react';
-import { todoSortVariants, type TodoSortKey } from '~/todo/config';
+import { todoSortVariants, type TodoSortKey } from '~/features/todo/config';
 import { todoSortAtom, todosResource } from '../../../model';
 
 const optionsEntries = Object.entries(todoSortVariants);

@@ -1,8 +1,8 @@
 import { useId } from 'react';
 import { reatomComponent, useAtom, useUpdate } from '@reatom/npm-react';
-import type { TodoDTO } from '~/todo/types';
-import { TodoEditor, ToggleTodo } from '~/todo/view/dumb';
-import { todoPageIdAtom, todoPageResource } from '~/todo/model';
+import type { TodoDTO } from '~/features/todo/types';
+import { todoPageIdAtom, todoPageResource } from '~/features/todo/model';
+import { TodoEditor, ToggleTodo } from '~/features/todo/view/dumb';
 import styles from './todo-details.module.css';
 
 type TodoProps = { todoId: TodoDTO['id'] };

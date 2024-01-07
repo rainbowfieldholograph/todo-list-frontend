@@ -1,10 +1,10 @@
-import type { FC, FormEvent } from 'react';
+import type { FormEvent } from 'react';
 import { useState } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
+import { signUp } from '~/features/user/model';
 import { Button, ErrorStroke, Form, Input } from '~/shared/view';
-import { signUp } from '~/user/model';
 
-export const SignUpForm: FC = () => {
+export const SignUpForm = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [username, setUsername] = useState('');

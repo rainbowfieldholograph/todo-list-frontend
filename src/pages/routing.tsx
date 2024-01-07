@@ -1,7 +1,7 @@
 import { lazily } from 'react-lazily';
 import { useAtom } from '@reatom/npm-react';
 import { Switch, Route } from 'wouter';
-import { isLoggedAtom } from '~/user/model';
+import { isLoggedAtom } from '~/features/user/model';
 import { Layout } from './layout';
 
 const { Welcome } = lazily(() => import('./welcome'));
