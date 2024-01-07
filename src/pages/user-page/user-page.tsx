@@ -1,5 +1,5 @@
 import { useAtom } from '@reatom/npm-react';
-import { EditUser, RemoveAccountButton } from '~/user/components';
+import { EditUser, RemoveAccountButton } from '~/user/view';
 import { userResource } from '~/user/model';
 import styles from './user-page.module.css';
 

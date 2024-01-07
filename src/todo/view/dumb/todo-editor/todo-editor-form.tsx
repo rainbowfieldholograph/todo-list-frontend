@@ -1,6 +1,6 @@
 import type { FormEventHandler } from 'react';
 import { memo, useState } from 'react';
-import { Button, Form, Input, TextArea } from '~/shared/ui';
+import { Button, Form, Input, TextArea } from '~/shared/view';
 
 type TodoEditorFormProps = {
 	title: string;

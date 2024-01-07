@@ -2,7 +2,7 @@ import type { Link } from 'wouter';
 import type { ComponentProps } from 'react';
 import clsx from 'clsx';
 import { withSlot } from '~/shared/lib/hocs';
-import { Button } from '~/shared/ui';
+import { Button } from '~/shared/view';
 import { NavLink } from './nav-link';
 import styles from './header.module.css';
 

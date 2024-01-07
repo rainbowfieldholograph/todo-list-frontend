@@ -1,4 +1,4 @@
-import { TodoCreator, TodoSort, TodoList } from '~/todo/components/smart';
+import { TodoCreator, TodoSort, TodoList } from '~/todo/view/smart';
 import styles from './todo-page.module.css';
 
 export const TodoPage = () => {

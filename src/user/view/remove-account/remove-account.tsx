@@ -1,5 +1,5 @@
 import { useAction, useAtom } from '@reatom/npm-react';
-import { Button } from '~/shared/ui';
+import { Button } from '~/shared/view';
 import { removeAccount } from '../../model';
 
 export const RemoveAccountButton = () => {

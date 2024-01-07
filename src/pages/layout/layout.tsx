@@ -1,6 +1,6 @@
 import { Suspense, type PropsWithChildren, useMemo } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
-import { Footer, Container, Header } from '~/shared/ui';
+import { Footer, Container, Header } from '~/shared/view';
 import { isLoggedAtom, logout, userResource } from '~/user/model';
 import styles from './layout.module.css';
 

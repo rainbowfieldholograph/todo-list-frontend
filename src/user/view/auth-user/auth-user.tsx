@@ -1,7 +1,7 @@
 import type { ChangeEvent, FormEvent } from 'react';
 import { useState } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
-import { Button, Input, Form, ErrorStroke } from '~/shared/ui';
+import { Button, Input, Form, ErrorStroke } from '~/shared/view';
 import { login } from '../../model';
 import styles from './auth-user.module.css';
 

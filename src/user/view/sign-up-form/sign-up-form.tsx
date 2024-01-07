@@ -1,7 +1,7 @@
 import type { FC, FormEvent } from 'react';
 import { useState } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
-import { Button, ErrorStroke, Form, Input } from '~/shared/ui';
+import { Button, ErrorStroke, Form, Input } from '~/shared/view';
 import { signUp } from '~/user/model';
 
 export const SignUpForm: FC = () => {

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useEvent } from '~/shared/lib/hooks';
-import { Button, Dialog } from '~/shared/ui';
+import { Button, Dialog } from '~/shared/view';
 import { TodoCreatorForm } from './creator-form';
 import { reatomTodoCreator } from './model';
 

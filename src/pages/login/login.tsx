@@ -1,5 +1,5 @@
-import { AuthLayout } from '~/shared/ui';
-import { AuthUser } from '~/user/components';
+import { AuthLayout } from '~/shared/view';
+import { AuthUser } from '~/user/view';
 
 export const Login = () => {
 	return (

@@ -1,6 +1,6 @@
 import { memo, type FormEvent } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
-import { Input, TextArea, Button, Form, ErrorStroke } from '~/shared/ui';
+import { Input, TextArea, Button, Form, ErrorStroke } from '~/shared/view';
 import type { TodoCreatorFormModel } from './model';
 import { createTodo } from '../../../model';
 import styles from './creator-form.module.css';

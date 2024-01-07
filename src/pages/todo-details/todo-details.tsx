@@ -1,7 +1,7 @@
 import { useId } from 'react';
 import { reatomComponent, useAtom, useUpdate } from '@reatom/npm-react';
 import type { TodoDTO } from '~/todo/types';
-import { TodoEditor, ToggleTodo } from '~/todo/components/dumb';
+import { TodoEditor, ToggleTodo } from '~/todo/view/dumb';
 import { todoPageIdAtom, todoPageResource } from '~/todo/model';
 import styles from './todo-details.module.css';
 

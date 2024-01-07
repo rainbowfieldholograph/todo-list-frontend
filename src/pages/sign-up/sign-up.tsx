@@ -1,5 +1,5 @@
-import { AuthLayout } from '~/shared/ui';
-import { SignUpForm } from '~/user/components';
+import { AuthLayout } from '~/shared/view';
+import { SignUpForm } from '~/user/view';
 
 export const SignUp = () => {
 	return (

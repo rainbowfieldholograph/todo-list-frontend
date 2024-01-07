@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 import { memo, useState } from 'react';
 import { useEvent } from '~/shared/lib/hooks';
-import { Button, Dialog } from '~/shared/ui';
+import { Button, Dialog } from '~/shared/view';
 import { TodoEditorForm } from './todo-editor-form';
 
 type FormSubmit = ComponentProps<typeof TodoEditorForm>['onSubmit'];

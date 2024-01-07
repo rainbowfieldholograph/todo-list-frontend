@@ -1,7 +1,7 @@
 import type { FormEventHandler } from 'react';
 import { useState } from 'react';
 import { useAction, useAtom } from '@reatom/npm-react';
-import { Button, Form, Input } from '~/shared/ui';
+import { Button, Form, Input } from '~/shared/view';
 import { changeCredentials, userResource } from '../../model';
 
 type EditUserFormProps = {
